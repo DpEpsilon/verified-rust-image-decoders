@@ -8558,4 +8558,5697 @@ pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_1x1()
     }
     crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_1x1(),h_interlace_ct3_d4_1x1(),z_interlace_ct3_d4_1x1(),raw_interlace_ct3_d4_1x1(),16nat,e6_a7_colour_interlace_ct3_d4_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x1());
 }
+spec fn e6_a7_colour_interlace_ct0_d1_1x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_1x1_0_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),r::line(raw_interlace_ct0_d1_1x1(),a_interlace_ct0_d1_1x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x1(),0nat)==1nat && r::base(a_interlace_ct0_d1_1x1(),0nat)==0nat && r::rb(a_interlace_ct0_d1_1x1(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x1(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x1(),0nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x1(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x1(),a_interlace_ct0_d1_1x1(),0nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),e6_a7_line_interlace_ct0_d1_1x1_0_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),e6_a7_line_interlace_ct0_d1_1x1_0_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),e6_a7_line_interlace_ct0_d1_1x1_0_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),e6_a7_line_interlace_ct0_d1_1x1_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),e6_a7_line_interlace_ct0_d1_1x1_0_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1(),0nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),r::line(raw_interlace_ct0_d1_1x1(),a_interlace_ct0_d1_1x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_1x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_1x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_1x1);hide(z_interlace_ct0_d1_1x1);hide(raw_interlace_ct0_d1_1x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_1x1().len()==67nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_1x1())==Ok((crate::model::Ihdr {width:1u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_1x1())==Ok((crate::model::Ihdr {width:1u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:10nat,next:55nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:10nat,next:55nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x1(),55nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:63nat,len:0nat,next:67nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x1(),55nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:63nat,len:0nat,next:67nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_1x1().subrange(41,51)==z_interlace_ct0_d1_1x1()) by (compute);
+    walk_interlace_ct0_d1_1x1(bytes_interlace_ct0_d1_1x1());
+
+    model_interlace_ct0_d1_1x1();inflate_interlace_ct0_d1_1x1();scan_interlace_ct0_d1_1x1();
+    assert(bytes_interlace_ct0_d1_1x1()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x1()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_1x1())==2nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_1x1(),a_interlace_ct0_d1_1x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_1x1(),h_interlace_ct0_d1_1x1(),10nat);
+    e6_a7_pass_interlace_ct0_d1_1x1_0();
+    assert(r::count(a_interlace_ct0_d1_1x1())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_1x1()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1().len()==4nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),1nat)==0nat && r::ph(a_interlace_ct0_d1_1x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),2nat)==1nat && r::ph(a_interlace_ct0_d1_1x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),3nat)==0nat && r::ph(a_interlace_ct0_d1_1x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),4nat)==1nat && r::ph(a_interlace_ct0_d1_1x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),5nat)==0nat && r::ph(a_interlace_ct0_d1_1x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x1(),6nat)==1nat && r::ph(a_interlace_ct0_d1_1x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_1x1(),k)>0 && y<r::ph(a_interlace_ct0_d1_1x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x1(),r::line(raw_interlace_ct0_d1_1x1(),a_interlace_ct0_d1_1x1(),k,y),r::pw(a_interlace_ct0_d1_1x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_1x1(),h_interlace_ct0_d1_1x1(),z_interlace_ct0_d1_1x1(),raw_interlace_ct0_d1_1x1(),0nat,e6_a7_colour_interlace_ct0_d1_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x1());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_1x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_1x1_0_0() -> Seq<u8> {seq![104u8,33u8,215u8,151u8,182u8,95u8,109u8,74u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_1x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),r::line(raw_interlace_ct6_d16_1x1(),a_interlace_ct6_d16_1x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_1x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),0nat)==1nat && r::ph(a_interlace_ct6_d16_1x1(),0nat)==1nat && r::base(a_interlace_ct6_d16_1x1(),0nat)==0nat && r::rb(a_interlace_ct6_d16_1x1(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_1x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x1(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_1x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x1(),0nat,8nat,0nat)==seq![104u8,33u8,215u8,151u8,182u8,95u8,109u8,74u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x1(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![104u8,33u8,215u8,151u8,182u8,95u8,109u8,74u8],None,8nat,seq![104u8,33u8,215u8,151u8,182u8,95u8,109u8,74u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![104u8,33u8,215u8,151u8,182u8,95u8,109u8,74u8],None,8nat,seq![104u8,33u8,215u8,151u8,182u8,95u8,109u8,74u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x1(),a_interlace_ct6_d16_1x1(),0nat,0nat)==seq![104u8,33u8,215u8,151u8,182u8,95u8,109u8,74u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),e6_a7_line_interlace_ct6_d16_1x1_0_0(),1nat)[0]==104u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),e6_a7_line_interlace_ct6_d16_1x1_0_0(),1nat)[1]==215u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),e6_a7_line_interlace_ct6_d16_1x1_0_0(),1nat)[2]==182u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),e6_a7_line_interlace_ct6_d16_1x1_0_0(),1nat)[3]==109u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),e6_a7_line_interlace_ct6_d16_1x1_0_0(),1nat),seq![104u8,215u8,182u8,109u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1(),0nat,0nat)==seq![104u8,215u8,182u8,109u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),r::line(raw_interlace_ct6_d16_1x1(),a_interlace_ct6_d16_1x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_1x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_1x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_1x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_1x1);hide(z_interlace_ct6_d16_1x1);hide(raw_interlace_ct6_d16_1x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_1x1().len()==74nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_1x1())==Ok((crate::model::Ihdr {width:1u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_1x1())==Ok((crate::model::Ihdr {width:1u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_1x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:17nat,next:62nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_1x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:17nat,next:62nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_1x1(),62nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:70nat,len:0nat,next:74nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_1x1(),62nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:70nat,len:0nat,next:74nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_1x1().subrange(41,58)==z_interlace_ct6_d16_1x1()) by (compute);
+    walk_interlace_ct6_d16_1x1(bytes_interlace_ct6_d16_1x1());
+
+    model_interlace_ct6_d16_1x1();inflate_interlace_ct6_d16_1x1();scan_interlace_ct6_d16_1x1();
+    assert(bytes_interlace_ct6_d16_1x1()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_1x1()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_1x1())==9nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_1x1(),a_interlace_ct6_d16_1x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_1x1(),h_interlace_ct6_d16_1x1(),17nat);
+    e6_a7_pass_interlace_ct6_d16_1x1_0();
+    assert(r::count(a_interlace_ct6_d16_1x1())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_1x1()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1().len()==4nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),0nat)==1nat && r::ph(a_interlace_ct6_d16_1x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),1nat)==0nat && r::ph(a_interlace_ct6_d16_1x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),2nat)==1nat && r::ph(a_interlace_ct6_d16_1x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),3nat)==0nat && r::ph(a_interlace_ct6_d16_1x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),4nat)==1nat && r::ph(a_interlace_ct6_d16_1x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),5nat)==0nat && r::ph(a_interlace_ct6_d16_1x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x1(),6nat)==1nat && r::ph(a_interlace_ct6_d16_1x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_1x1(),k)>0 && y<r::ph(a_interlace_ct6_d16_1x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x1(),r::line(raw_interlace_ct6_d16_1x1(),a_interlace_ct6_d16_1x1(),k,y),r::pw(a_interlace_ct6_d16_1x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_1x1(),h_interlace_ct6_d16_1x1(),z_interlace_ct6_d16_1x1(),raw_interlace_ct6_d16_1x1(),0nat,e6_a7_colour_interlace_ct6_d16_1x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x1());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_1x2() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_1x2_0_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x2_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),r::line(raw_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x2(),0nat)==1nat && r::base(a_interlace_ct0_d1_1x2(),0nat)==0nat && r::rb(a_interlace_ct0_d1_1x2(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x2(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x2()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x2(),0nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x2(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),0nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_0_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_0_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_0_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_0_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2(),0nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),r::line(raw_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_1x2_6_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x2_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),r::line(raw_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2(),6nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),6nat)==1nat && r::ph(a_interlace_ct0_d1_1x2(),6nat)==1nat && r::base(a_interlace_ct0_d1_1x2(),6nat)==2nat && r::rb(a_interlace_ct0_d1_1x2(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x2(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x2()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x2(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x2(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),6nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_6_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_6_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_6_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_6_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),e6_a7_line_interlace_ct0_d1_1x2_6_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2(),6nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),r::line(raw_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_1x2()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x2()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_1x2(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_1x2);hide(z_interlace_ct0_d1_1x2);hide(raw_interlace_ct0_d1_1x2);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_1x2().len()==69nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_1x2())==Ok((crate::model::Ihdr {width:1u32,height:2u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_1x2())==Ok((crate::model::Ihdr {width:1u32,height:2u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:12nat,next:57nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:12nat,next:57nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x2(),57nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:65nat,len:0nat,next:69nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x2(),57nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:65nat,len:0nat,next:69nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_1x2().subrange(41,53)==z_interlace_ct0_d1_1x2()) by (compute);
+    walk_interlace_ct0_d1_1x2(bytes_interlace_ct0_d1_1x2());
+
+    model_interlace_ct0_d1_1x2();inflate_interlace_ct0_d1_1x2();scan_interlace_ct0_d1_1x2();
+    assert(bytes_interlace_ct0_d1_1x2()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x2()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_1x2())==4nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_1x2(),h_interlace_ct0_d1_1x2(),12nat);
+    e6_a7_pass_interlace_ct0_d1_1x2_0();
+    e6_a7_pass_interlace_ct0_d1_1x2_6();
+    assert(r::count(a_interlace_ct0_d1_1x2())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_1x2()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2().len()==8nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x2(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),1nat)==0nat && r::ph(a_interlace_ct0_d1_1x2(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),2nat)==1nat && r::ph(a_interlace_ct0_d1_1x2(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),3nat)==0nat && r::ph(a_interlace_ct0_d1_1x2(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),4nat)==1nat && r::ph(a_interlace_ct0_d1_1x2(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),5nat)==0nat && r::ph(a_interlace_ct0_d1_1x2(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x2(),6nat)==1nat && r::ph(a_interlace_ct0_d1_1x2(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_1x2(),k)>0 && y<r::ph(a_interlace_ct0_d1_1x2(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x2(),r::line(raw_interlace_ct0_d1_1x2(),a_interlace_ct0_d1_1x2(),k,y),r::pw(a_interlace_ct0_d1_1x2(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_1x2(),h_interlace_ct0_d1_1x2(),z_interlace_ct0_d1_1x2(),raw_interlace_ct0_d1_1x2(),0nat,e6_a7_colour_interlace_ct0_d1_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x2());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_1x2() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_1x2_0_0() -> Seq<u8> {seq![164u8,197u8,185u8,7u8,12u8,137u8,112u8,241u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_1x2_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),r::line(raw_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_1x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),0nat)==1nat && r::ph(a_interlace_ct6_d16_1x2(),0nat)==1nat && r::base(a_interlace_ct6_d16_1x2(),0nat)==0nat && r::rb(a_interlace_ct6_d16_1x2(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_1x2()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x2(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_1x2()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x2(),0nat,8nat,0nat)==seq![164u8,197u8,185u8,7u8,12u8,137u8,112u8,241u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x2(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![164u8,197u8,185u8,7u8,12u8,137u8,112u8,241u8],None,8nat,seq![164u8,197u8,185u8,7u8,12u8,137u8,112u8,241u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![164u8,197u8,185u8,7u8,12u8,137u8,112u8,241u8],None,8nat,seq![164u8,197u8,185u8,7u8,12u8,137u8,112u8,241u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),0nat,0nat)==seq![164u8,197u8,185u8,7u8,12u8,137u8,112u8,241u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_0_0(),1nat)[0]==164u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_0_0(),1nat)[1]==184u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_0_0(),1nat)[2]==12u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_0_0(),1nat)[3]==113u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_0_0(),1nat),seq![164u8,184u8,12u8,113u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2(),0nat,0nat)==seq![164u8,184u8,12u8,113u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),r::line(raw_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_1x2_6_0() -> Seq<u8> {seq![216u8,241u8,31u8,122u8,102u8,145u8,231u8,16u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_1x2_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),r::line(raw_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2(),6nat,y),
+{
+    hide(raw_interlace_ct6_d16_1x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),6nat)==1nat && r::ph(a_interlace_ct6_d16_1x2(),6nat)==1nat && r::base(a_interlace_ct6_d16_1x2(),6nat)==9nat && r::rb(a_interlace_ct6_d16_1x2(),6nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_1x2()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x2(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_1x2()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x2(),9nat,8nat,0nat)==seq![216u8,241u8,31u8,122u8,102u8,145u8,231u8,16u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x2(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![216u8,241u8,31u8,122u8,102u8,145u8,231u8,16u8],None,8nat,seq![216u8,241u8,31u8,122u8,102u8,145u8,231u8,16u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![216u8,241u8,31u8,122u8,102u8,145u8,231u8,16u8],None,8nat,seq![216u8,241u8,31u8,122u8,102u8,145u8,231u8,16u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),6nat,0nat)==seq![216u8,241u8,31u8,122u8,102u8,145u8,231u8,16u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_6_0(),1nat)[0]==216u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_6_0(),1nat)[1]==31u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_6_0(),1nat)[2]==102u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_6_0(),1nat)[3]==230u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),e6_a7_line_interlace_ct6_d16_1x2_6_0(),1nat),seq![216u8,31u8,102u8,230u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2(),6nat,0nat)==seq![216u8,31u8,102u8,230u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),r::line(raw_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_1x2()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_1x2()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_1x2(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_1x2);hide(z_interlace_ct6_d16_1x2);hide(raw_interlace_ct6_d16_1x2);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_1x2().len()==84nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_1x2())==Ok((crate::model::Ihdr {width:1u32,height:2u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_1x2())==Ok((crate::model::Ihdr {width:1u32,height:2u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_1x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:27nat,next:72nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_1x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:27nat,next:72nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_1x2(),72nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:80nat,len:0nat,next:84nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_1x2(),72nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:80nat,len:0nat,next:84nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_1x2().subrange(41,68)==z_interlace_ct6_d16_1x2()) by (compute);
+    walk_interlace_ct6_d16_1x2(bytes_interlace_ct6_d16_1x2());
+
+    model_interlace_ct6_d16_1x2();inflate_interlace_ct6_d16_1x2();scan_interlace_ct6_d16_1x2();
+    assert(bytes_interlace_ct6_d16_1x2()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_1x2()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_1x2())==18nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_1x2(),h_interlace_ct6_d16_1x2(),27nat);
+    e6_a7_pass_interlace_ct6_d16_1x2_0();
+    e6_a7_pass_interlace_ct6_d16_1x2_6();
+    assert(r::count(a_interlace_ct6_d16_1x2())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_1x2()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2().len()==8nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),0nat)==1nat && r::ph(a_interlace_ct6_d16_1x2(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),1nat)==0nat && r::ph(a_interlace_ct6_d16_1x2(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),2nat)==1nat && r::ph(a_interlace_ct6_d16_1x2(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),3nat)==0nat && r::ph(a_interlace_ct6_d16_1x2(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),4nat)==1nat && r::ph(a_interlace_ct6_d16_1x2(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),5nat)==0nat && r::ph(a_interlace_ct6_d16_1x2(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x2(),6nat)==1nat && r::ph(a_interlace_ct6_d16_1x2(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_1x2(),k)>0 && y<r::ph(a_interlace_ct6_d16_1x2(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x2(),r::line(raw_interlace_ct6_d16_1x2(),a_interlace_ct6_d16_1x2(),k,y),r::pw(a_interlace_ct6_d16_1x2(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_1x2(),h_interlace_ct6_d16_1x2(),z_interlace_ct6_d16_1x2(),raw_interlace_ct6_d16_1x2(),0nat,e6_a7_colour_interlace_ct6_d16_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x2());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_1x2() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![48u8,133u8,152u8,119u8,73u8,36u8,137u8,169u8,47u8,31u8,222u8,37u8,218u8,42u8,11u8,195u8,93u8,100u8,205u8,159u8,179u8,3u8,251u8,34u8,252u8,216u8,107u8,91u8,226u8,12u8,195u8,205u8,79u8,172u8,16u8,169u8,169u8,254u8,66u8,31u8,92u8,97u8,148u8,36u8,145u8,249u8,13u8,185u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_1x2_0_0() -> Seq<u8> {seq![32u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x2_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),r::line(raw_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),0nat)==1nat && r::ph(a_interlace_ct3_d4_1x2(),0nat)==1nat && r::base(a_interlace_ct3_d4_1x2(),0nat)==0nat && r::rb(a_interlace_ct3_d4_1x2(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x2(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x2()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x2(),0nat,1nat,0nat)==seq![32u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x2(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![32u8],None,1nat,seq![32u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![32u8],None,1nat,seq![32u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),0nat,0nat)==seq![32u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_0_0(),1nat)[0]==137u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_0_0(),1nat)[1]==169u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_0_0(),1nat)[2]==47u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_0_0(),1nat),seq![137u8,169u8,47u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2(),0nat,0nat)==seq![137u8,169u8,47u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),r::line(raw_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_1x2_6_0() -> Seq<u8> {seq![112u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x2_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),r::line(raw_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2(),6nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),6nat)==1nat && r::ph(a_interlace_ct3_d4_1x2(),6nat)==1nat && r::base(a_interlace_ct3_d4_1x2(),6nat)==2nat && r::rb(a_interlace_ct3_d4_1x2(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x2(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x2()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x2(),2nat,1nat,0nat)==seq![112u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x2(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![112u8],None,1nat,seq![112u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![112u8],None,1nat,seq![112u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),6nat,0nat)==seq![112u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_6_0(),1nat)[0]==3u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_6_0(),1nat)[1]==251u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_6_0(),1nat)[2]==34u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_6_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),e6_a7_line_interlace_ct3_d4_1x2_6_0(),1nat),seq![3u8,251u8,34u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2(),6nat,0nat)==seq![3u8,251u8,34u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),r::line(raw_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_1x2()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_1x2()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_1x2(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_1x2);hide(z_interlace_ct3_d4_1x2);hide(raw_interlace_ct3_d4_1x2);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_1x2().len()==129nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_1x2())==Ok((crate::model::Ihdr {width:1u32,height:2u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_1x2())==Ok((crate::model::Ihdr {width:1u32,height:2u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x2(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:12nat,next:117nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x2(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:12nat,next:117nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x2(),117nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:125nat,len:0nat,next:129nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x2(),117nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:125nat,len:0nat,next:129nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_1x2().subrange(101,113)==z_interlace_ct3_d4_1x2()) by (compute);
+    walk_interlace_ct3_d4_1x2(bytes_interlace_ct3_d4_1x2());
+
+    model_interlace_ct3_d4_1x2();inflate_interlace_ct3_d4_1x2();scan_interlace_ct3_d4_1x2();
+    assert(bytes_interlace_ct3_d4_1x2()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_1x2()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_1x2())==4nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_1x2().subrange(41,89)==seq![48u8,133u8,152u8,119u8,73u8,36u8,137u8,169u8,47u8,31u8,222u8,37u8,218u8,42u8,11u8,195u8,93u8,100u8,205u8,159u8,179u8,3u8,251u8,34u8,252u8,216u8,107u8,91u8,226u8,12u8,195u8,205u8,79u8,172u8,16u8,169u8,169u8,254u8,66u8,31u8,92u8,97u8,148u8,36u8,145u8,249u8,13u8,185u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_1x2(),h_interlace_ct3_d4_1x2(),12nat);
+    e6_a7_pass_interlace_ct3_d4_1x2_0();
+    e6_a7_pass_interlace_ct3_d4_1x2_6();
+    assert(r::count(a_interlace_ct3_d4_1x2())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_1x2()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2().len()==8nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),0nat)==1nat && r::ph(a_interlace_ct3_d4_1x2(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),1nat)==0nat && r::ph(a_interlace_ct3_d4_1x2(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),2nat)==1nat && r::ph(a_interlace_ct3_d4_1x2(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),3nat)==0nat && r::ph(a_interlace_ct3_d4_1x2(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),4nat)==1nat && r::ph(a_interlace_ct3_d4_1x2(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),5nat)==0nat && r::ph(a_interlace_ct3_d4_1x2(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x2(),6nat)==1nat && r::ph(a_interlace_ct3_d4_1x2(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_1x2(),k)>0 && y<r::ph(a_interlace_ct3_d4_1x2(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x2(),r::line(raw_interlace_ct3_d4_1x2(),a_interlace_ct3_d4_1x2(),k,y),r::pw(a_interlace_ct3_d4_1x2(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_1x2(),h_interlace_ct3_d4_1x2(),z_interlace_ct3_d4_1x2(),raw_interlace_ct3_d4_1x2(),16nat,e6_a7_colour_interlace_ct3_d4_1x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x2());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_2x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_2x1_0_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_2x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),r::line(raw_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_2x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),0nat)==1nat && r::ph(a_interlace_ct0_d1_2x1(),0nat)==1nat && r::base(a_interlace_ct0_d1_2x1(),0nat)==0nat && r::rb(a_interlace_ct0_d1_2x1(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_2x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_2x1(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_2x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_2x1(),0nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_2x1(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),0nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_0_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_0_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_0_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_0_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1(),0nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),r::line(raw_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_2x1_5_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_2x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),r::line(raw_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1(),5nat,y),
+{
+    hide(raw_interlace_ct0_d1_2x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),5nat)==1nat && r::ph(a_interlace_ct0_d1_2x1(),5nat)==1nat && r::base(a_interlace_ct0_d1_2x1(),5nat)==2nat && r::rb(a_interlace_ct0_d1_2x1(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_2x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_2x1(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_2x1()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_2x1(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_2x1(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),5nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_5_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_5_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_5_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_5_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),e6_a7_line_interlace_ct0_d1_2x1_5_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1(),5nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),r::line(raw_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_2x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_2x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_2x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_2x1);hide(z_interlace_ct0_d1_2x1);hide(raw_interlace_ct0_d1_2x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_2x1().len()==69nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_2x1())==Ok((crate::model::Ihdr {width:2u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_2x1())==Ok((crate::model::Ihdr {width:2u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_2x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:12nat,next:57nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_2x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:12nat,next:57nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_2x1(),57nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:65nat,len:0nat,next:69nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_2x1(),57nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:65nat,len:0nat,next:69nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_2x1().subrange(41,53)==z_interlace_ct0_d1_2x1()) by (compute);
+    walk_interlace_ct0_d1_2x1(bytes_interlace_ct0_d1_2x1());
+
+    model_interlace_ct0_d1_2x1();inflate_interlace_ct0_d1_2x1();scan_interlace_ct0_d1_2x1();
+    assert(bytes_interlace_ct0_d1_2x1()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_2x1()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_2x1())==4nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_2x1(),h_interlace_ct0_d1_2x1(),12nat);
+    e6_a7_pass_interlace_ct0_d1_2x1_0();
+    e6_a7_pass_interlace_ct0_d1_2x1_5();
+    assert(r::count(a_interlace_ct0_d1_2x1())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_2x1()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1().len()==8nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),0nat)==1nat && r::ph(a_interlace_ct0_d1_2x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),1nat)==0nat && r::ph(a_interlace_ct0_d1_2x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),2nat)==1nat && r::ph(a_interlace_ct0_d1_2x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),3nat)==0nat && r::ph(a_interlace_ct0_d1_2x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),4nat)==1nat && r::ph(a_interlace_ct0_d1_2x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),5nat)==1nat && r::ph(a_interlace_ct0_d1_2x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x1(),6nat)==2nat && r::ph(a_interlace_ct0_d1_2x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_2x1(),k)>0 && y<r::ph(a_interlace_ct0_d1_2x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x1(),r::line(raw_interlace_ct0_d1_2x1(),a_interlace_ct0_d1_2x1(),k,y),r::pw(a_interlace_ct0_d1_2x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_2x1(),h_interlace_ct0_d1_2x1(),z_interlace_ct0_d1_2x1(),raw_interlace_ct0_d1_2x1(),0nat,e6_a7_colour_interlace_ct0_d1_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x1());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_2x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_2x1_0_0() -> Seq<u8> {seq![83u8,3u8,151u8,115u8,238u8,200u8,122u8,169u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_2x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),r::line(raw_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_2x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),0nat)==1nat && r::ph(a_interlace_ct6_d16_2x1(),0nat)==1nat && r::base(a_interlace_ct6_d16_2x1(),0nat)==0nat && r::rb(a_interlace_ct6_d16_2x1(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_2x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_2x1(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_2x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_2x1(),0nat,8nat,0nat)==seq![83u8,3u8,151u8,115u8,238u8,200u8,122u8,169u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_2x1(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![83u8,3u8,151u8,115u8,238u8,200u8,122u8,169u8],None,8nat,seq![83u8,3u8,151u8,115u8,238u8,200u8,122u8,169u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![83u8,3u8,151u8,115u8,238u8,200u8,122u8,169u8],None,8nat,seq![83u8,3u8,151u8,115u8,238u8,200u8,122u8,169u8]);
+    assert(r::line(raw_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),0nat,0nat)==seq![83u8,3u8,151u8,115u8,238u8,200u8,122u8,169u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_0_0(),1nat)[0]==83u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_0_0(),1nat)[1]==151u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_0_0(),1nat)[2]==238u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_0_0(),1nat)[3]==122u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_0_0(),1nat),seq![83u8,151u8,238u8,122u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1(),0nat,0nat)==seq![83u8,151u8,238u8,122u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),r::line(raw_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_2x1_5_0() -> Seq<u8> {seq![4u8,125u8,110u8,42u8,215u8,217u8,203u8,39u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_2x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),r::line(raw_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1(),5nat,y),
+{
+    hide(raw_interlace_ct6_d16_2x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),5nat)==1nat && r::ph(a_interlace_ct6_d16_2x1(),5nat)==1nat && r::base(a_interlace_ct6_d16_2x1(),5nat)==9nat && r::rb(a_interlace_ct6_d16_2x1(),5nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_2x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_2x1(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_2x1()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_2x1(),9nat,8nat,0nat)==seq![4u8,125u8,110u8,42u8,215u8,217u8,203u8,39u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_2x1(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![4u8,125u8,110u8,42u8,215u8,217u8,203u8,39u8],None,8nat,seq![4u8,125u8,110u8,42u8,215u8,217u8,203u8,39u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![4u8,125u8,110u8,42u8,215u8,217u8,203u8,39u8],None,8nat,seq![4u8,125u8,110u8,42u8,215u8,217u8,203u8,39u8]);
+    assert(r::line(raw_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),5nat,0nat)==seq![4u8,125u8,110u8,42u8,215u8,217u8,203u8,39u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_5_0(),1nat)[0]==4u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_5_0(),1nat)[1]==110u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_5_0(),1nat)[2]==215u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_5_0(),1nat)[3]==202u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),e6_a7_line_interlace_ct6_d16_2x1_5_0(),1nat),seq![4u8,110u8,215u8,202u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1(),5nat,0nat)==seq![4u8,110u8,215u8,202u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),r::line(raw_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_2x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_2x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_2x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_2x1);hide(z_interlace_ct6_d16_2x1);hide(raw_interlace_ct6_d16_2x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_2x1().len()==84nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_2x1())==Ok((crate::model::Ihdr {width:2u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_2x1())==Ok((crate::model::Ihdr {width:2u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_2x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:27nat,next:72nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_2x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:27nat,next:72nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_2x1(),72nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:80nat,len:0nat,next:84nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_2x1(),72nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:80nat,len:0nat,next:84nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_2x1().subrange(41,68)==z_interlace_ct6_d16_2x1()) by (compute);
+    walk_interlace_ct6_d16_2x1(bytes_interlace_ct6_d16_2x1());
+
+    model_interlace_ct6_d16_2x1();inflate_interlace_ct6_d16_2x1();scan_interlace_ct6_d16_2x1();
+    assert(bytes_interlace_ct6_d16_2x1()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_2x1()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_2x1())==18nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_2x1(),h_interlace_ct6_d16_2x1(),27nat);
+    e6_a7_pass_interlace_ct6_d16_2x1_0();
+    e6_a7_pass_interlace_ct6_d16_2x1_5();
+    assert(r::count(a_interlace_ct6_d16_2x1())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_2x1()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1().len()==8nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),0nat)==1nat && r::ph(a_interlace_ct6_d16_2x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),1nat)==0nat && r::ph(a_interlace_ct6_d16_2x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),2nat)==1nat && r::ph(a_interlace_ct6_d16_2x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),3nat)==0nat && r::ph(a_interlace_ct6_d16_2x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),4nat)==1nat && r::ph(a_interlace_ct6_d16_2x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),5nat)==1nat && r::ph(a_interlace_ct6_d16_2x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x1(),6nat)==2nat && r::ph(a_interlace_ct6_d16_2x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_2x1(),k)>0 && y<r::ph(a_interlace_ct6_d16_2x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x1(),r::line(raw_interlace_ct6_d16_2x1(),a_interlace_ct6_d16_2x1(),k,y),r::pw(a_interlace_ct6_d16_2x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_2x1(),h_interlace_ct6_d16_2x1(),z_interlace_ct6_d16_2x1(),raw_interlace_ct6_d16_2x1(),0nat,e6_a7_colour_interlace_ct6_d16_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x1());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_2x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![89u8,196u8,227u8,155u8,87u8,162u8,121u8,246u8,210u8,86u8,127u8,185u8,92u8,199u8,181u8,14u8,145u8,216u8,190u8,196u8,167u8,144u8,238u8,26u8,246u8,17u8,167u8,145u8,35u8,138u8,66u8,27u8,249u8,24u8,58u8,27u8,53u8,70u8,220u8,235u8,135u8,120u8,6u8,211u8,79u8,87u8,184u8,23u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_2x1_0_0() -> Seq<u8> {seq![224u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_2x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),r::line(raw_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_2x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),0nat)==1nat && r::ph(a_interlace_ct3_d4_2x1(),0nat)==1nat && r::base(a_interlace_ct3_d4_2x1(),0nat)==0nat && r::rb(a_interlace_ct3_d4_2x1(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_2x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_2x1(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_2x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_2x1(),0nat,1nat,0nat)==seq![224u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_2x1(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![224u8],None,1nat,seq![224u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![224u8],None,1nat,seq![224u8]);
+    assert(r::line(raw_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),0nat,0nat)==seq![224u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_0_0(),1nat)[0]==6u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_0_0(),1nat)[1]==211u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_0_0(),1nat)[2]==79u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_0_0(),1nat),seq![6u8,211u8,79u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1(),0nat,0nat)==seq![6u8,211u8,79u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),r::line(raw_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_2x1_5_0() -> Seq<u8> {seq![96u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_2x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),r::line(raw_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1(),5nat,y),
+{
+    hide(raw_interlace_ct3_d4_2x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),5nat)==1nat && r::ph(a_interlace_ct3_d4_2x1(),5nat)==1nat && r::base(a_interlace_ct3_d4_2x1(),5nat)==2nat && r::rb(a_interlace_ct3_d4_2x1(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_2x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_2x1(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_2x1()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_2x1(),2nat,1nat,0nat)==seq![96u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_2x1(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![96u8],None,1nat,seq![96u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![96u8],None,1nat,seq![96u8]);
+    assert(r::line(raw_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),5nat,0nat)==seq![96u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_5_0(),1nat)[0]==190u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_5_0(),1nat)[1]==196u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_5_0(),1nat)[2]==167u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_5_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),e6_a7_line_interlace_ct3_d4_2x1_5_0(),1nat),seq![190u8,196u8,167u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1(),5nat,0nat)==seq![190u8,196u8,167u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),r::line(raw_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_2x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_2x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_2x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_2x1);hide(z_interlace_ct3_d4_2x1);hide(raw_interlace_ct3_d4_2x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_2x1().len()==129nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_2x1())==Ok((crate::model::Ihdr {width:2u32,height:1u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_2x1())==Ok((crate::model::Ihdr {width:2u32,height:1u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_2x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_2x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_2x1(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:12nat,next:117nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_2x1(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:12nat,next:117nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_2x1(),117nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:125nat,len:0nat,next:129nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_2x1(),117nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:125nat,len:0nat,next:129nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_2x1().subrange(101,113)==z_interlace_ct3_d4_2x1()) by (compute);
+    walk_interlace_ct3_d4_2x1(bytes_interlace_ct3_d4_2x1());
+
+    model_interlace_ct3_d4_2x1();inflate_interlace_ct3_d4_2x1();scan_interlace_ct3_d4_2x1();
+    assert(bytes_interlace_ct3_d4_2x1()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_2x1()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_2x1())==4nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_2x1().subrange(41,89)==seq![89u8,196u8,227u8,155u8,87u8,162u8,121u8,246u8,210u8,86u8,127u8,185u8,92u8,199u8,181u8,14u8,145u8,216u8,190u8,196u8,167u8,144u8,238u8,26u8,246u8,17u8,167u8,145u8,35u8,138u8,66u8,27u8,249u8,24u8,58u8,27u8,53u8,70u8,220u8,235u8,135u8,120u8,6u8,211u8,79u8,87u8,184u8,23u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_2x1(),h_interlace_ct3_d4_2x1(),12nat);
+    e6_a7_pass_interlace_ct3_d4_2x1_0();
+    e6_a7_pass_interlace_ct3_d4_2x1_5();
+    assert(r::count(a_interlace_ct3_d4_2x1())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_2x1()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1().len()==8nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),0nat)==1nat && r::ph(a_interlace_ct3_d4_2x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),1nat)==0nat && r::ph(a_interlace_ct3_d4_2x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),2nat)==1nat && r::ph(a_interlace_ct3_d4_2x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),3nat)==0nat && r::ph(a_interlace_ct3_d4_2x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),4nat)==1nat && r::ph(a_interlace_ct3_d4_2x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),5nat)==1nat && r::ph(a_interlace_ct3_d4_2x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x1(),6nat)==2nat && r::ph(a_interlace_ct3_d4_2x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_2x1(),k)>0 && y<r::ph(a_interlace_ct3_d4_2x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x1(),r::line(raw_interlace_ct3_d4_2x1(),a_interlace_ct3_d4_2x1(),k,y),r::pw(a_interlace_ct3_d4_2x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_2x1(),h_interlace_ct3_d4_2x1(),z_interlace_ct3_d4_2x1(),raw_interlace_ct3_d4_2x1(),16nat,e6_a7_colour_interlace_ct3_d4_2x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x1());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_1x5() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_1x5_0_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x5_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),0nat)==1nat && r::base(a_interlace_ct0_d1_1x5(),0nat)==0nat && r::rb(a_interlace_ct0_d1_1x5(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x5(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x5()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x5(),0nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x5(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),0nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_0_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_0_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_0_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_0_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),0nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_1x5_2_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x5_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),2nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),2nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),2nat)==1nat && r::base(a_interlace_ct0_d1_1x5(),2nat)==2nat && r::rb(a_interlace_ct0_d1_1x5(),2nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x5(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x5()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x5(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x5(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),2nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_2_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_2_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_2_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_2_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_2_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),2nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_1x5_4_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x5_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),4nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),4nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),4nat)==1nat && r::base(a_interlace_ct0_d1_1x5(),4nat)==4nat && r::rb(a_interlace_ct0_d1_1x5(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x5(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x5()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x5(),4nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x5(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),4nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_4_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_4_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_4_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_4_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_4_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),4nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_1x5_6_0() -> Seq<u8> {seq![0u8]}
+spec fn e6_a7_line_interlace_ct0_d1_1x5_6_1() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x5_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),6nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),6nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),6nat)==2nat && r::base(a_interlace_ct0_d1_1x5(),6nat)==6nat && r::rb(a_interlace_ct0_d1_1x5(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x5(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x5()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x5(),6nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x5(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),6nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),6nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x5(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_1x5()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x5(),6nat,1nat,1nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x5(),6nat,1nat,1nat,1nat)==Some(seq![0u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![128u8],Some(seq![0u8]),1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![128u8],Some(seq![0u8]),1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),6nat,1nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_1(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_1(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_1(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),e6_a7_line_interlace_ct0_d1_1x5_6_1(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),6nat,1nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_1x5()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x5()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_1x5(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_1x5);hide(z_interlace_ct0_d1_1x5);hide(raw_interlace_ct0_d1_1x5);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_1x5().len()==75nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_1x5())==Ok((crate::model::Ihdr {width:1u32,height:5u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_1x5())==Ok((crate::model::Ihdr {width:1u32,height:5u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:18nat,next:63nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:18nat,next:63nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x5(),63nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:71nat,len:0nat,next:75nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x5(),63nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:71nat,len:0nat,next:75nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_1x5().subrange(41,59)==z_interlace_ct0_d1_1x5()) by (compute);
+    walk_interlace_ct0_d1_1x5(bytes_interlace_ct0_d1_1x5());
+
+    model_interlace_ct0_d1_1x5();inflate_interlace_ct0_d1_1x5();scan_interlace_ct0_d1_1x5();
+    assert(bytes_interlace_ct0_d1_1x5()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x5()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_1x5())==10nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_1x5(),h_interlace_ct0_d1_1x5(),18nat);
+    e6_a7_pass_interlace_ct0_d1_1x5_0();
+    e6_a7_pass_interlace_ct0_d1_1x5_2();
+    e6_a7_pass_interlace_ct0_d1_1x5_4();
+    e6_a7_pass_interlace_ct0_d1_1x5_6();
+    assert(r::count(a_interlace_ct0_d1_1x5())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_1x5()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5().len()==20nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),1nat)==0nat && r::ph(a_interlace_ct0_d1_1x5(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),2nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),3nat)==0nat && r::ph(a_interlace_ct0_d1_1x5(),3nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),4nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),5nat)==0nat && r::ph(a_interlace_ct0_d1_1x5(),5nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x5(),6nat)==1nat && r::ph(a_interlace_ct0_d1_1x5(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_1x5(),k)>0 && y<r::ph(a_interlace_ct0_d1_1x5(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x5(),r::line(raw_interlace_ct0_d1_1x5(),a_interlace_ct0_d1_1x5(),k,y),r::pw(a_interlace_ct0_d1_1x5(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_1x5(),h_interlace_ct0_d1_1x5(),z_interlace_ct0_d1_1x5(),raw_interlace_ct0_d1_1x5(),0nat,e6_a7_colour_interlace_ct0_d1_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x5());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_1x5() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_1x5_0_0() -> Seq<u8> {seq![158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_1x5_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),0nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),0nat)==1nat && r::base(a_interlace_ct6_d16_1x5(),0nat)==0nat && r::rb(a_interlace_ct6_d16_1x5(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_1x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x5(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_1x5()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x5(),0nat,8nat,0nat)==seq![158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x5(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8],None,8nat,seq![158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8],None,8nat,seq![158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),0nat,0nat)==seq![158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_0_0(),1nat)[0]==158u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_0_0(),1nat)[1]==251u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_0_0(),1nat)[2]==234u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_0_0(),1nat)[3]==72u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_0_0(),1nat),seq![158u8,251u8,234u8,72u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),0nat,0nat)==seq![158u8,251u8,234u8,72u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_1x5_2_0() -> Seq<u8> {seq![222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_1x5_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),2nat,y),
+{
+    hide(raw_interlace_ct6_d16_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),2nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),2nat)==1nat && r::base(a_interlace_ct6_d16_1x5(),2nat)==9nat && r::rb(a_interlace_ct6_d16_1x5(),2nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_1x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x5(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_1x5()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x5(),9nat,8nat,0nat)==seq![222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x5(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8],None,8nat,seq![222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8],None,8nat,seq![222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),2nat,0nat)==seq![222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_2_0(),1nat)[0]==222u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_2_0(),1nat)[1]==55u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_2_0(),1nat)[2]==225u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_2_0(),1nat)[3]==106u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_2_0(),1nat),seq![222u8,55u8,225u8,106u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),2nat,0nat)==seq![222u8,55u8,225u8,106u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_1x5_4_0() -> Seq<u8> {seq![139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_1x5_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),4nat,y),
+{
+    hide(raw_interlace_ct6_d16_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),4nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),4nat)==1nat && r::base(a_interlace_ct6_d16_1x5(),4nat)==18nat && r::rb(a_interlace_ct6_d16_1x5(),4nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_1x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x5(),18nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_1x5()[18]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x5(),18nat,8nat,0nat)==seq![139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x5(),18nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8],None,8nat,seq![139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8],None,8nat,seq![139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),4nat,0nat)==seq![139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_4_0(),1nat)[0]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_4_0(),1nat)[1]==221u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_4_0(),1nat)[2]==1u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_4_0(),1nat)[3]==83u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_4_0(),1nat),seq![139u8,221u8,1u8,83u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),4nat,0nat)==seq![139u8,221u8,1u8,83u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_1x5_6_0() -> Seq<u8> {seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8]}
+spec fn e6_a7_line_interlace_ct6_d16_1x5_6_1() -> Seq<u8> {seq![24u8,53u8,16u8,22u8,241u8,115u8,100u8,69u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_1x5_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),6nat,y),
+{
+    hide(raw_interlace_ct6_d16_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),6nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),6nat)==2nat && r::base(a_interlace_ct6_d16_1x5(),6nat)==27nat && r::rb(a_interlace_ct6_d16_1x5(),6nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_1x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x5(),27nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_1x5()[27]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x5(),27nat,8nat,0nat)==seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x5(),27nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8],None,8nat,seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8],None,8nat,seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),6nat,0nat)==seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_0(),1nat)[0]==185u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_0(),1nat)[1]==41u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_0(),1nat)[2]==174u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_0(),1nat)[3]==199u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_0(),1nat),seq![185u8,41u8,174u8,199u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),6nat,0nat)==seq![185u8,41u8,174u8,199u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_1x5(),27nat,8nat,8nat,1nat);
+    assert(raw_interlace_ct6_d16_1x5()[36]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_1x5(),27nat,8nat,1nat)==seq![94u8,33u8,232u8,25u8,67u8,210u8,157u8,76u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_1x5(),27nat,8nat,8nat,1nat)==Some(seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![94u8,33u8,232u8,25u8,67u8,210u8,157u8,76u8],Some(seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8]),8nat,seq![24u8,53u8,16u8,22u8,241u8,115u8,100u8,69u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![94u8,33u8,232u8,25u8,67u8,210u8,157u8,76u8],Some(seq![186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8]),8nat,seq![24u8,53u8,16u8,22u8,241u8,115u8,100u8,69u8]);
+    assert(r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),6nat,1nat)==seq![24u8,53u8,16u8,22u8,241u8,115u8,100u8,69u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_1(),1nat)[0]==24u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_1(),1nat)[1]==16u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_1(),1nat)[2]==241u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_1(),1nat)[3]==100u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),e6_a7_line_interlace_ct6_d16_1x5_6_1(),1nat),seq![24u8,16u8,241u8,100u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),6nat,1nat)==seq![24u8,16u8,241u8,100u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_1x5()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_1x5()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_1x5(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_1x5);hide(z_interlace_ct6_d16_1x5);hide(raw_interlace_ct6_d16_1x5);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_1x5().len()==113nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_1x5())==Ok((crate::model::Ihdr {width:1u32,height:5u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_1x5())==Ok((crate::model::Ihdr {width:1u32,height:5u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_1x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:56nat,next:101nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_1x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:56nat,next:101nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_1x5(),101nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:109nat,len:0nat,next:113nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_1x5(),101nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:109nat,len:0nat,next:113nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_1x5().subrange(41,97)==z_interlace_ct6_d16_1x5()) by (compute);
+    walk_interlace_ct6_d16_1x5(bytes_interlace_ct6_d16_1x5());
+
+    model_interlace_ct6_d16_1x5();inflate_interlace_ct6_d16_1x5();scan_interlace_ct6_d16_1x5();
+    assert(bytes_interlace_ct6_d16_1x5()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_1x5()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_1x5())==45nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_1x5(),h_interlace_ct6_d16_1x5(),56nat);
+    e6_a7_pass_interlace_ct6_d16_1x5_0();
+    e6_a7_pass_interlace_ct6_d16_1x5_2();
+    e6_a7_pass_interlace_ct6_d16_1x5_4();
+    e6_a7_pass_interlace_ct6_d16_1x5_6();
+    assert(r::count(a_interlace_ct6_d16_1x5())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_1x5()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5().len()==20nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),0nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),1nat)==0nat && r::ph(a_interlace_ct6_d16_1x5(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),2nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),3nat)==0nat && r::ph(a_interlace_ct6_d16_1x5(),3nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),4nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),5nat)==0nat && r::ph(a_interlace_ct6_d16_1x5(),5nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_1x5(),6nat)==1nat && r::ph(a_interlace_ct6_d16_1x5(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_1x5(),k)>0 && y<r::ph(a_interlace_ct6_d16_1x5(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_1x5(),r::line(raw_interlace_ct6_d16_1x5(),a_interlace_ct6_d16_1x5(),k,y),r::pw(a_interlace_ct6_d16_1x5(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_1x5(),h_interlace_ct6_d16_1x5(),z_interlace_ct6_d16_1x5(),raw_interlace_ct6_d16_1x5(),0nat,e6_a7_colour_interlace_ct6_d16_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_1x5());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_1x5() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![87u8,8u8,201u8,231u8,105u8,48u8,146u8,222u8,193u8,246u8,123u8,62u8,127u8,17u8,162u8,150u8,214u8,243u8,70u8,168u8,2u8,185u8,190u8,15u8,115u8,201u8,98u8,124u8,177u8,208u8,133u8,240u8,176u8,10u8,36u8,156u8,79u8,103u8,70u8,180u8,169u8,43u8,220u8,164u8,131u8,13u8,126u8,151u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_1x5_0_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x5_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),0nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),0nat)==1nat && r::base(a_interlace_ct3_d4_1x5(),0nat)==0nat && r::rb(a_interlace_ct3_d4_1x5(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x5(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x5()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x5(),0nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x5(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),0nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_0_0(),1nat)[0]==87u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_0_0(),1nat)[1]==8u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_0_0(),1nat)[2]==201u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_0_0(),1nat),seq![87u8,8u8,201u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),0nat,0nat)==seq![87u8,8u8,201u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_1x5_2_0() -> Seq<u8> {seq![96u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x5_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),2nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),2nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),2nat)==1nat && r::base(a_interlace_ct3_d4_1x5(),2nat)==2nat && r::rb(a_interlace_ct3_d4_1x5(),2nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x5(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x5()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x5(),2nat,1nat,0nat)==seq![96u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x5(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![96u8],None,1nat,seq![96u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![96u8],None,1nat,seq![96u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),2nat,0nat)==seq![96u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_2_0(),1nat)[0]==70u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_2_0(),1nat)[1]==168u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_2_0(),1nat)[2]==2u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_2_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_2_0(),1nat),seq![70u8,168u8,2u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),2nat,0nat)==seq![70u8,168u8,2u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_1x5_4_0() -> Seq<u8> {seq![224u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x5_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),4nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),4nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),4nat)==1nat && r::base(a_interlace_ct3_d4_1x5(),4nat)==4nat && r::rb(a_interlace_ct3_d4_1x5(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x5(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x5()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x5(),4nat,1nat,0nat)==seq![224u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x5(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![224u8],None,1nat,seq![224u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![224u8],None,1nat,seq![224u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),4nat,0nat)==seq![224u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_4_0(),1nat)[0]==220u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_4_0(),1nat)[1]==164u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_4_0(),1nat)[2]==131u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_4_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_4_0(),1nat),seq![220u8,164u8,131u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),4nat,0nat)==seq![220u8,164u8,131u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_1x5_6_0() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct3_d4_1x5_6_1() -> Seq<u8> {seq![112u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x5_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),6nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),6nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),6nat)==2nat && r::base(a_interlace_ct3_d4_1x5(),6nat)==6nat && r::rb(a_interlace_ct3_d4_1x5(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x5(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x5()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x5(),6nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x5(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),6nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_0(),1nat)[0]==115u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_0(),1nat)[1]==201u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_0(),1nat)[2]==98u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_0(),1nat),seq![115u8,201u8,98u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),6nat,0nat)==seq![115u8,201u8,98u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x5(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_1x5()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x5(),6nat,1nat,1nat)==seq![240u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x5(),6nat,1nat,1nat,1nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![240u8],Some(seq![128u8]),1nat,seq![112u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![240u8],Some(seq![128u8]),1nat,seq![112u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),6nat,1nat)==seq![112u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_1(),1nat)[0]==185u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_1(),1nat)[1]==190u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_1(),1nat)[2]==15u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),e6_a7_line_interlace_ct3_d4_1x5_6_1(),1nat),seq![185u8,190u8,15u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),6nat,1nat)==seq![185u8,190u8,15u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_1x5()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_1x5()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_1x5(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_1x5);hide(z_interlace_ct3_d4_1x5);hide(raw_interlace_ct3_d4_1x5);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_1x5().len()==135nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_1x5())==Ok((crate::model::Ihdr {width:1u32,height:5u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_1x5())==Ok((crate::model::Ihdr {width:1u32,height:5u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x5(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:18nat,next:123nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x5(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:18nat,next:123nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x5(),123nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:131nat,len:0nat,next:135nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x5(),123nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:131nat,len:0nat,next:135nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_1x5().subrange(101,119)==z_interlace_ct3_d4_1x5()) by (compute);
+    walk_interlace_ct3_d4_1x5(bytes_interlace_ct3_d4_1x5());
+
+    model_interlace_ct3_d4_1x5();inflate_interlace_ct3_d4_1x5();scan_interlace_ct3_d4_1x5();
+    assert(bytes_interlace_ct3_d4_1x5()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_1x5()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_1x5())==10nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_1x5().subrange(41,89)==seq![87u8,8u8,201u8,231u8,105u8,48u8,146u8,222u8,193u8,246u8,123u8,62u8,127u8,17u8,162u8,150u8,214u8,243u8,70u8,168u8,2u8,185u8,190u8,15u8,115u8,201u8,98u8,124u8,177u8,208u8,133u8,240u8,176u8,10u8,36u8,156u8,79u8,103u8,70u8,180u8,169u8,43u8,220u8,164u8,131u8,13u8,126u8,151u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_1x5(),h_interlace_ct3_d4_1x5(),18nat);
+    e6_a7_pass_interlace_ct3_d4_1x5_0();
+    e6_a7_pass_interlace_ct3_d4_1x5_2();
+    e6_a7_pass_interlace_ct3_d4_1x5_4();
+    e6_a7_pass_interlace_ct3_d4_1x5_6();
+    assert(r::count(a_interlace_ct3_d4_1x5())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_1x5()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5().len()==20nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),0nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),1nat)==0nat && r::ph(a_interlace_ct3_d4_1x5(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),2nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),3nat)==0nat && r::ph(a_interlace_ct3_d4_1x5(),3nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),4nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),5nat)==0nat && r::ph(a_interlace_ct3_d4_1x5(),5nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x5(),6nat)==1nat && r::ph(a_interlace_ct3_d4_1x5(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_1x5(),k)>0 && y<r::ph(a_interlace_ct3_d4_1x5(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x5(),r::line(raw_interlace_ct3_d4_1x5(),a_interlace_ct3_d4_1x5(),k,y),r::pw(a_interlace_ct3_d4_1x5(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_1x5(),h_interlace_ct3_d4_1x5(),z_interlace_ct3_d4_1x5(),raw_interlace_ct3_d4_1x5(),16nat,e6_a7_colour_interlace_ct3_d4_1x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x5());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_5x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_5x1_0_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),0nat)==1nat && r::ph(a_interlace_ct0_d1_5x1(),0nat)==1nat && r::base(a_interlace_ct0_d1_5x1(),0nat)==0nat && r::rb(a_interlace_ct0_d1_5x1(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x1(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x1(),0nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x1(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),0nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_0_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_0_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_0_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_0_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),0nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x1_1_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x1_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),1nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),1nat)==1nat && r::ph(a_interlace_ct0_d1_5x1(),1nat)==1nat && r::base(a_interlace_ct0_d1_5x1(),1nat)==2nat && r::rb(a_interlace_ct0_d1_5x1(),1nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x1(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x1()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x1(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x1(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),1nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_1_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_1_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_1_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_1_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_1_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),1nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x1_3_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x1_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),3nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),3nat)==1nat && r::ph(a_interlace_ct0_d1_5x1(),3nat)==1nat && r::base(a_interlace_ct0_d1_5x1(),3nat)==4nat && r::rb(a_interlace_ct0_d1_5x1(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x1(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x1()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x1(),4nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x1(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),3nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_3_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_3_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_3_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_3_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),3nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x1_5_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),5nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),5nat)==2nat && r::ph(a_interlace_ct0_d1_5x1(),5nat)==1nat && r::base(a_interlace_ct0_d1_5x1(),5nat)==6nat && r::rb(a_interlace_ct0_d1_5x1(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x1(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x1()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x1(),6nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x1(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),5nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),e6_a7_line_interlace_ct0_d1_5x1_5_0(),2nat),seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),5nat,0nat)==seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_5x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_5x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_5x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_5x1);hide(z_interlace_ct0_d1_5x1);hide(raw_interlace_ct0_d1_5x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_5x1().len()==73nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_5x1())==Ok((crate::model::Ihdr {width:5u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_5x1())==Ok((crate::model::Ihdr {width:5u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_5x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:16nat,next:61nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_5x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:16nat,next:61nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_5x1(),61nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:69nat,len:0nat,next:73nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_5x1(),61nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:69nat,len:0nat,next:73nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_5x1().subrange(41,57)==z_interlace_ct0_d1_5x1()) by (compute);
+    walk_interlace_ct0_d1_5x1(bytes_interlace_ct0_d1_5x1());
+
+    model_interlace_ct0_d1_5x1();inflate_interlace_ct0_d1_5x1();scan_interlace_ct0_d1_5x1();
+    assert(bytes_interlace_ct0_d1_5x1()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_5x1()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_5x1())==8nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_5x1(),h_interlace_ct0_d1_5x1(),16nat);
+    e6_a7_pass_interlace_ct0_d1_5x1_0();
+    e6_a7_pass_interlace_ct0_d1_5x1_1();
+    e6_a7_pass_interlace_ct0_d1_5x1_3();
+    e6_a7_pass_interlace_ct0_d1_5x1_5();
+    assert(r::count(a_interlace_ct0_d1_5x1())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_5x1()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1().len()==20nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),0nat)==1nat && r::ph(a_interlace_ct0_d1_5x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),1nat)==1nat && r::ph(a_interlace_ct0_d1_5x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),2nat)==2nat && r::ph(a_interlace_ct0_d1_5x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),3nat)==1nat && r::ph(a_interlace_ct0_d1_5x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),4nat)==3nat && r::ph(a_interlace_ct0_d1_5x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),5nat)==2nat && r::ph(a_interlace_ct0_d1_5x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x1(),6nat)==5nat && r::ph(a_interlace_ct0_d1_5x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_5x1(),k)>0 && y<r::ph(a_interlace_ct0_d1_5x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x1(),r::line(raw_interlace_ct0_d1_5x1(),a_interlace_ct0_d1_5x1(),k,y),r::pw(a_interlace_ct0_d1_5x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_5x1(),h_interlace_ct0_d1_5x1(),z_interlace_ct0_d1_5x1(),raw_interlace_ct0_d1_5x1(),0nat,e6_a7_colour_interlace_ct0_d1_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x1());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_5x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_5x1_0_0() -> Seq<u8> {seq![120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),0nat)==1nat && r::ph(a_interlace_ct6_d16_5x1(),0nat)==1nat && r::base(a_interlace_ct6_d16_5x1(),0nat)==0nat && r::rb(a_interlace_ct6_d16_5x1(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x1(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x1(),0nat,8nat,0nat)==seq![120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x1(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8],None,8nat,seq![120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8],None,8nat,seq![120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),0nat,0nat)==seq![120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_0_0(),1nat)[0]==120u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_0_0(),1nat)[1]==130u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_0_0(),1nat)[2]==236u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_0_0(),1nat)[3]==223u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_0_0(),1nat),seq![120u8,130u8,236u8,223u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),0nat,0nat)==seq![120u8,130u8,236u8,223u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x1_1_0() -> Seq<u8> {seq![87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x1_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),1nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),1nat)==1nat && r::ph(a_interlace_ct6_d16_5x1(),1nat)==1nat && r::base(a_interlace_ct6_d16_5x1(),1nat)==9nat && r::rb(a_interlace_ct6_d16_5x1(),1nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x1(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x1()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x1(),9nat,8nat,0nat)==seq![87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x1(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8],None,8nat,seq![87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8],None,8nat,seq![87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),1nat,0nat)==seq![87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_1_0(),1nat)[0]==87u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_1_0(),1nat)[1]==58u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_1_0(),1nat)[2]==164u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_1_0(),1nat)[3]==46u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_1_0(),1nat),seq![87u8,58u8,164u8,46u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),1nat,0nat)==seq![87u8,58u8,164u8,46u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x1_3_0() -> Seq<u8> {seq![246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x1_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),3nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),3nat)==1nat && r::ph(a_interlace_ct6_d16_5x1(),3nat)==1nat && r::base(a_interlace_ct6_d16_5x1(),3nat)==18nat && r::rb(a_interlace_ct6_d16_5x1(),3nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x1(),18nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x1()[18]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x1(),18nat,8nat,0nat)==seq![246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x1(),18nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8],None,8nat,seq![246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8],None,8nat,seq![246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),3nat,0nat)==seq![246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_3_0(),1nat)[0]==246u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_3_0(),1nat)[1]==231u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_3_0(),1nat)[2]==221u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_3_0(),1nat)[3]==183u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_3_0(),1nat),seq![246u8,231u8,221u8,183u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),3nat,0nat)==seq![246u8,231u8,221u8,183u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x1_5_0() -> Seq<u8> {seq![25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,40u8,84u8,31u8,48u8,204u8,234u8,25u8,73u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),5nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),5nat)==2nat && r::ph(a_interlace_ct6_d16_5x1(),5nat)==1nat && r::base(a_interlace_ct6_d16_5x1(),5nat)==27nat && r::rb(a_interlace_ct6_d16_5x1(),5nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x1(),27nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x1()[27]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x1(),27nat,16nat,0nat)==seq![25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,28u8,252u8,208u8,43u8,185u8,193u8,224u8,245u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x1(),27nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,28u8,252u8,208u8,43u8,185u8,193u8,224u8,245u8],None,8nat,seq![25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,40u8,84u8,31u8,48u8,204u8,234u8,25u8,73u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,28u8,252u8,208u8,43u8,185u8,193u8,224u8,245u8],None,8nat,seq![25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,40u8,84u8,31u8,48u8,204u8,234u8,25u8,73u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),5nat,0nat)==seq![25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,40u8,84u8,31u8,48u8,204u8,234u8,25u8,73u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[0]==26u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[1]==157u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[2]==39u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[3]==115u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[4]==40u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[5]==31u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[6]==204u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat)[7]==25u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),e6_a7_line_interlace_ct6_d16_5x1_5_0(),2nat),seq![26u8,157u8,39u8,115u8,40u8,31u8,204u8,25u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),5nat,0nat)==seq![26u8,157u8,39u8,115u8,40u8,31u8,204u8,25u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_5x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_5x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_5x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_5x1);hide(z_interlace_ct6_d16_5x1);hide(raw_interlace_ct6_d16_5x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_5x1().len()==112nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_5x1())==Ok((crate::model::Ihdr {width:5u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_5x1())==Ok((crate::model::Ihdr {width:5u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_5x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:55nat,next:100nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_5x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:55nat,next:100nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_5x1(),100nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:108nat,len:0nat,next:112nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_5x1(),100nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:108nat,len:0nat,next:112nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_5x1().subrange(41,96)==z_interlace_ct6_d16_5x1()) by (compute);
+    walk_interlace_ct6_d16_5x1(bytes_interlace_ct6_d16_5x1());
+
+    model_interlace_ct6_d16_5x1();inflate_interlace_ct6_d16_5x1();scan_interlace_ct6_d16_5x1();
+    assert(bytes_interlace_ct6_d16_5x1()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_5x1()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_5x1())==44nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_5x1(),h_interlace_ct6_d16_5x1(),55nat);
+    e6_a7_pass_interlace_ct6_d16_5x1_0();
+    e6_a7_pass_interlace_ct6_d16_5x1_1();
+    e6_a7_pass_interlace_ct6_d16_5x1_3();
+    e6_a7_pass_interlace_ct6_d16_5x1_5();
+    assert(r::count(a_interlace_ct6_d16_5x1())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_5x1()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1().len()==20nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),0nat)==1nat && r::ph(a_interlace_ct6_d16_5x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),1nat)==1nat && r::ph(a_interlace_ct6_d16_5x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),2nat)==2nat && r::ph(a_interlace_ct6_d16_5x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),3nat)==1nat && r::ph(a_interlace_ct6_d16_5x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),4nat)==3nat && r::ph(a_interlace_ct6_d16_5x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),5nat)==2nat && r::ph(a_interlace_ct6_d16_5x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x1(),6nat)==5nat && r::ph(a_interlace_ct6_d16_5x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_5x1(),k)>0 && y<r::ph(a_interlace_ct6_d16_5x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x1(),r::line(raw_interlace_ct6_d16_5x1(),a_interlace_ct6_d16_5x1(),k,y),r::pw(a_interlace_ct6_d16_5x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_5x1(),h_interlace_ct6_d16_5x1(),z_interlace_ct6_d16_5x1(),raw_interlace_ct6_d16_5x1(),0nat,e6_a7_colour_interlace_ct6_d16_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x1());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_5x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![46u8,39u8,214u8,171u8,90u8,127u8,169u8,19u8,13u8,145u8,106u8,212u8,19u8,229u8,18u8,255u8,102u8,165u8,147u8,116u8,179u8,14u8,105u8,220u8,149u8,215u8,123u8,11u8,255u8,65u8,144u8,74u8,73u8,227u8,67u8,94u8,118u8,224u8,157u8,159u8,235u8,74u8,99u8,222u8,157u8,20u8,121u8,123u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_5x1_0_0() -> Seq<u8> {seq![176u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),0nat)==1nat && r::ph(a_interlace_ct3_d4_5x1(),0nat)==1nat && r::base(a_interlace_ct3_d4_5x1(),0nat)==0nat && r::rb(a_interlace_ct3_d4_5x1(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x1(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x1(),0nat,1nat,0nat)==seq![176u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x1(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![176u8],None,1nat,seq![176u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![176u8],None,1nat,seq![176u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),0nat,0nat)==seq![176u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_0_0(),1nat)[0]==227u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_0_0(),1nat)[1]==67u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_0_0(),1nat)[2]==94u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_0_0(),1nat),seq![227u8,67u8,94u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),0nat,0nat)==seq![227u8,67u8,94u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x1_1_0() -> Seq<u8> {seq![112u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x1_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),1nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),1nat)==1nat && r::ph(a_interlace_ct3_d4_5x1(),1nat)==1nat && r::base(a_interlace_ct3_d4_5x1(),1nat)==2nat && r::rb(a_interlace_ct3_d4_5x1(),1nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x1(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x1()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x1(),2nat,1nat,0nat)==seq![112u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x1(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![112u8],None,1nat,seq![112u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![112u8],None,1nat,seq![112u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),1nat,0nat)==seq![112u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_1_0(),1nat)[0]==14u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_1_0(),1nat)[1]==105u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_1_0(),1nat)[2]==220u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_1_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_1_0(),1nat),seq![14u8,105u8,220u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),1nat,0nat)==seq![14u8,105u8,220u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x1_3_0() -> Seq<u8> {seq![224u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x1_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),3nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),3nat)==1nat && r::ph(a_interlace_ct3_d4_5x1(),3nat)==1nat && r::base(a_interlace_ct3_d4_5x1(),3nat)==4nat && r::rb(a_interlace_ct3_d4_5x1(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x1(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x1()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x1(),4nat,1nat,0nat)==seq![224u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x1(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![224u8],None,1nat,seq![224u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![224u8],None,1nat,seq![224u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),3nat,0nat)==seq![224u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_3_0(),1nat)[0]==99u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_3_0(),1nat)[1]==222u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_3_0(),1nat)[2]==157u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_3_0(),1nat),seq![99u8,222u8,157u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),3nat,0nat)==seq![99u8,222u8,157u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x1_5_0() -> Seq<u8> {seq![115u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),5nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),5nat)==2nat && r::ph(a_interlace_ct3_d4_5x1(),5nat)==1nat && r::base(a_interlace_ct3_d4_5x1(),5nat)==6nat && r::rb(a_interlace_ct3_d4_5x1(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x1(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x1()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x1(),6nat,1nat,0nat)==seq![115u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x1(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![115u8],None,1nat,seq![115u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![115u8],None,1nat,seq![115u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),5nat,0nat)==seq![115u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[0]==14u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[1]==105u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[2]==220u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[4]==145u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[5]==106u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[6]==212u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),e6_a7_line_interlace_ct3_d4_5x1_5_0(),2nat),seq![14u8,105u8,220u8,255u8,145u8,106u8,212u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),5nat,0nat)==seq![14u8,105u8,220u8,255u8,145u8,106u8,212u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_5x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_5x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_5x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_5x1);hide(z_interlace_ct3_d4_5x1);hide(raw_interlace_ct3_d4_5x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_5x1().len()==133nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_5x1())==Ok((crate::model::Ihdr {width:5u32,height:1u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_5x1())==Ok((crate::model::Ihdr {width:5u32,height:1u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_5x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_5x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_5x1(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:16nat,next:121nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_5x1(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:16nat,next:121nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_5x1(),121nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:129nat,len:0nat,next:133nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_5x1(),121nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:129nat,len:0nat,next:133nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_5x1().subrange(101,117)==z_interlace_ct3_d4_5x1()) by (compute);
+    walk_interlace_ct3_d4_5x1(bytes_interlace_ct3_d4_5x1());
+
+    model_interlace_ct3_d4_5x1();inflate_interlace_ct3_d4_5x1();scan_interlace_ct3_d4_5x1();
+    assert(bytes_interlace_ct3_d4_5x1()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_5x1()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_5x1())==8nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_5x1().subrange(41,89)==seq![46u8,39u8,214u8,171u8,90u8,127u8,169u8,19u8,13u8,145u8,106u8,212u8,19u8,229u8,18u8,255u8,102u8,165u8,147u8,116u8,179u8,14u8,105u8,220u8,149u8,215u8,123u8,11u8,255u8,65u8,144u8,74u8,73u8,227u8,67u8,94u8,118u8,224u8,157u8,159u8,235u8,74u8,99u8,222u8,157u8,20u8,121u8,123u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_5x1(),h_interlace_ct3_d4_5x1(),16nat);
+    e6_a7_pass_interlace_ct3_d4_5x1_0();
+    e6_a7_pass_interlace_ct3_d4_5x1_1();
+    e6_a7_pass_interlace_ct3_d4_5x1_3();
+    e6_a7_pass_interlace_ct3_d4_5x1_5();
+    assert(r::count(a_interlace_ct3_d4_5x1())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_5x1()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1().len()==20nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),0nat)==1nat && r::ph(a_interlace_ct3_d4_5x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),1nat)==1nat && r::ph(a_interlace_ct3_d4_5x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),2nat)==2nat && r::ph(a_interlace_ct3_d4_5x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),3nat)==1nat && r::ph(a_interlace_ct3_d4_5x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),4nat)==3nat && r::ph(a_interlace_ct3_d4_5x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),5nat)==2nat && r::ph(a_interlace_ct3_d4_5x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x1(),6nat)==5nat && r::ph(a_interlace_ct3_d4_5x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_5x1(),k)>0 && y<r::ph(a_interlace_ct3_d4_5x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x1(),r::line(raw_interlace_ct3_d4_5x1(),a_interlace_ct3_d4_5x1(),k,y),r::pw(a_interlace_ct3_d4_5x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_5x1(),h_interlace_ct3_d4_5x1(),z_interlace_ct3_d4_5x1(),raw_interlace_ct3_d4_5x1(),16nat,e6_a7_colour_interlace_ct3_d4_5x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x1());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_2x2() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_2x2_0_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_2x2_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),0nat)==1nat && r::ph(a_interlace_ct0_d1_2x2(),0nat)==1nat && r::base(a_interlace_ct0_d1_2x2(),0nat)==0nat && r::rb(a_interlace_ct0_d1_2x2(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_2x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_2x2(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_2x2()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_2x2(),0nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_2x2(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),0nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_0_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_0_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_0_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_0_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),0nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_2x2_5_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_2x2_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),5nat,y),
+{
+    hide(raw_interlace_ct0_d1_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),5nat)==1nat && r::ph(a_interlace_ct0_d1_2x2(),5nat)==1nat && r::base(a_interlace_ct0_d1_2x2(),5nat)==2nat && r::rb(a_interlace_ct0_d1_2x2(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_2x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_2x2(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_2x2()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_2x2(),2nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_2x2(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),5nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_5_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_5_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_5_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_5_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_5_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),5nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),5nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_2x2_6_0() -> Seq<u8> {seq![64u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_2x2_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),6nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),6nat,y),
+{
+    hide(raw_interlace_ct0_d1_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),6nat)==2nat && r::ph(a_interlace_ct0_d1_2x2(),6nat)==1nat && r::base(a_interlace_ct0_d1_2x2(),6nat)==4nat && r::rb(a_interlace_ct0_d1_2x2(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_2x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_2x2(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_2x2()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_2x2(),4nat,1nat,0nat)==seq![64u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_2x2(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![64u8],None,1nat,seq![64u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![64u8],None,1nat,seq![64u8]);
+    assert(r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),6nat,0nat)==seq![64u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),e6_a7_line_interlace_ct0_d1_2x2_6_0(),2nat),seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),6nat,0nat)==seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),6nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_2x2()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_2x2()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_2x2(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_2x2);hide(z_interlace_ct0_d1_2x2);hide(raw_interlace_ct0_d1_2x2);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_2x2().len()==71nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_2x2())==Ok((crate::model::Ihdr {width:2u32,height:2u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_2x2())==Ok((crate::model::Ihdr {width:2u32,height:2u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_2x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:14nat,next:59nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_2x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:14nat,next:59nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_2x2(),59nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:67nat,len:0nat,next:71nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_2x2(),59nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:67nat,len:0nat,next:71nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_2x2().subrange(41,55)==z_interlace_ct0_d1_2x2()) by (compute);
+    walk_interlace_ct0_d1_2x2(bytes_interlace_ct0_d1_2x2());
+
+    model_interlace_ct0_d1_2x2();inflate_interlace_ct0_d1_2x2();scan_interlace_ct0_d1_2x2();
+    assert(bytes_interlace_ct0_d1_2x2()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_2x2()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_2x2())==6nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_2x2(),h_interlace_ct0_d1_2x2(),14nat);
+    e6_a7_pass_interlace_ct0_d1_2x2_0();
+    e6_a7_pass_interlace_ct0_d1_2x2_5();
+    e6_a7_pass_interlace_ct0_d1_2x2_6();
+    assert(r::count(a_interlace_ct0_d1_2x2())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_2x2()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2().len()==16nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),0nat)==1nat && r::ph(a_interlace_ct0_d1_2x2(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),1nat)==0nat && r::ph(a_interlace_ct0_d1_2x2(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),2nat)==1nat && r::ph(a_interlace_ct0_d1_2x2(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),3nat)==0nat && r::ph(a_interlace_ct0_d1_2x2(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),4nat)==1nat && r::ph(a_interlace_ct0_d1_2x2(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),5nat)==1nat && r::ph(a_interlace_ct0_d1_2x2(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_2x2(),6nat)==2nat && r::ph(a_interlace_ct0_d1_2x2(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_2x2(),k)>0 && y<r::ph(a_interlace_ct0_d1_2x2(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_2x2(),r::line(raw_interlace_ct0_d1_2x2(),a_interlace_ct0_d1_2x2(),k,y),r::pw(a_interlace_ct0_d1_2x2(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_2x2(),h_interlace_ct0_d1_2x2(),z_interlace_ct0_d1_2x2(),raw_interlace_ct0_d1_2x2(),0nat,e6_a7_colour_interlace_ct0_d1_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_2x2());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_2x2() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_2x2_0_0() -> Seq<u8> {seq![76u8,230u8,143u8,67u8,127u8,92u8,27u8,125u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_2x2_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),0nat)==1nat && r::ph(a_interlace_ct6_d16_2x2(),0nat)==1nat && r::base(a_interlace_ct6_d16_2x2(),0nat)==0nat && r::rb(a_interlace_ct6_d16_2x2(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_2x2()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_2x2(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_2x2()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_2x2(),0nat,8nat,0nat)==seq![76u8,230u8,143u8,67u8,127u8,92u8,27u8,125u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_2x2(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![76u8,230u8,143u8,67u8,127u8,92u8,27u8,125u8],None,8nat,seq![76u8,230u8,143u8,67u8,127u8,92u8,27u8,125u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![76u8,230u8,143u8,67u8,127u8,92u8,27u8,125u8],None,8nat,seq![76u8,230u8,143u8,67u8,127u8,92u8,27u8,125u8]);
+    assert(r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),0nat,0nat)==seq![76u8,230u8,143u8,67u8,127u8,92u8,27u8,125u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_0_0(),1nat)[0]==77u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_0_0(),1nat)[1]==143u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_0_0(),1nat)[2]==127u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_0_0(),1nat)[3]==27u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_0_0(),1nat),seq![77u8,143u8,127u8,27u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),0nat,0nat)==seq![77u8,143u8,127u8,27u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_2x2_5_0() -> Seq<u8> {seq![61u8,166u8,26u8,87u8,54u8,137u8,15u8,37u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_2x2_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),5nat,y),
+{
+    hide(raw_interlace_ct6_d16_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),5nat)==1nat && r::ph(a_interlace_ct6_d16_2x2(),5nat)==1nat && r::base(a_interlace_ct6_d16_2x2(),5nat)==9nat && r::rb(a_interlace_ct6_d16_2x2(),5nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_2x2()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_2x2(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_2x2()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_2x2(),9nat,8nat,0nat)==seq![61u8,166u8,26u8,87u8,54u8,137u8,15u8,37u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_2x2(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![61u8,166u8,26u8,87u8,54u8,137u8,15u8,37u8],None,8nat,seq![61u8,166u8,26u8,87u8,54u8,137u8,15u8,37u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![61u8,166u8,26u8,87u8,54u8,137u8,15u8,37u8],None,8nat,seq![61u8,166u8,26u8,87u8,54u8,137u8,15u8,37u8]);
+    assert(r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),5nat,0nat)==seq![61u8,166u8,26u8,87u8,54u8,137u8,15u8,37u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_5_0(),1nat)[0]==61u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_5_0(),1nat)[1]==26u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_5_0(),1nat)[2]==54u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_5_0(),1nat)[3]==15u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_5_0(),1nat),seq![61u8,26u8,54u8,15u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),5nat,0nat)==seq![61u8,26u8,54u8,15u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),5nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_2x2_6_0() -> Seq<u8> {seq![212u8,40u8,120u8,166u8,41u8,200u8,24u8,154u8,248u8,228u8,104u8,47u8,14u8,116u8,207u8,161u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_2x2_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),6nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),6nat,y),
+{
+    hide(raw_interlace_ct6_d16_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),6nat)==2nat && r::ph(a_interlace_ct6_d16_2x2(),6nat)==1nat && r::base(a_interlace_ct6_d16_2x2(),6nat)==18nat && r::rb(a_interlace_ct6_d16_2x2(),6nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_2x2()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_2x2(),18nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_2x2()[18]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_2x2(),18nat,16nat,0nat)==seq![212u8,40u8,120u8,166u8,41u8,200u8,24u8,154u8,248u8,228u8,104u8,47u8,14u8,116u8,207u8,161u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_2x2(),18nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![212u8,40u8,120u8,166u8,41u8,200u8,24u8,154u8,248u8,228u8,104u8,47u8,14u8,116u8,207u8,161u8],None,8nat,seq![212u8,40u8,120u8,166u8,41u8,200u8,24u8,154u8,248u8,228u8,104u8,47u8,14u8,116u8,207u8,161u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![212u8,40u8,120u8,166u8,41u8,200u8,24u8,154u8,248u8,228u8,104u8,47u8,14u8,116u8,207u8,161u8],None,8nat,seq![212u8,40u8,120u8,166u8,41u8,200u8,24u8,154u8,248u8,228u8,104u8,47u8,14u8,116u8,207u8,161u8]);
+    assert(r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),6nat,0nat)==seq![212u8,40u8,120u8,166u8,41u8,200u8,24u8,154u8,248u8,228u8,104u8,47u8,14u8,116u8,207u8,161u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[0]==211u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[1]==120u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[2]==42u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[3]==25u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[4]==248u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[5]==104u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[6]==14u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat)[7]==207u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),e6_a7_line_interlace_ct6_d16_2x2_6_0(),2nat),seq![211u8,120u8,42u8,25u8,248u8,104u8,14u8,207u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),6nat,0nat)==seq![211u8,120u8,42u8,25u8,248u8,104u8,14u8,207u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),6nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_2x2()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_2x2()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_2x2(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_2x2);hide(z_interlace_ct6_d16_2x2);hide(raw_interlace_ct6_d16_2x2);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_2x2().len()==101nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_2x2())==Ok((crate::model::Ihdr {width:2u32,height:2u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_2x2())==Ok((crate::model::Ihdr {width:2u32,height:2u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_2x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:44nat,next:89nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_2x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:44nat,next:89nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_2x2(),89nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:97nat,len:0nat,next:101nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_2x2(),89nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:97nat,len:0nat,next:101nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_2x2().subrange(41,85)==z_interlace_ct6_d16_2x2()) by (compute);
+    walk_interlace_ct6_d16_2x2(bytes_interlace_ct6_d16_2x2());
+
+    model_interlace_ct6_d16_2x2();inflate_interlace_ct6_d16_2x2();scan_interlace_ct6_d16_2x2();
+    assert(bytes_interlace_ct6_d16_2x2()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_2x2()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_2x2())==35nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_2x2(),h_interlace_ct6_d16_2x2(),44nat);
+    e6_a7_pass_interlace_ct6_d16_2x2_0();
+    e6_a7_pass_interlace_ct6_d16_2x2_5();
+    e6_a7_pass_interlace_ct6_d16_2x2_6();
+    assert(r::count(a_interlace_ct6_d16_2x2())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_2x2()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2().len()==16nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),0nat)==1nat && r::ph(a_interlace_ct6_d16_2x2(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),1nat)==0nat && r::ph(a_interlace_ct6_d16_2x2(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),2nat)==1nat && r::ph(a_interlace_ct6_d16_2x2(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),3nat)==0nat && r::ph(a_interlace_ct6_d16_2x2(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),4nat)==1nat && r::ph(a_interlace_ct6_d16_2x2(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),5nat)==1nat && r::ph(a_interlace_ct6_d16_2x2(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_2x2(),6nat)==2nat && r::ph(a_interlace_ct6_d16_2x2(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_2x2(),k)>0 && y<r::ph(a_interlace_ct6_d16_2x2(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_2x2(),r::line(raw_interlace_ct6_d16_2x2(),a_interlace_ct6_d16_2x2(),k,y),r::pw(a_interlace_ct6_d16_2x2(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_2x2(),h_interlace_ct6_d16_2x2(),z_interlace_ct6_d16_2x2(),raw_interlace_ct6_d16_2x2(),0nat,e6_a7_colour_interlace_ct6_d16_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_2x2());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_2x2() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![194u8,155u8,159u8,253u8,215u8,50u8,11u8,140u8,194u8,168u8,145u8,56u8,151u8,195u8,123u8,17u8,249u8,103u8,143u8,55u8,212u8,184u8,212u8,105u8,207u8,41u8,49u8,81u8,122u8,2u8,25u8,134u8,96u8,239u8,125u8,219u8,110u8,210u8,237u8,228u8,162u8,17u8,50u8,150u8,193u8,202u8,116u8,25u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_2x2_0_0() -> Seq<u8> {seq![32u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_2x2_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),0nat)==1nat && r::ph(a_interlace_ct3_d4_2x2(),0nat)==1nat && r::base(a_interlace_ct3_d4_2x2(),0nat)==0nat && r::rb(a_interlace_ct3_d4_2x2(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_2x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_2x2(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_2x2()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_2x2(),0nat,1nat,0nat)==seq![32u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_2x2(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![32u8],None,1nat,seq![32u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![32u8],None,1nat,seq![32u8]);
+    assert(r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),0nat,0nat)==seq![32u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_0_0(),1nat)[0]==11u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_0_0(),1nat)[1]==140u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_0_0(),1nat)[2]==194u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_0_0(),1nat),seq![11u8,140u8,194u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),0nat,0nat)==seq![11u8,140u8,194u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_2x2_5_0() -> Seq<u8> {seq![192u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_2x2_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),5nat,y),
+{
+    hide(raw_interlace_ct3_d4_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),5nat)==1nat && r::ph(a_interlace_ct3_d4_2x2(),5nat)==1nat && r::base(a_interlace_ct3_d4_2x2(),5nat)==2nat && r::rb(a_interlace_ct3_d4_2x2(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_2x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_2x2(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_2x2()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_2x2(),2nat,1nat,0nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_2x2(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![192u8],None,1nat,seq![192u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![192u8],None,1nat,seq![192u8]);
+    assert(r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),5nat,0nat)==seq![192u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_5_0(),1nat)[0]==110u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_5_0(),1nat)[1]==210u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_5_0(),1nat)[2]==237u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_5_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_5_0(),1nat),seq![110u8,210u8,237u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),5nat,0nat)==seq![110u8,210u8,237u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),5nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_2x2_6_0() -> Seq<u8> {seq![132u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_2x2_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),6nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),6nat,y),
+{
+    hide(raw_interlace_ct3_d4_2x2);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),6nat)==2nat && r::ph(a_interlace_ct3_d4_2x2(),6nat)==1nat && r::base(a_interlace_ct3_d4_2x2(),6nat)==4nat && r::rb(a_interlace_ct3_d4_2x2(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_2x2()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_2x2(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_2x2()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_2x2(),4nat,1nat,0nat)==seq![132u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_2x2(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![132u8],None,1nat,seq![132u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![132u8],None,1nat,seq![132u8]);
+    assert(r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),6nat,0nat)==seq![132u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[0]==207u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[1]==41u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[2]==49u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[4]==151u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[5]==195u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[6]==123u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),e6_a7_line_interlace_ct3_d4_2x2_6_0(),2nat),seq![207u8,41u8,49u8,255u8,151u8,195u8,123u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),6nat,0nat)==seq![207u8,41u8,49u8,255u8,151u8,195u8,123u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),6nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_2x2()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_2x2()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_2x2(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_2x2);hide(z_interlace_ct3_d4_2x2);hide(raw_interlace_ct3_d4_2x2);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_2x2().len()==131nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_2x2())==Ok((crate::model::Ihdr {width:2u32,height:2u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_2x2())==Ok((crate::model::Ihdr {width:2u32,height:2u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_2x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_2x2(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_2x2(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:14nat,next:119nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_2x2(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:14nat,next:119nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_2x2(),119nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:127nat,len:0nat,next:131nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_2x2(),119nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:127nat,len:0nat,next:131nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_2x2().subrange(101,115)==z_interlace_ct3_d4_2x2()) by (compute);
+    walk_interlace_ct3_d4_2x2(bytes_interlace_ct3_d4_2x2());
+
+    model_interlace_ct3_d4_2x2();inflate_interlace_ct3_d4_2x2();scan_interlace_ct3_d4_2x2();
+    assert(bytes_interlace_ct3_d4_2x2()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_2x2()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_2x2())==6nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_2x2().subrange(41,89)==seq![194u8,155u8,159u8,253u8,215u8,50u8,11u8,140u8,194u8,168u8,145u8,56u8,151u8,195u8,123u8,17u8,249u8,103u8,143u8,55u8,212u8,184u8,212u8,105u8,207u8,41u8,49u8,81u8,122u8,2u8,25u8,134u8,96u8,239u8,125u8,219u8,110u8,210u8,237u8,228u8,162u8,17u8,50u8,150u8,193u8,202u8,116u8,25u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_2x2(),h_interlace_ct3_d4_2x2(),14nat);
+    e6_a7_pass_interlace_ct3_d4_2x2_0();
+    e6_a7_pass_interlace_ct3_d4_2x2_5();
+    e6_a7_pass_interlace_ct3_d4_2x2_6();
+    assert(r::count(a_interlace_ct3_d4_2x2())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_2x2()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2().len()==16nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),0nat)==1nat && r::ph(a_interlace_ct3_d4_2x2(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),1nat)==0nat && r::ph(a_interlace_ct3_d4_2x2(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),2nat)==1nat && r::ph(a_interlace_ct3_d4_2x2(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),3nat)==0nat && r::ph(a_interlace_ct3_d4_2x2(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),4nat)==1nat && r::ph(a_interlace_ct3_d4_2x2(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),5nat)==1nat && r::ph(a_interlace_ct3_d4_2x2(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_2x2(),6nat)==2nat && r::ph(a_interlace_ct3_d4_2x2(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_2x2(),k)>0 && y<r::ph(a_interlace_ct3_d4_2x2(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_2x2(),r::line(raw_interlace_ct3_d4_2x2(),a_interlace_ct3_d4_2x2(),k,y),r::pw(a_interlace_ct3_d4_2x2(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_2x2(),h_interlace_ct3_d4_2x2(),z_interlace_ct3_d4_2x2(),raw_interlace_ct3_d4_2x2(),16nat,e6_a7_colour_interlace_ct3_d4_2x2(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_2x2());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_3x3() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_3x3_0_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_3x3_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),0nat)==1nat && r::ph(a_interlace_ct0_d1_3x3(),0nat)==1nat && r::base(a_interlace_ct0_d1_3x3(),0nat)==0nat && r::rb(a_interlace_ct0_d1_3x3(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_3x3(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_3x3()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_3x3(),0nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_3x3(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),0nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_0_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_0_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_0_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_0_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),0nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_3x3_3_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_3x3_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),3nat,y),
+{
+    hide(raw_interlace_ct0_d1_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),3nat)==1nat && r::ph(a_interlace_ct0_d1_3x3(),3nat)==1nat && r::base(a_interlace_ct0_d1_3x3(),3nat)==2nat && r::rb(a_interlace_ct0_d1_3x3(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_3x3(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_3x3()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_3x3(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_3x3(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),3nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_3_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_3_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_3_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_3_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),3nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_3x3_4_0() -> Seq<u8> {seq![64u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_3x3_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),4nat,y),
+{
+    hide(raw_interlace_ct0_d1_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),4nat)==2nat && r::ph(a_interlace_ct0_d1_3x3(),4nat)==1nat && r::base(a_interlace_ct0_d1_3x3(),4nat)==4nat && r::rb(a_interlace_ct0_d1_3x3(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_3x3(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_3x3()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_3x3(),4nat,1nat,0nat)==seq![64u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_3x3(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![64u8],None,1nat,seq![64u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![64u8],None,1nat,seq![64u8]);
+    assert(r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),4nat,0nat)==seq![64u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_4_0(),2nat),seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),4nat,0nat)==seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_3x3_5_0() -> Seq<u8> {seq![0u8]}
+spec fn e6_a7_line_interlace_ct0_d1_3x3_5_1() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_3x3_5()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),5nat,y),
+{
+    hide(raw_interlace_ct0_d1_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),5nat)==1nat && r::ph(a_interlace_ct0_d1_3x3(),5nat)==2nat && r::base(a_interlace_ct0_d1_3x3(),5nat)==6nat && r::rb(a_interlace_ct0_d1_3x3(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_3x3(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_3x3()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_3x3(),6nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_3x3(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),5nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),5nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_3x3(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_3x3()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_3x3(),6nat,1nat,1nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_3x3(),6nat,1nat,1nat,1nat)==Some(seq![0u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![0u8],Some(seq![0u8]),1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![0u8],Some(seq![0u8]),1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),5nat,1nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_1(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_1(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_1(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_5_1(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),5nat,1nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),5nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_3x3_6_0() -> Seq<u8> {seq![192u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_3x3_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),6nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),6nat,y),
+{
+    hide(raw_interlace_ct0_d1_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),6nat)==3nat && r::ph(a_interlace_ct0_d1_3x3(),6nat)==1nat && r::base(a_interlace_ct0_d1_3x3(),6nat)==10nat && r::rb(a_interlace_ct0_d1_3x3(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_3x3(),10nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_3x3()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_3x3(),10nat,1nat,0nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_3x3(),10nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![192u8],None,1nat,seq![192u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![192u8],None,1nat,seq![192u8]);
+    assert(r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),6nat,0nat)==seq![192u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[8]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[9]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[10]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat)[11]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),e6_a7_line_interlace_ct0_d1_3x3_6_0(),3nat),seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),6nat,0nat)==seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),6nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_3x3()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_3x3()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_3x3(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_3x3);hide(z_interlace_ct0_d1_3x3);hide(raw_interlace_ct0_d1_3x3);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_3x3().len()==77nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_3x3())==Ok((crate::model::Ihdr {width:3u32,height:3u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_3x3())==Ok((crate::model::Ihdr {width:3u32,height:3u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_3x3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:20nat,next:65nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_3x3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:20nat,next:65nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_3x3(),65nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:73nat,len:0nat,next:77nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_3x3(),65nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:73nat,len:0nat,next:77nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_3x3().subrange(41,61)==z_interlace_ct0_d1_3x3()) by (compute);
+    walk_interlace_ct0_d1_3x3(bytes_interlace_ct0_d1_3x3());
+
+    model_interlace_ct0_d1_3x3();inflate_interlace_ct0_d1_3x3();scan_interlace_ct0_d1_3x3();
+    assert(bytes_interlace_ct0_d1_3x3()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_3x3()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_3x3())==12nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_3x3(),h_interlace_ct0_d1_3x3(),20nat);
+    e6_a7_pass_interlace_ct0_d1_3x3_0();
+    e6_a7_pass_interlace_ct0_d1_3x3_3();
+    e6_a7_pass_interlace_ct0_d1_3x3_4();
+    e6_a7_pass_interlace_ct0_d1_3x3_5();
+    e6_a7_pass_interlace_ct0_d1_3x3_6();
+    assert(r::count(a_interlace_ct0_d1_3x3())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_3x3()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),0nat)==1nat && r::ph(a_interlace_ct0_d1_3x3(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),1nat)==0nat && r::ph(a_interlace_ct0_d1_3x3(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),2nat)==1nat && r::ph(a_interlace_ct0_d1_3x3(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),3nat)==1nat && r::ph(a_interlace_ct0_d1_3x3(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),4nat)==2nat && r::ph(a_interlace_ct0_d1_3x3(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),5nat)==1nat && r::ph(a_interlace_ct0_d1_3x3(),5nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_3x3(),6nat)==3nat && r::ph(a_interlace_ct0_d1_3x3(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_3x3(),k)>0 && y<r::ph(a_interlace_ct0_d1_3x3(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_3x3(),r::line(raw_interlace_ct0_d1_3x3(),a_interlace_ct0_d1_3x3(),k,y),r::pw(a_interlace_ct0_d1_3x3(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_3x3(),h_interlace_ct0_d1_3x3(),z_interlace_ct0_d1_3x3(),raw_interlace_ct0_d1_3x3(),0nat,e6_a7_colour_interlace_ct0_d1_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_3x3());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_3x3() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_3x3_0_0() -> Seq<u8> {seq![106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_3x3_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),0nat)==1nat && r::ph(a_interlace_ct6_d16_3x3(),0nat)==1nat && r::base(a_interlace_ct6_d16_3x3(),0nat)==0nat && r::rb(a_interlace_ct6_d16_3x3(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_3x3()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_3x3(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_3x3()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_3x3(),0nat,8nat,0nat)==seq![106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_3x3(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8],None,8nat,seq![106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8],None,8nat,seq![106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8]);
+    assert(r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),0nat,0nat)==seq![106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_0_0(),1nat)[0]==106u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_0_0(),1nat)[1]==73u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_0_0(),1nat)[2]==7u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_0_0(),1nat)[3]==107u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_0_0(),1nat),seq![106u8,73u8,7u8,107u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),0nat,0nat)==seq![106u8,73u8,7u8,107u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_3x3_3_0() -> Seq<u8> {seq![65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_3x3_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),3nat,y),
+{
+    hide(raw_interlace_ct6_d16_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),3nat)==1nat && r::ph(a_interlace_ct6_d16_3x3(),3nat)==1nat && r::base(a_interlace_ct6_d16_3x3(),3nat)==9nat && r::rb(a_interlace_ct6_d16_3x3(),3nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_3x3()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_3x3(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_3x3()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_3x3(),9nat,8nat,0nat)==seq![65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_3x3(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8],None,8nat,seq![65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8],None,8nat,seq![65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8]);
+    assert(r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),3nat,0nat)==seq![65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_3_0(),1nat)[0]==65u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_3_0(),1nat)[1]==26u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_3_0(),1nat)[2]==135u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_3_0(),1nat)[3]==22u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_3_0(),1nat),seq![65u8,26u8,135u8,22u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),3nat,0nat)==seq![65u8,26u8,135u8,22u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_3x3_4_0() -> Seq<u8> {seq![221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_3x3_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),4nat,y),
+{
+    hide(raw_interlace_ct6_d16_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),4nat)==2nat && r::ph(a_interlace_ct6_d16_3x3(),4nat)==1nat && r::base(a_interlace_ct6_d16_3x3(),4nat)==18nat && r::rb(a_interlace_ct6_d16_3x3(),4nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_3x3()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_3x3(),18nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_3x3()[18]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_3x3(),18nat,16nat,0nat)==seq![221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_3x3(),18nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8],None,8nat,seq![221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8],None,8nat,seq![221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8]);
+    assert(r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),4nat,0nat)==seq![221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[0]==220u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[1]==12u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[2]==253u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[3]==202u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[4]==225u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[5]==150u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[6]==166u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat)[7]==12u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_4_0(),2nat),seq![220u8,12u8,253u8,202u8,225u8,150u8,166u8,12u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),4nat,0nat)==seq![220u8,12u8,253u8,202u8,225u8,150u8,166u8,12u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_3x3_5_0() -> Seq<u8> {seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8]}
+spec fn e6_a7_line_interlace_ct6_d16_3x3_5_1() -> Seq<u8> {seq![179u8,248u8,90u8,16u8,228u8,119u8,18u8,218u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_3x3_5()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),5nat,y),
+{
+    hide(raw_interlace_ct6_d16_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),5nat)==1nat && r::ph(a_interlace_ct6_d16_3x3(),5nat)==2nat && r::base(a_interlace_ct6_d16_3x3(),5nat)==35nat && r::rb(a_interlace_ct6_d16_3x3(),5nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_3x3()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_3x3(),35nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_3x3()[35]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_3x3(),35nat,8nat,0nat)==seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_3x3(),35nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8],None,8nat,seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8],None,8nat,seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8]);
+    assert(r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),5nat,0nat)==seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_0(),1nat)[0]==73u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_0(),1nat)[1]==53u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_0(),1nat)[2]==245u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_0(),1nat)[3]==71u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_0(),1nat),seq![73u8,53u8,245u8,71u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),5nat,0nat)==seq![73u8,53u8,245u8,71u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_3x3(),35nat,8nat,8nat,1nat);
+    assert(raw_interlace_ct6_d16_3x3()[44]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_3x3(),35nat,8nat,1nat)==seq![106u8,136u8,38u8,39u8,238u8,100u8,203u8,66u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_3x3(),35nat,8nat,8nat,1nat)==Some(seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![106u8,136u8,38u8,39u8,238u8,100u8,203u8,66u8],Some(seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8]),8nat,seq![179u8,248u8,90u8,16u8,228u8,119u8,18u8,218u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![106u8,136u8,38u8,39u8,238u8,100u8,203u8,66u8],Some(seq![73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8]),8nat,seq![179u8,248u8,90u8,16u8,228u8,119u8,18u8,218u8]);
+    assert(r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),5nat,1nat)==seq![179u8,248u8,90u8,16u8,228u8,119u8,18u8,218u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_1(),1nat)[0]==179u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_1(),1nat)[1]==90u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_1(),1nat)[2]==228u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_1(),1nat)[3]==19u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_5_1(),1nat),seq![179u8,90u8,228u8,19u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),5nat,1nat)==seq![179u8,90u8,228u8,19u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),5nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_3x3_6_0() -> Seq<u8> {seq![165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_3x3_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),6nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),6nat,y),
+{
+    hide(raw_interlace_ct6_d16_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),6nat)==3nat && r::ph(a_interlace_ct6_d16_3x3(),6nat)==1nat && r::base(a_interlace_ct6_d16_3x3(),6nat)==53nat && r::rb(a_interlace_ct6_d16_3x3(),6nat)==24nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_3x3()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_3x3(),53nat,24nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_3x3()[53]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_3x3(),53nat,24nat,0nat)==seq![165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_3x3(),53nat,24nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8],None,8nat,seq![165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8],0,24nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8],None,8nat,seq![165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8]);
+    assert(r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),6nat,0nat)==seq![165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[0]==165u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[1]==124u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[2]==127u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[3]==25u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[4]==7u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[5]==69u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[6]==253u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[7]==57u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[8]==195u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[9]==174u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[10]==198u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat)[11]==127u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),e6_a7_line_interlace_ct6_d16_3x3_6_0(),3nat),seq![165u8,124u8,127u8,25u8,7u8,69u8,253u8,57u8,195u8,174u8,198u8,127u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),6nat,0nat)==seq![165u8,124u8,127u8,25u8,7u8,69u8,253u8,57u8,195u8,174u8,198u8,127u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),6nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_3x3()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_3x3()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_3x3(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_3x3);hide(z_interlace_ct6_d16_3x3);hide(raw_interlace_ct6_d16_3x3);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_3x3().len()==146nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_3x3())==Ok((crate::model::Ihdr {width:3u32,height:3u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_3x3())==Ok((crate::model::Ihdr {width:3u32,height:3u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_3x3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:89nat,next:134nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_3x3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:89nat,next:134nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_3x3(),134nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:142nat,len:0nat,next:146nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_3x3(),134nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:142nat,len:0nat,next:146nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_3x3().subrange(41,130)==z_interlace_ct6_d16_3x3()) by (compute);
+    walk_interlace_ct6_d16_3x3(bytes_interlace_ct6_d16_3x3());
+
+    model_interlace_ct6_d16_3x3();inflate_interlace_ct6_d16_3x3();scan_interlace_ct6_d16_3x3();
+    assert(bytes_interlace_ct6_d16_3x3()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_3x3()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_3x3())==78nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_3x3(),h_interlace_ct6_d16_3x3(),89nat);
+    e6_a7_pass_interlace_ct6_d16_3x3_0();
+    e6_a7_pass_interlace_ct6_d16_3x3_3();
+    e6_a7_pass_interlace_ct6_d16_3x3_4();
+    e6_a7_pass_interlace_ct6_d16_3x3_5();
+    e6_a7_pass_interlace_ct6_d16_3x3_6();
+    assert(r::count(a_interlace_ct6_d16_3x3())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_3x3()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),0nat)==1nat && r::ph(a_interlace_ct6_d16_3x3(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),1nat)==0nat && r::ph(a_interlace_ct6_d16_3x3(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),2nat)==1nat && r::ph(a_interlace_ct6_d16_3x3(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),3nat)==1nat && r::ph(a_interlace_ct6_d16_3x3(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),4nat)==2nat && r::ph(a_interlace_ct6_d16_3x3(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),5nat)==1nat && r::ph(a_interlace_ct6_d16_3x3(),5nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_3x3(),6nat)==3nat && r::ph(a_interlace_ct6_d16_3x3(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_3x3(),k)>0 && y<r::ph(a_interlace_ct6_d16_3x3(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_3x3(),r::line(raw_interlace_ct6_d16_3x3(),a_interlace_ct6_d16_3x3(),k,y),r::pw(a_interlace_ct6_d16_3x3(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_3x3(),h_interlace_ct6_d16_3x3(),z_interlace_ct6_d16_3x3(),raw_interlace_ct6_d16_3x3(),0nat,e6_a7_colour_interlace_ct6_d16_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_3x3());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_3x3() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![64u8,165u8,197u8,59u8,205u8,174u8,113u8,157u8,26u8,122u8,35u8,237u8,139u8,153u8,15u8,105u8,130u8,34u8,54u8,172u8,38u8,103u8,35u8,57u8,174u8,18u8,146u8,64u8,39u8,165u8,74u8,77u8,4u8,212u8,157u8,168u8,28u8,25u8,234u8,253u8,1u8,109u8,219u8,136u8,206u8,247u8,94u8,54u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_3x3_0_0() -> Seq<u8> {seq![208u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_3x3_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),0nat)==1nat && r::ph(a_interlace_ct3_d4_3x3(),0nat)==1nat && r::base(a_interlace_ct3_d4_3x3(),0nat)==0nat && r::rb(a_interlace_ct3_d4_3x3(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_3x3(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_3x3()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_3x3(),0nat,1nat,0nat)==seq![208u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_3x3(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![208u8],None,1nat,seq![208u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![208u8],None,1nat,seq![208u8]);
+    assert(r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),0nat,0nat)==seq![208u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_0_0(),1nat)[0]==253u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_0_0(),1nat)[1]==1u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_0_0(),1nat)[2]==109u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_0_0(),1nat),seq![253u8,1u8,109u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),0nat,0nat)==seq![253u8,1u8,109u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_3x3_3_0() -> Seq<u8> {seq![64u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_3x3_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),3nat,y),
+{
+    hide(raw_interlace_ct3_d4_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),3nat)==1nat && r::ph(a_interlace_ct3_d4_3x3(),3nat)==1nat && r::base(a_interlace_ct3_d4_3x3(),3nat)==2nat && r::rb(a_interlace_ct3_d4_3x3(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_3x3(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_3x3()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_3x3(),2nat,1nat,0nat)==seq![64u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_3x3(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![64u8],None,1nat,seq![64u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![64u8],None,1nat,seq![64u8]);
+    assert(r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),3nat,0nat)==seq![64u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_3_0(),1nat)[0]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_3_0(),1nat)[1]==153u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_3_0(),1nat)[2]==15u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_3_0(),1nat),seq![139u8,153u8,15u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),3nat,0nat)==seq![139u8,153u8,15u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_3x3_4_0() -> Seq<u8> {seq![67u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_3x3_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),4nat,y),
+{
+    hide(raw_interlace_ct3_d4_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),4nat)==2nat && r::ph(a_interlace_ct3_d4_3x3(),4nat)==1nat && r::base(a_interlace_ct3_d4_3x3(),4nat)==4nat && r::rb(a_interlace_ct3_d4_3x3(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_3x3(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_3x3()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_3x3(),4nat,1nat,0nat)==seq![67u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_3x3(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![67u8],None,1nat,seq![67u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![67u8],None,1nat,seq![67u8]);
+    assert(r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),4nat,0nat)==seq![67u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[0]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[1]==153u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[2]==15u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[4]==122u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[5]==35u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[6]==237u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_4_0(),2nat),seq![139u8,153u8,15u8,255u8,122u8,35u8,237u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),4nat,0nat)==seq![139u8,153u8,15u8,255u8,122u8,35u8,237u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_3x3_5_0() -> Seq<u8> {seq![224u8]}
+spec fn e6_a7_line_interlace_ct3_d4_3x3_5_1() -> Seq<u8> {seq![160u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_3x3_5()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),5nat,y),
+{
+    hide(raw_interlace_ct3_d4_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),5nat)==1nat && r::ph(a_interlace_ct3_d4_3x3(),5nat)==2nat && r::base(a_interlace_ct3_d4_3x3(),5nat)==6nat && r::rb(a_interlace_ct3_d4_3x3(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_3x3(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_3x3()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_3x3(),6nat,1nat,0nat)==seq![224u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_3x3(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![224u8],None,1nat,seq![224u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![224u8],None,1nat,seq![224u8]);
+    assert(r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),5nat,0nat)==seq![224u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_0(),1nat)[0]==219u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_0(),1nat)[1]==136u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_0(),1nat)[2]==206u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_0(),1nat),seq![219u8,136u8,206u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),5nat,0nat)==seq![219u8,136u8,206u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_3x3(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_3x3()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_3x3(),6nat,1nat,1nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_3x3(),6nat,1nat,1nat,1nat)==Some(seq![224u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![192u8],Some(seq![224u8]),1nat,seq![160u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![192u8],Some(seq![224u8]),1nat,seq![160u8]);
+    assert(r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),5nat,1nat)==seq![160u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_1(),1nat)[0]==74u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_1(),1nat)[1]==77u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_1(),1nat)[2]==4u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_5_1(),1nat),seq![74u8,77u8,4u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),5nat,1nat)==seq![74u8,77u8,4u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),5nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),5nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_3x3_6_0() -> Seq<u8> {seq![124u8,16u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_3x3_6()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),6nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),6nat,y),
+{
+    hide(raw_interlace_ct3_d4_3x3);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),6nat)==3nat && r::ph(a_interlace_ct3_d4_3x3(),6nat)==1nat && r::base(a_interlace_ct3_d4_3x3(),6nat)==10nat && r::rb(a_interlace_ct3_d4_3x3(),6nat)==2nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_3x3()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_3x3(),10nat,2nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_3x3()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_3x3(),10nat,2nat,0nat)==seq![124u8,16u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_3x3(),10nat,2nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![124u8,16u8],None,1nat,seq![124u8,16u8],0,2nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![124u8,16u8],None,1nat,seq![124u8,16u8]);
+    assert(r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),6nat,0nat)==seq![124u8,16u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[0]==103u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[1]==35u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[2]==57u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[4]==28u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[5]==25u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[6]==234u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[8]==59u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[9]==205u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[10]==174u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat)[11]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),e6_a7_line_interlace_ct3_d4_3x3_6_0(),3nat),seq![103u8,35u8,57u8,255u8,28u8,25u8,234u8,255u8,59u8,205u8,174u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),6nat,0nat)==seq![103u8,35u8,57u8,255u8,28u8,25u8,234u8,255u8,59u8,205u8,174u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),6nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),6nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_3x3()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_3x3()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_3x3(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_3x3);hide(z_interlace_ct3_d4_3x3);hide(raw_interlace_ct3_d4_3x3);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_3x3().len()==138nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_3x3())==Ok((crate::model::Ihdr {width:3u32,height:3u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_3x3())==Ok((crate::model::Ihdr {width:3u32,height:3u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_3x3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_3x3(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_3x3(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:21nat,next:126nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_3x3(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:21nat,next:126nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_3x3(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_3x3(),126nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:134nat,len:0nat,next:138nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_3x3().subrange(101,122)==z_interlace_ct3_d4_3x3()) by (compute);
+    walk_interlace_ct3_d4_3x3(bytes_interlace_ct3_d4_3x3());
+
+    model_interlace_ct3_d4_3x3();inflate_interlace_ct3_d4_3x3();scan_interlace_ct3_d4_3x3();
+    assert(bytes_interlace_ct3_d4_3x3()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_3x3()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_3x3())==13nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_3x3().subrange(41,89)==seq![64u8,165u8,197u8,59u8,205u8,174u8,113u8,157u8,26u8,122u8,35u8,237u8,139u8,153u8,15u8,105u8,130u8,34u8,54u8,172u8,38u8,103u8,35u8,57u8,174u8,18u8,146u8,64u8,39u8,165u8,74u8,77u8,4u8,212u8,157u8,168u8,28u8,25u8,234u8,253u8,1u8,109u8,219u8,136u8,206u8,247u8,94u8,54u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_3x3(),h_interlace_ct3_d4_3x3(),21nat);
+    e6_a7_pass_interlace_ct3_d4_3x3_0();
+    e6_a7_pass_interlace_ct3_d4_3x3_3();
+    e6_a7_pass_interlace_ct3_d4_3x3_4();
+    e6_a7_pass_interlace_ct3_d4_3x3_5();
+    e6_a7_pass_interlace_ct3_d4_3x3_6();
+    assert(r::count(a_interlace_ct3_d4_3x3())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_3x3()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),0nat)==1nat && r::ph(a_interlace_ct3_d4_3x3(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),1nat)==0nat && r::ph(a_interlace_ct3_d4_3x3(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),2nat)==1nat && r::ph(a_interlace_ct3_d4_3x3(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),3nat)==1nat && r::ph(a_interlace_ct3_d4_3x3(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),4nat)==2nat && r::ph(a_interlace_ct3_d4_3x3(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),5nat)==1nat && r::ph(a_interlace_ct3_d4_3x3(),5nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_3x3(),6nat)==3nat && r::ph(a_interlace_ct3_d4_3x3(),6nat)==1nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_3x3(),k)>0 && y<r::ph(a_interlace_ct3_d4_3x3(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_3x3(),r::line(raw_interlace_ct3_d4_3x3(),a_interlace_ct3_d4_3x3(),k,y),r::pw(a_interlace_ct3_d4_3x3(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_3x3(),h_interlace_ct3_d4_3x3(),z_interlace_ct3_d4_3x3(),raw_interlace_ct3_d4_3x3(),16nat,e6_a7_colour_interlace_ct3_d4_3x3(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_3x3());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_4x4() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_4x4_0_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_4x4_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),0nat)==1nat && r::ph(a_interlace_ct0_d1_4x4(),0nat)==1nat && r::base(a_interlace_ct0_d1_4x4(),0nat)==0nat && r::rb(a_interlace_ct0_d1_4x4(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_4x4(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_4x4()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_4x4(),0nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_4x4(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),0nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_0_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_0_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_0_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_0_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),0nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_4x4_3_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_4x4_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),3nat,y),
+{
+    hide(raw_interlace_ct0_d1_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),3nat)==1nat && r::ph(a_interlace_ct0_d1_4x4(),3nat)==1nat && r::base(a_interlace_ct0_d1_4x4(),3nat)==2nat && r::rb(a_interlace_ct0_d1_4x4(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_4x4(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_4x4()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_4x4(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_4x4(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),3nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_3_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_3_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_3_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_3_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),3nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_4x4_4_0() -> Seq<u8> {seq![64u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_4x4_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),4nat,y),
+{
+    hide(raw_interlace_ct0_d1_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),4nat)==2nat && r::ph(a_interlace_ct0_d1_4x4(),4nat)==1nat && r::base(a_interlace_ct0_d1_4x4(),4nat)==4nat && r::rb(a_interlace_ct0_d1_4x4(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_4x4(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_4x4()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_4x4(),4nat,1nat,0nat)==seq![64u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_4x4(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![64u8],None,1nat,seq![64u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![64u8],None,1nat,seq![64u8]);
+    assert(r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),4nat,0nat)==seq![64u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_4_0(),2nat),seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),4nat,0nat)==seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_4x4_5_0() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct0_d1_4x4_5_1() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_4x4_5()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),5nat,y),
+{
+    hide(raw_interlace_ct0_d1_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),5nat)==2nat && r::ph(a_interlace_ct0_d1_4x4(),5nat)==2nat && r::base(a_interlace_ct0_d1_4x4(),5nat)==6nat && r::rb(a_interlace_ct0_d1_4x4(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_4x4(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_4x4()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_4x4(),6nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_4x4(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),5nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_0(),2nat),seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),5nat,0nat)==seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_4x4(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_4x4()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_4x4(),6nat,1nat,1nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_4x4(),6nat,1nat,1nat,1nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![0u8],Some(seq![128u8]),1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![0u8],Some(seq![128u8]),1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),5nat,1nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_5_1(),2nat),seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),5nat,1nat)==seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),5nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_4x4_6_0() -> Seq<u8> {seq![16u8]}
+spec fn e6_a7_line_interlace_ct0_d1_4x4_6_1() -> Seq<u8> {seq![208u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_4x4_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),6nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),6nat,y),
+{
+    hide(raw_interlace_ct0_d1_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),6nat)==4nat && r::ph(a_interlace_ct0_d1_4x4(),6nat)==2nat && r::base(a_interlace_ct0_d1_4x4(),6nat)==10nat && r::rb(a_interlace_ct0_d1_4x4(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_4x4(),10nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_4x4()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_4x4(),10nat,1nat,0nat)==seq![16u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_4x4(),10nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![16u8],None,1nat,seq![16u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![16u8],None,1nat,seq![16u8]);
+    assert(r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),6nat,0nat)==seq![16u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[8]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[9]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[10]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[12]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[13]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[14]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat)[15]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_0(),4nat),seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),6nat,0nat)==seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_4x4(),10nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_4x4()[12]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_4x4(),10nat,1nat,1nat)==seq![208u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_4x4(),10nat,1nat,1nat,1nat)==Some(seq![16u8]));
+    assert(crate::filter_model::encoded_row(1u8,seq![208u8],Some(seq![16u8]),1nat,seq![208u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![208u8],Some(seq![16u8]),1nat,seq![208u8]);
+    assert(r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),6nat,1nat)==seq![208u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[8]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[9]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[10]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[12]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[13]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[14]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat)[15]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),e6_a7_line_interlace_ct0_d1_4x4_6_1(),4nat),seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),6nat,1nat)==seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),6nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_4x4()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_4x4()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_4x4(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_4x4);hide(z_interlace_ct0_d1_4x4);hide(raw_interlace_ct0_d1_4x4);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_4x4().len()==79nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_4x4())==Ok((crate::model::Ihdr {width:4u32,height:4u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_4x4())==Ok((crate::model::Ihdr {width:4u32,height:4u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_4x4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:22nat,next:67nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_4x4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:22nat,next:67nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_4x4(),67nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:75nat,len:0nat,next:79nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_4x4(),67nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:75nat,len:0nat,next:79nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_4x4().subrange(41,63)==z_interlace_ct0_d1_4x4()) by (compute);
+    walk_interlace_ct0_d1_4x4(bytes_interlace_ct0_d1_4x4());
+
+    model_interlace_ct0_d1_4x4();inflate_interlace_ct0_d1_4x4();scan_interlace_ct0_d1_4x4();
+    assert(bytes_interlace_ct0_d1_4x4()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_4x4()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_4x4())==14nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_4x4(),h_interlace_ct0_d1_4x4(),22nat);
+    e6_a7_pass_interlace_ct0_d1_4x4_0();
+    e6_a7_pass_interlace_ct0_d1_4x4_3();
+    e6_a7_pass_interlace_ct0_d1_4x4_4();
+    e6_a7_pass_interlace_ct0_d1_4x4_5();
+    e6_a7_pass_interlace_ct0_d1_4x4_6();
+    assert(r::count(a_interlace_ct0_d1_4x4())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_4x4()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4().len()==64nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),0nat)==1nat && r::ph(a_interlace_ct0_d1_4x4(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),1nat)==0nat && r::ph(a_interlace_ct0_d1_4x4(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),2nat)==1nat && r::ph(a_interlace_ct0_d1_4x4(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),3nat)==1nat && r::ph(a_interlace_ct0_d1_4x4(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),4nat)==2nat && r::ph(a_interlace_ct0_d1_4x4(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),5nat)==2nat && r::ph(a_interlace_ct0_d1_4x4(),5nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_4x4(),6nat)==4nat && r::ph(a_interlace_ct0_d1_4x4(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_4x4(),k)>0 && y<r::ph(a_interlace_ct0_d1_4x4(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_4x4(),r::line(raw_interlace_ct0_d1_4x4(),a_interlace_ct0_d1_4x4(),k,y),r::pw(a_interlace_ct0_d1_4x4(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_4x4(),h_interlace_ct0_d1_4x4(),z_interlace_ct0_d1_4x4(),raw_interlace_ct0_d1_4x4(),0nat,e6_a7_colour_interlace_ct0_d1_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_4x4());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_4x4() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_4x4_0_0() -> Seq<u8> {seq![122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_4x4_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),0nat)==1nat && r::ph(a_interlace_ct6_d16_4x4(),0nat)==1nat && r::base(a_interlace_ct6_d16_4x4(),0nat)==0nat && r::rb(a_interlace_ct6_d16_4x4(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_4x4()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_4x4(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_4x4()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_4x4(),0nat,8nat,0nat)==seq![122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_4x4(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8],None,8nat,seq![122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8],None,8nat,seq![122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8]);
+    assert(r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),0nat,0nat)==seq![122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_0_0(),1nat)[0]==122u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_0_0(),1nat)[1]==68u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_0_0(),1nat)[2]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_0_0(),1nat)[3]==154u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_0_0(),1nat),seq![122u8,68u8,139u8,154u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),0nat,0nat)==seq![122u8,68u8,139u8,154u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_4x4_3_0() -> Seq<u8> {seq![128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_4x4_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),3nat,y),
+{
+    hide(raw_interlace_ct6_d16_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),3nat)==1nat && r::ph(a_interlace_ct6_d16_4x4(),3nat)==1nat && r::base(a_interlace_ct6_d16_4x4(),3nat)==9nat && r::rb(a_interlace_ct6_d16_4x4(),3nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_4x4()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_4x4(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_4x4()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_4x4(),9nat,8nat,0nat)==seq![128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_4x4(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8],None,8nat,seq![128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8],None,8nat,seq![128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8]);
+    assert(r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),3nat,0nat)==seq![128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_3_0(),1nat)[0]==128u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_3_0(),1nat)[1]==33u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_3_0(),1nat)[2]==224u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_3_0(),1nat)[3]==127u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_3_0(),1nat),seq![128u8,33u8,224u8,127u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),3nat,0nat)==seq![128u8,33u8,224u8,127u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_4x4_4_0() -> Seq<u8> {seq![34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_4x4_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),4nat,y),
+{
+    hide(raw_interlace_ct6_d16_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),4nat)==2nat && r::ph(a_interlace_ct6_d16_4x4(),4nat)==1nat && r::base(a_interlace_ct6_d16_4x4(),4nat)==18nat && r::rb(a_interlace_ct6_d16_4x4(),4nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_4x4()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_4x4(),18nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_4x4()[18]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_4x4(),18nat,16nat,0nat)==seq![34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_4x4(),18nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8],None,8nat,seq![34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8],None,8nat,seq![34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8]);
+    assert(r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),4nat,0nat)==seq![34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[0]==34u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[1]==106u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[2]==17u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[3]==109u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[4]==210u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[5]==90u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[6]==167u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat)[7]==251u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_4_0(),2nat),seq![34u8,106u8,17u8,109u8,210u8,90u8,167u8,251u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),4nat,0nat)==seq![34u8,106u8,17u8,109u8,210u8,90u8,167u8,251u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_4x4_5_0() -> Seq<u8> {seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,126u8,1u8,217u8,184u8,66u8,40u8,161u8,151u8]}
+spec fn e6_a7_line_interlace_ct6_d16_4x4_5_1() -> Seq<u8> {seq![60u8,31u8,126u8,108u8,32u8,173u8,247u8,105u8,80u8,97u8,76u8,240u8,45u8,172u8,173u8,112u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_4x4_5()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),5nat,y),
+{
+    hide(raw_interlace_ct6_d16_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),5nat)==2nat && r::ph(a_interlace_ct6_d16_4x4(),5nat)==2nat && r::base(a_interlace_ct6_d16_4x4(),5nat)==35nat && r::rb(a_interlace_ct6_d16_4x4(),5nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_4x4()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_4x4(),35nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_4x4()[35]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_4x4(),35nat,16nat,0nat)==seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,82u8,208u8,203u8,70u8,9u8,201u8,128u8,60u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_4x4(),35nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,82u8,208u8,203u8,70u8,9u8,201u8,128u8,60u8],None,8nat,seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,126u8,1u8,217u8,184u8,66u8,40u8,161u8,151u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,82u8,208u8,203u8,70u8,9u8,201u8,128u8,60u8],None,8nat,seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,126u8,1u8,217u8,184u8,66u8,40u8,161u8,151u8]);
+    assert(r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),5nat,0nat)==seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,126u8,1u8,217u8,184u8,66u8,40u8,161u8,151u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[0]==89u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[1]==29u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[2]==114u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[3]==66u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[4]==126u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[5]==217u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[6]==66u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat)[7]==161u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_0(),2nat),seq![89u8,29u8,114u8,66u8,126u8,217u8,66u8,161u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),5nat,0nat)==seq![89u8,29u8,114u8,66u8,126u8,217u8,66u8,161u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_4x4(),35nat,16nat,8nat,1nat);
+    assert(raw_interlace_ct6_d16_4x4()[52]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_4x4(),35nat,16nat,1nat)==seq![227u8,188u8,98u8,136u8,174u8,239u8,181u8,178u8,247u8,96u8,115u8,132u8,13u8,132u8,182u8,7u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_4x4(),35nat,16nat,8nat,1nat)==Some(seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,126u8,1u8,217u8,184u8,66u8,40u8,161u8,151u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![227u8,188u8,98u8,136u8,174u8,239u8,181u8,178u8,247u8,96u8,115u8,132u8,13u8,132u8,182u8,7u8],Some(seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,126u8,1u8,217u8,184u8,66u8,40u8,161u8,151u8]),8nat,seq![60u8,31u8,126u8,108u8,32u8,173u8,247u8,105u8,80u8,97u8,76u8,240u8,45u8,172u8,173u8,112u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![227u8,188u8,98u8,136u8,174u8,239u8,181u8,178u8,247u8,96u8,115u8,132u8,13u8,132u8,182u8,7u8],Some(seq![89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,126u8,1u8,217u8,184u8,66u8,40u8,161u8,151u8]),8nat,seq![60u8,31u8,126u8,108u8,32u8,173u8,247u8,105u8,80u8,97u8,76u8,240u8,45u8,172u8,173u8,112u8]);
+    assert(r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),5nat,1nat)==seq![60u8,31u8,126u8,108u8,32u8,173u8,247u8,105u8,80u8,97u8,76u8,240u8,45u8,172u8,173u8,112u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[0]==60u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[1]==126u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[2]==33u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[3]==246u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[4]==80u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[5]==77u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[6]==45u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat)[7]==173u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_5_1(),2nat),seq![60u8,126u8,33u8,246u8,80u8,77u8,45u8,173u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),5nat,1nat)==seq![60u8,126u8,33u8,246u8,80u8,77u8,45u8,173u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),5nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_4x4_6_0() -> Seq<u8> {seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8]}
+spec fn e6_a7_line_interlace_ct6_d16_4x4_6_1() -> Seq<u8> {seq![199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,31u8,202u8,1u8,227u8,60u8,171u8,233u8,49u8,210u8,190u8,114u8,5u8,246u8,82u8,50u8,1u8,214u8,190u8,247u8,68u8,187u8,172u8,166u8,218u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_4x4_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),6nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),6nat,y),
+{
+    hide(raw_interlace_ct6_d16_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),6nat)==4nat && r::ph(a_interlace_ct6_d16_4x4(),6nat)==2nat && r::base(a_interlace_ct6_d16_4x4(),6nat)==69nat && r::rb(a_interlace_ct6_d16_4x4(),6nat)==32nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_4x4()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_4x4(),69nat,32nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_4x4()[69]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_4x4(),69nat,32nat,0nat)==seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_4x4(),69nat,32nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8],None,8nat,seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8],0,32nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8],None,8nat,seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8]);
+    assert(r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),6nat,0nat)==seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[0]==3u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[1]==193u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[2]==42u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[3]==247u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[4]==157u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[5]==81u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[6]==29u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[7]==88u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[8]==224u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[9]==174u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[10]==7u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[11]==33u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[12]==214u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[13]==82u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[14]==209u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat)[15]==133u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_0(),4nat),seq![3u8,193u8,42u8,247u8,157u8,81u8,29u8,88u8,224u8,174u8,7u8,33u8,214u8,82u8,209u8,133u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),6nat,0nat)==seq![3u8,193u8,42u8,247u8,157u8,81u8,29u8,88u8,224u8,174u8,7u8,33u8,214u8,82u8,209u8,133u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_4x4(),69nat,32nat,8nat,1nat);
+    assert(raw_interlace_ct6_d16_4x4()[102]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_4x4(),69nat,32nat,1nat)==seq![199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,88u8,253u8,143u8,52u8,127u8,76u8,91u8,163u8,179u8,244u8,113u8,34u8,186u8,167u8,73u8,208u8,4u8,0u8,133u8,63u8,197u8,90u8,116u8,217u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_4x4(),69nat,32nat,8nat,1nat)==Some(seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8]));
+    assert(crate::filter_model::encoded_row(1u8,seq![199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,88u8,253u8,143u8,52u8,127u8,76u8,91u8,163u8,179u8,244u8,113u8,34u8,186u8,167u8,73u8,208u8,4u8,0u8,133u8,63u8,197u8,90u8,116u8,217u8],Some(seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8]),8nat,seq![199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,31u8,202u8,1u8,227u8,60u8,171u8,233u8,49u8,210u8,190u8,114u8,5u8,246u8,82u8,50u8,1u8,214u8,190u8,247u8,68u8,187u8,172u8,166u8,218u8],0,32nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,88u8,253u8,143u8,52u8,127u8,76u8,91u8,163u8,179u8,244u8,113u8,34u8,186u8,167u8,73u8,208u8,4u8,0u8,133u8,63u8,197u8,90u8,116u8,217u8],Some(seq![2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8]),8nat,seq![199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,31u8,202u8,1u8,227u8,60u8,171u8,233u8,49u8,210u8,190u8,114u8,5u8,246u8,82u8,50u8,1u8,214u8,190u8,247u8,68u8,187u8,172u8,166u8,218u8]);
+    assert(r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),6nat,1nat)==seq![199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,31u8,202u8,1u8,227u8,60u8,171u8,233u8,49u8,210u8,190u8,114u8,5u8,246u8,82u8,50u8,1u8,214u8,190u8,247u8,68u8,187u8,172u8,166u8,218u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[0]==199u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[1]==114u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[2]==189u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[3]==142u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[4]==32u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[5]==2u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[6]==60u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[7]==232u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[8]==210u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[9]==114u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[10]==245u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[11]==50u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[12]==214u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[13]==246u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[14]==187u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat)[15]==166u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),e6_a7_line_interlace_ct6_d16_4x4_6_1(),4nat),seq![199u8,114u8,189u8,142u8,32u8,2u8,60u8,232u8,210u8,114u8,245u8,50u8,214u8,246u8,187u8,166u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),6nat,1nat)==seq![199u8,114u8,189u8,142u8,32u8,2u8,60u8,232u8,210u8,114u8,245u8,50u8,214u8,246u8,187u8,166u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),6nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_4x4()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_4x4()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_4x4(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_4x4);hide(z_interlace_ct6_d16_4x4);hide(raw_interlace_ct6_d16_4x4);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_4x4().len()==203nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_4x4())==Ok((crate::model::Ihdr {width:4u32,height:4u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_4x4())==Ok((crate::model::Ihdr {width:4u32,height:4u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_4x4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:146nat,next:191nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_4x4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:146nat,next:191nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_4x4(),191nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:199nat,len:0nat,next:203nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_4x4(),191nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:199nat,len:0nat,next:203nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_4x4().subrange(41,187)==z_interlace_ct6_d16_4x4()) by (compute);
+    walk_interlace_ct6_d16_4x4(bytes_interlace_ct6_d16_4x4());
+
+    model_interlace_ct6_d16_4x4();inflate_interlace_ct6_d16_4x4();scan_interlace_ct6_d16_4x4();
+    assert(bytes_interlace_ct6_d16_4x4()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_4x4()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_4x4())==135nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_4x4(),h_interlace_ct6_d16_4x4(),146nat);
+    e6_a7_pass_interlace_ct6_d16_4x4_0();
+    e6_a7_pass_interlace_ct6_d16_4x4_3();
+    e6_a7_pass_interlace_ct6_d16_4x4_4();
+    e6_a7_pass_interlace_ct6_d16_4x4_5();
+    e6_a7_pass_interlace_ct6_d16_4x4_6();
+    assert(r::count(a_interlace_ct6_d16_4x4())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_4x4()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4().len()==64nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),0nat)==1nat && r::ph(a_interlace_ct6_d16_4x4(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),1nat)==0nat && r::ph(a_interlace_ct6_d16_4x4(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),2nat)==1nat && r::ph(a_interlace_ct6_d16_4x4(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),3nat)==1nat && r::ph(a_interlace_ct6_d16_4x4(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),4nat)==2nat && r::ph(a_interlace_ct6_d16_4x4(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),5nat)==2nat && r::ph(a_interlace_ct6_d16_4x4(),5nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_4x4(),6nat)==4nat && r::ph(a_interlace_ct6_d16_4x4(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_4x4(),k)>0 && y<r::ph(a_interlace_ct6_d16_4x4(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_4x4(),r::line(raw_interlace_ct6_d16_4x4(),a_interlace_ct6_d16_4x4(),k,y),r::pw(a_interlace_ct6_d16_4x4(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_4x4(),h_interlace_ct6_d16_4x4(),z_interlace_ct6_d16_4x4(),raw_interlace_ct6_d16_4x4(),0nat,e6_a7_colour_interlace_ct6_d16_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_4x4());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_4x4() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![154u8,62u8,40u8,122u8,148u8,201u8,94u8,104u8,241u8,34u8,148u8,250u8,101u8,127u8,11u8,235u8,20u8,153u8,70u8,219u8,142u8,44u8,135u8,68u8,215u8,177u8,205u8,225u8,240u8,138u8,16u8,249u8,75u8,193u8,13u8,84u8,197u8,59u8,212u8,181u8,168u8,32u8,235u8,247u8,221u8,159u8,115u8,37u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_4x4_0_0() -> Seq<u8> {seq![64u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_4x4_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),0nat)==1nat && r::ph(a_interlace_ct3_d4_4x4(),0nat)==1nat && r::base(a_interlace_ct3_d4_4x4(),0nat)==0nat && r::rb(a_interlace_ct3_d4_4x4(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_4x4(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_4x4()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_4x4(),0nat,1nat,0nat)==seq![64u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_4x4(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![64u8],None,1nat,seq![64u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![64u8],None,1nat,seq![64u8]);
+    assert(r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),0nat,0nat)==seq![64u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_0_0(),1nat)[0]==101u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_0_0(),1nat)[1]==127u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_0_0(),1nat)[2]==11u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_0_0(),1nat),seq![101u8,127u8,11u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),0nat,0nat)==seq![101u8,127u8,11u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_4x4_3_0() -> Seq<u8> {seq![80u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_4x4_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),3nat,y),
+{
+    hide(raw_interlace_ct3_d4_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),3nat)==1nat && r::ph(a_interlace_ct3_d4_4x4(),3nat)==1nat && r::base(a_interlace_ct3_d4_4x4(),3nat)==2nat && r::rb(a_interlace_ct3_d4_4x4(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_4x4(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_4x4()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_4x4(),2nat,1nat,0nat)==seq![80u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_4x4(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![80u8],None,1nat,seq![80u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![80u8],None,1nat,seq![80u8]);
+    assert(r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),3nat,0nat)==seq![80u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_3_0(),1nat)[0]==235u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_3_0(),1nat)[1]==20u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_3_0(),1nat)[2]==153u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_3_0(),1nat),seq![235u8,20u8,153u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),3nat,0nat)==seq![235u8,20u8,153u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_4x4_4_0() -> Seq<u8> {seq![110u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_4x4_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),4nat,y),
+{
+    hide(raw_interlace_ct3_d4_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),4nat)==2nat && r::ph(a_interlace_ct3_d4_4x4(),4nat)==1nat && r::base(a_interlace_ct3_d4_4x4(),4nat)==4nat && r::rb(a_interlace_ct3_d4_4x4(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_4x4(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_4x4()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_4x4(),4nat,1nat,0nat)==seq![110u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_4x4(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![110u8],None,1nat,seq![110u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![110u8],None,1nat,seq![110u8]);
+    assert(r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),4nat,0nat)==seq![110u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[0]==70u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[1]==219u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[2]==142u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[4]==235u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[5]==247u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[6]==221u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_4_0(),2nat),seq![70u8,219u8,142u8,255u8,235u8,247u8,221u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),4nat,0nat)==seq![70u8,219u8,142u8,255u8,235u8,247u8,221u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),4nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_4x4_5_0() -> Seq<u8> {seq![190u8]}
+spec fn e6_a7_line_interlace_ct3_d4_4x4_5_1() -> Seq<u8> {seq![3u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_4x4_5()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),5nat,y),
+{
+    hide(raw_interlace_ct3_d4_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),5nat)==2nat && r::ph(a_interlace_ct3_d4_4x4(),5nat)==2nat && r::base(a_interlace_ct3_d4_4x4(),5nat)==6nat && r::rb(a_interlace_ct3_d4_4x4(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_4x4(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_4x4()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_4x4(),6nat,1nat,0nat)==seq![190u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_4x4(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![190u8],None,1nat,seq![190u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![190u8],None,1nat,seq![190u8]);
+    assert(r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),5nat,0nat)==seq![190u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[0]==193u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[1]==13u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[2]==84u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[4]==235u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[5]==247u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[6]==221u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_0(),2nat),seq![193u8,13u8,84u8,255u8,235u8,247u8,221u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),5nat,0nat)==seq![193u8,13u8,84u8,255u8,235u8,247u8,221u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_4x4(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_4x4()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_4x4(),6nat,1nat,1nat)==seq![69u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_4x4(),6nat,1nat,1nat,1nat)==Some(seq![190u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![69u8],Some(seq![190u8]),1nat,seq![3u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![69u8],Some(seq![190u8]),1nat,seq![3u8]);
+    assert(r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),5nat,1nat)==seq![3u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[0]==154u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[1]==62u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[2]==40u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[4]==34u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[5]==148u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[6]==250u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_5_1(),2nat),seq![154u8,62u8,40u8,255u8,34u8,148u8,250u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),5nat,1nat)==seq![154u8,62u8,40u8,255u8,34u8,148u8,250u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),5nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_4x4_6_0() -> Seq<u8> {seq![99u8,86u8]}
+spec fn e6_a7_line_interlace_ct3_d4_4x4_6_1() -> Seq<u8> {seq![39u8,108u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_4x4_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),6nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),6nat,y),
+{
+    hide(raw_interlace_ct3_d4_4x4);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),6nat)==4nat && r::ph(a_interlace_ct3_d4_4x4(),6nat)==2nat && r::base(a_interlace_ct3_d4_4x4(),6nat)==10nat && r::rb(a_interlace_ct3_d4_4x4(),6nat)==2nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_4x4()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_4x4(),10nat,2nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_4x4()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_4x4(),10nat,2nat,0nat)==seq![99u8,86u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_4x4(),10nat,2nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![99u8,86u8],None,1nat,seq![99u8,86u8],0,2nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![99u8,86u8],None,1nat,seq![99u8,86u8]);
+    assert(r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),6nat,0nat)==seq![99u8,86u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[0]==70u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[1]==219u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[2]==142u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[4]==34u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[5]==148u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[6]==250u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[8]==235u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[9]==20u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[10]==153u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[12]==70u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[13]==219u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[14]==142u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat)[15]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_0(),4nat),seq![70u8,219u8,142u8,255u8,34u8,148u8,250u8,255u8,235u8,20u8,153u8,255u8,70u8,219u8,142u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),6nat,0nat)==seq![70u8,219u8,142u8,255u8,34u8,148u8,250u8,255u8,235u8,20u8,153u8,255u8,70u8,219u8,142u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_4x4(),10nat,2nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_4x4()[13]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_4x4(),10nat,2nat,1nat)==seq![39u8,69u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_4x4(),10nat,2nat,1nat,1nat)==Some(seq![99u8,86u8]));
+    assert(crate::filter_model::encoded_row(1u8,seq![39u8,69u8],Some(seq![99u8,86u8]),1nat,seq![39u8,108u8],0,2nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![39u8,69u8],Some(seq![99u8,86u8]),1nat,seq![39u8,108u8]);
+    assert(r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),6nat,1nat)==seq![39u8,108u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[0]==94u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[1]==104u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[2]==241u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[4]==44u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[5]==135u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[6]==68u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[8]==70u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[9]==219u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[10]==142u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[12]==197u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[13]==59u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[14]==212u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat)[15]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),e6_a7_line_interlace_ct3_d4_4x4_6_1(),4nat),seq![94u8,104u8,241u8,255u8,44u8,135u8,68u8,255u8,70u8,219u8,142u8,255u8,197u8,59u8,212u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),6nat,1nat)==seq![94u8,104u8,241u8,255u8,44u8,135u8,68u8,255u8,70u8,219u8,142u8,255u8,197u8,59u8,212u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),6nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_4x4()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_4x4()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_4x4(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_4x4);hide(z_interlace_ct3_d4_4x4);hide(raw_interlace_ct3_d4_4x4);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_4x4().len()==141nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_4x4())==Ok((crate::model::Ihdr {width:4u32,height:4u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_4x4())==Ok((crate::model::Ihdr {width:4u32,height:4u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_4x4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_4x4(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_4x4(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:24nat,next:129nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_4x4(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:24nat,next:129nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_4x4(),129nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:137nat,len:0nat,next:141nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_4x4(),129nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:137nat,len:0nat,next:141nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_4x4().subrange(101,125)==z_interlace_ct3_d4_4x4()) by (compute);
+    walk_interlace_ct3_d4_4x4(bytes_interlace_ct3_d4_4x4());
+
+    model_interlace_ct3_d4_4x4();inflate_interlace_ct3_d4_4x4();scan_interlace_ct3_d4_4x4();
+    assert(bytes_interlace_ct3_d4_4x4()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_4x4()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_4x4())==16nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_4x4().subrange(41,89)==seq![154u8,62u8,40u8,122u8,148u8,201u8,94u8,104u8,241u8,34u8,148u8,250u8,101u8,127u8,11u8,235u8,20u8,153u8,70u8,219u8,142u8,44u8,135u8,68u8,215u8,177u8,205u8,225u8,240u8,138u8,16u8,249u8,75u8,193u8,13u8,84u8,197u8,59u8,212u8,181u8,168u8,32u8,235u8,247u8,221u8,159u8,115u8,37u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_4x4(),h_interlace_ct3_d4_4x4(),24nat);
+    e6_a7_pass_interlace_ct3_d4_4x4_0();
+    e6_a7_pass_interlace_ct3_d4_4x4_3();
+    e6_a7_pass_interlace_ct3_d4_4x4_4();
+    e6_a7_pass_interlace_ct3_d4_4x4_5();
+    e6_a7_pass_interlace_ct3_d4_4x4_6();
+    assert(r::count(a_interlace_ct3_d4_4x4())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_4x4()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4().len()==64nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),0nat)==1nat && r::ph(a_interlace_ct3_d4_4x4(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),1nat)==0nat && r::ph(a_interlace_ct3_d4_4x4(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),2nat)==1nat && r::ph(a_interlace_ct3_d4_4x4(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),3nat)==1nat && r::ph(a_interlace_ct3_d4_4x4(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),4nat)==2nat && r::ph(a_interlace_ct3_d4_4x4(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),5nat)==2nat && r::ph(a_interlace_ct3_d4_4x4(),5nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_4x4(),6nat)==4nat && r::ph(a_interlace_ct3_d4_4x4(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_4x4(),k)>0 && y<r::ph(a_interlace_ct3_d4_4x4(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_4x4(),r::line(raw_interlace_ct3_d4_4x4(),a_interlace_ct3_d4_4x4(),k,y),r::pw(a_interlace_ct3_d4_4x4(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_4x4(),h_interlace_ct3_d4_4x4(),z_interlace_ct3_d4_4x4(),raw_interlace_ct3_d4_4x4(),16nat,e6_a7_colour_interlace_ct3_d4_4x4(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_4x4());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_5x5() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_0_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x5_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),0nat)==1nat && r::ph(a_interlace_ct0_d1_5x5(),0nat)==1nat && r::base(a_interlace_ct0_d1_5x5(),0nat)==0nat && r::rb(a_interlace_ct0_d1_5x5(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x5()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),0nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),0nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_0_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_0_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_0_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_0_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),0nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_1_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x5_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),1nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),1nat)==1nat && r::ph(a_interlace_ct0_d1_5x5(),1nat)==1nat && r::base(a_interlace_ct0_d1_5x5(),1nat)==2nat && r::rb(a_interlace_ct0_d1_5x5(),1nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x5()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),1nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_1_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_1_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_1_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_1_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_1_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),1nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_2_0() -> Seq<u8> {seq![192u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x5_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),2nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),2nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),2nat)==2nat && r::ph(a_interlace_ct0_d1_5x5(),2nat)==1nat && r::base(a_interlace_ct0_d1_5x5(),2nat)==4nat && r::rb(a_interlace_ct0_d1_5x5(),2nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x5()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),4nat,1nat,0nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![192u8],None,1nat,seq![192u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![192u8],None,1nat,seq![192u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),2nat,0nat)==seq![192u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_2_0(),2nat),seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),2nat,0nat)==seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),2nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_3_0() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_3_1() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x5_3()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),3nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),3nat)==1nat && r::ph(a_interlace_ct0_d1_5x5(),3nat)==2nat && r::base(a_interlace_ct0_d1_5x5(),3nat)==6nat && r::rb(a_interlace_ct0_d1_5x5(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x5()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),6nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),3nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),3nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_5x5()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),6nat,1nat,1nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),6nat,1nat,1nat,1nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![128u8],Some(seq![128u8]),1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![128u8],Some(seq![128u8]),1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),3nat,1nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_1(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_1(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_1(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_3_1(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),3nat,1nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),3nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_4_0() -> Seq<u8> {seq![160u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x5_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),4nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),4nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),4nat)==3nat && r::ph(a_interlace_ct0_d1_5x5(),4nat)==1nat && r::base(a_interlace_ct0_d1_5x5(),4nat)==10nat && r::rb(a_interlace_ct0_d1_5x5(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),10nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x5()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),10nat,1nat,0nat)==seq![160u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),10nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![160u8],None,1nat,seq![160u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![160u8],None,1nat,seq![160u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),4nat,0nat)==seq![160u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[8]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[9]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[10]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat)[11]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_4_0(),3nat),seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),4nat,0nat)==seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),4nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_5_0() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_5_1() -> Seq<u8> {seq![64u8]}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_5_2() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x5_5()
+    ensures forall|y: nat| y<3 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),5nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),5nat)==2nat && r::ph(a_interlace_ct0_d1_5x5(),5nat)==3nat && r::base(a_interlace_ct0_d1_5x5(),5nat)==12nat && r::rb(a_interlace_ct0_d1_5x5(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),12nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x5()[12]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),12nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),12nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),5nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_0(),2nat),seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),5nat,0nat)==seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),12nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_5x5()[14]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),12nat,1nat,1nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),12nat,1nat,1nat,1nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(2u8,seq![192u8],Some(seq![128u8]),1nat,seq![64u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![192u8],Some(seq![128u8]),1nat,seq![64u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),5nat,1nat)==seq![64u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_1(),2nat),seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),5nat,1nat)==seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),12nat,1nat,1nat,2nat);
+    assert(raw_interlace_ct0_d1_5x5()[16]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),12nat,1nat,2nat)==seq![224u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),12nat,1nat,1nat,2nat)==Some(seq![64u8]));
+    assert(crate::filter_model::encoded_row(3u8,seq![224u8],Some(seq![64u8]),1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![224u8],Some(seq![64u8]),1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),5nat,2nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_5_2(),2nat),seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),5nat,2nat)==seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<3 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),5nat,y) by {
+        if y==0 {} else if y==1 {} else {assert(y==2);}
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_6_0() -> Seq<u8> {seq![216u8]}
+spec fn e6_a7_line_interlace_ct0_d1_5x5_6_1() -> Seq<u8> {seq![24u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_5x5_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),6nat,y),5nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),6nat,y),
+{
+    hide(raw_interlace_ct0_d1_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),6nat)==5nat && r::ph(a_interlace_ct0_d1_5x5(),6nat)==2nat && r::base(a_interlace_ct0_d1_5x5(),6nat)==18nat && r::rb(a_interlace_ct0_d1_5x5(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),18nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_5x5()[18]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),18nat,1nat,0nat)==seq![216u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),18nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(4u8,seq![216u8],None,1nat,seq![216u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![216u8],None,1nat,seq![216u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),6nat,0nat)==seq![216u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[8]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[9]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[10]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[12]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[13]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[14]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[15]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[16]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[17]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[18]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat)[19]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_0(),5nat),seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),6nat,0nat)==seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_5x5(),18nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_5x5()[20]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_5x5(),18nat,1nat,1nat)==seq![24u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_5x5(),18nat,1nat,1nat,1nat)==Some(seq![216u8]));
+    assert(crate::filter_model::encoded_row(0u8,seq![24u8],Some(seq![216u8]),1nat,seq![24u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![24u8],Some(seq![216u8]),1nat,seq![24u8]);
+    assert(r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),6nat,1nat)==seq![24u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[8]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[9]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[10]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[12]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[13]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[14]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[15]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[16]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[17]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[18]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat)[19]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),e6_a7_line_interlace_ct0_d1_5x5_6_1(),5nat),seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),6nat,1nat)==seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),6nat,y),5nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_5x5()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_5x5()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_5x5(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_5x5);hide(z_interlace_ct0_d1_5x5);hide(raw_interlace_ct0_d1_5x5);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_5x5().len()==84nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_5x5())==Ok((crate::model::Ihdr {width:5u32,height:5u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_5x5())==Ok((crate::model::Ihdr {width:5u32,height:5u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_5x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:27nat,next:72nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_5x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:27nat,next:72nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_5x5(),72nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:80nat,len:0nat,next:84nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_5x5(),72nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:80nat,len:0nat,next:84nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_5x5().subrange(41,68)==z_interlace_ct0_d1_5x5()) by (compute);
+    walk_interlace_ct0_d1_5x5(bytes_interlace_ct0_d1_5x5());
+
+    model_interlace_ct0_d1_5x5();inflate_interlace_ct0_d1_5x5();scan_interlace_ct0_d1_5x5();
+    assert(bytes_interlace_ct0_d1_5x5()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_5x5()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_5x5())==22nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_5x5(),h_interlace_ct0_d1_5x5(),27nat);
+    e6_a7_pass_interlace_ct0_d1_5x5_0();
+    e6_a7_pass_interlace_ct0_d1_5x5_1();
+    e6_a7_pass_interlace_ct0_d1_5x5_2();
+    e6_a7_pass_interlace_ct0_d1_5x5_3();
+    e6_a7_pass_interlace_ct0_d1_5x5_4();
+    e6_a7_pass_interlace_ct0_d1_5x5_5();
+    e6_a7_pass_interlace_ct0_d1_5x5_6();
+    assert(r::count(a_interlace_ct0_d1_5x5())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_5x5()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5().len()==100nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),0nat)==1nat && r::ph(a_interlace_ct0_d1_5x5(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),1nat)==1nat && r::ph(a_interlace_ct0_d1_5x5(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),2nat)==2nat && r::ph(a_interlace_ct0_d1_5x5(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),3nat)==1nat && r::ph(a_interlace_ct0_d1_5x5(),3nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),4nat)==3nat && r::ph(a_interlace_ct0_d1_5x5(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),5nat)==2nat && r::ph(a_interlace_ct0_d1_5x5(),5nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_5x5(),6nat)==5nat && r::ph(a_interlace_ct0_d1_5x5(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_5x5(),k)>0 && y<r::ph(a_interlace_ct0_d1_5x5(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_5x5(),r::line(raw_interlace_ct0_d1_5x5(),a_interlace_ct0_d1_5x5(),k,y),r::pw(a_interlace_ct0_d1_5x5(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_5x5(),h_interlace_ct0_d1_5x5(),z_interlace_ct0_d1_5x5(),raw_interlace_ct0_d1_5x5(),0nat,e6_a7_colour_interlace_ct0_d1_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_5x5());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_5x5() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_0_0() -> Seq<u8> {seq![116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x5_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),0nat)==1nat && r::ph(a_interlace_ct6_d16_5x5(),0nat)==1nat && r::base(a_interlace_ct6_d16_5x5(),0nat)==0nat && r::rb(a_interlace_ct6_d16_5x5(),0nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),0nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x5()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),0nat,8nat,0nat)==seq![116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),0nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8],None,8nat,seq![116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8],None,8nat,seq![116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),0nat,0nat)==seq![116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_0_0(),1nat)[0]==117u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_0_0(),1nat)[1]==191u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_0_0(),1nat)[2]==137u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_0_0(),1nat)[3]==242u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_0_0(),1nat),seq![117u8,191u8,137u8,242u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),0nat,0nat)==seq![117u8,191u8,137u8,242u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_1_0() -> Seq<u8> {seq![20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x5_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),1nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),1nat)==1nat && r::ph(a_interlace_ct6_d16_5x5(),1nat)==1nat && r::base(a_interlace_ct6_d16_5x5(),1nat)==9nat && r::rb(a_interlace_ct6_d16_5x5(),1nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),9nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x5()[9]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),9nat,8nat,0nat)==seq![20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),9nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8],None,8nat,seq![20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8],None,8nat,seq![20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),1nat,0nat)==seq![20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_1_0(),1nat)[0]==20u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_1_0(),1nat)[1]==201u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_1_0(),1nat)[2]==62u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_1_0(),1nat)[3]==123u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_1_0(),1nat),seq![20u8,201u8,62u8,123u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),1nat,0nat)==seq![20u8,201u8,62u8,123u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_2_0() -> Seq<u8> {seq![62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x5_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),2nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),2nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),2nat)==2nat && r::ph(a_interlace_ct6_d16_5x5(),2nat)==1nat && r::base(a_interlace_ct6_d16_5x5(),2nat)==18nat && r::rb(a_interlace_ct6_d16_5x5(),2nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),18nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x5()[18]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),18nat,16nat,0nat)==seq![62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),18nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8],None,8nat,seq![62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8],None,8nat,seq![62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),2nat,0nat)==seq![62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[0]==62u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[1]==23u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[2]==4u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[3]==172u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[4]==237u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[5]==100u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[6]==226u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat)[7]==17u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_2_0(),2nat),seq![62u8,23u8,4u8,172u8,237u8,100u8,226u8,17u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),2nat,0nat)==seq![62u8,23u8,4u8,172u8,237u8,100u8,226u8,17u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),2nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_3_0() -> Seq<u8> {seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8]}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_3_1() -> Seq<u8> {seq![164u8,112u8,90u8,102u8,173u8,10u8,244u8,178u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x5_3()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),3nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),3nat)==1nat && r::ph(a_interlace_ct6_d16_5x5(),3nat)==2nat && r::base(a_interlace_ct6_d16_5x5(),3nat)==35nat && r::rb(a_interlace_ct6_d16_5x5(),3nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),35nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x5()[35]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),35nat,8nat,0nat)==seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),35nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8],None,8nat,seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8],None,8nat,seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),3nat,0nat)==seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_0(),1nat)[0]==246u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_0(),1nat)[1]==132u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_0(),1nat)[2]==64u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_0(),1nat)[3]==166u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_0(),1nat),seq![246u8,132u8,64u8,166u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),3nat,0nat)==seq![246u8,132u8,64u8,166u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),35nat,8nat,8nat,1nat);
+    assert(raw_interlace_ct6_d16_5x5()[44]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),35nat,8nat,1nat)==seq![174u8,211u8,214u8,34u8,110u8,53u8,78u8,212u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),35nat,8nat,8nat,1nat)==Some(seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![174u8,211u8,214u8,34u8,110u8,53u8,78u8,212u8],Some(seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8]),8nat,seq![164u8,112u8,90u8,102u8,173u8,10u8,244u8,178u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![174u8,211u8,214u8,34u8,110u8,53u8,78u8,212u8],Some(seq![246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8]),8nat,seq![164u8,112u8,90u8,102u8,173u8,10u8,244u8,178u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),3nat,1nat)==seq![164u8,112u8,90u8,102u8,173u8,10u8,244u8,178u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_1(),1nat)[0]==164u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_1(),1nat)[1]==90u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_1(),1nat)[2]==172u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_1(),1nat)[3]==244u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_3_1(),1nat),seq![164u8,90u8,172u8,244u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),3nat,1nat)==seq![164u8,90u8,172u8,244u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),3nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_4_0() -> Seq<u8> {seq![112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x5_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),4nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),4nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),4nat)==3nat && r::ph(a_interlace_ct6_d16_5x5(),4nat)==1nat && r::base(a_interlace_ct6_d16_5x5(),4nat)==53nat && r::rb(a_interlace_ct6_d16_5x5(),4nat)==24nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),53nat,24nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x5()[53]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),53nat,24nat,0nat)==seq![112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),53nat,24nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8],None,8nat,seq![112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8],0,24nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8],None,8nat,seq![112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),4nat,0nat)==seq![112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[0]==112u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[1]==100u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[2]==68u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[3]==24u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[4]==213u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[5]==169u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[6]==243u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[7]==83u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[8]==49u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[9]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[10]==20u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat)[11]==191u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_4_0(),3nat),seq![112u8,100u8,68u8,24u8,213u8,169u8,243u8,83u8,49u8,139u8,20u8,191u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),4nat,0nat)==seq![112u8,100u8,68u8,24u8,213u8,169u8,243u8,83u8,49u8,139u8,20u8,191u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),4nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_5_0() -> Seq<u8> {seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,103u8,35u8,65u8,77u8,209u8,23u8,134u8,242u8]}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_5_1() -> Seq<u8> {seq![75u8,149u8,205u8,83u8,99u8,21u8,130u8,101u8,27u8,245u8,21u8,108u8,162u8,145u8,103u8,84u8]}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_5_2() -> Seq<u8> {seq![22u8,128u8,126u8,215u8,222u8,100u8,184u8,122u8,70u8,42u8,255u8,207u8,13u8,28u8,188u8,0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x5_5()
+    ensures forall|y: nat| y<3 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),5nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),5nat)==2nat && r::ph(a_interlace_ct6_d16_5x5(),5nat)==3nat && r::base(a_interlace_ct6_d16_5x5(),5nat)==78nat && r::rb(a_interlace_ct6_d16_5x5(),5nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),78nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x5()[78]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),78nat,16nat,0nat)==seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,224u8,198u8,179u8,90u8,109u8,81u8,214u8,188u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),78nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,224u8,198u8,179u8,90u8,109u8,81u8,214u8,188u8],None,8nat,seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,103u8,35u8,65u8,77u8,209u8,23u8,134u8,242u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,224u8,198u8,179u8,90u8,109u8,81u8,214u8,188u8],None,8nat,seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,103u8,35u8,65u8,77u8,209u8,23u8,134u8,242u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),5nat,0nat)==seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,103u8,35u8,65u8,77u8,209u8,23u8,134u8,242u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[0]==135u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[1]==142u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[2]==100u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[3]==176u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[4]==103u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[5]==65u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[6]==208u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat)[7]==134u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_0(),2nat),seq![135u8,142u8,100u8,176u8,103u8,65u8,208u8,134u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),5nat,0nat)==seq![135u8,142u8,100u8,176u8,103u8,65u8,208u8,134u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),78nat,16nat,8nat,1nat);
+    assert(raw_interlace_ct6_d16_5x5()[95]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),78nat,16nat,1nat)==seq![196u8,56u8,63u8,96u8,255u8,79u8,210u8,47u8,180u8,210u8,212u8,31u8,209u8,122u8,225u8,98u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),78nat,16nat,8nat,1nat)==Some(seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,103u8,35u8,65u8,77u8,209u8,23u8,134u8,242u8]));
+    assert(crate::filter_model::encoded_row(2u8,seq![196u8,56u8,63u8,96u8,255u8,79u8,210u8,47u8,180u8,210u8,212u8,31u8,209u8,122u8,225u8,98u8],Some(seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,103u8,35u8,65u8,77u8,209u8,23u8,134u8,242u8]),8nat,seq![75u8,149u8,205u8,83u8,99u8,21u8,130u8,101u8,27u8,245u8,21u8,108u8,162u8,145u8,103u8,84u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![196u8,56u8,63u8,96u8,255u8,79u8,210u8,47u8,180u8,210u8,212u8,31u8,209u8,122u8,225u8,98u8],Some(seq![135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,103u8,35u8,65u8,77u8,209u8,23u8,134u8,242u8]),8nat,seq![75u8,149u8,205u8,83u8,99u8,21u8,130u8,101u8,27u8,245u8,21u8,108u8,162u8,145u8,103u8,84u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),5nat,1nat)==seq![75u8,149u8,205u8,83u8,99u8,21u8,130u8,101u8,27u8,245u8,21u8,108u8,162u8,145u8,103u8,84u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[0]==75u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[1]==205u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[2]==99u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[3]==130u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[4]==28u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[5]==21u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[6]==162u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat)[7]==103u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_1(),2nat),seq![75u8,205u8,99u8,130u8,28u8,21u8,162u8,103u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),5nat,1nat)==seq![75u8,205u8,99u8,130u8,28u8,21u8,162u8,103u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),78nat,16nat,8nat,2nat);
+    assert(raw_interlace_ct6_d16_5x5()[112]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),78nat,16nat,2nat)==seq![241u8,54u8,24u8,174u8,173u8,90u8,119u8,72u8,46u8,112u8,182u8,46u8,77u8,162u8,45u8,153u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),78nat,16nat,8nat,2nat)==Some(seq![75u8,149u8,205u8,83u8,99u8,21u8,130u8,101u8,27u8,245u8,21u8,108u8,162u8,145u8,103u8,84u8]));
+    assert(crate::filter_model::encoded_row(3u8,seq![241u8,54u8,24u8,174u8,173u8,90u8,119u8,72u8,46u8,112u8,182u8,46u8,77u8,162u8,45u8,153u8],Some(seq![75u8,149u8,205u8,83u8,99u8,21u8,130u8,101u8,27u8,245u8,21u8,108u8,162u8,145u8,103u8,84u8]),8nat,seq![22u8,128u8,126u8,215u8,222u8,100u8,184u8,122u8,70u8,42u8,255u8,207u8,13u8,28u8,188u8,0u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![241u8,54u8,24u8,174u8,173u8,90u8,119u8,72u8,46u8,112u8,182u8,46u8,77u8,162u8,45u8,153u8],Some(seq![75u8,149u8,205u8,83u8,99u8,21u8,130u8,101u8,27u8,245u8,21u8,108u8,162u8,145u8,103u8,84u8]),8nat,seq![22u8,128u8,126u8,215u8,222u8,100u8,184u8,122u8,70u8,42u8,255u8,207u8,13u8,28u8,188u8,0u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),5nat,2nat)==seq![22u8,128u8,126u8,215u8,222u8,100u8,184u8,122u8,70u8,42u8,255u8,207u8,13u8,28u8,188u8,0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[0]==22u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[1]==126u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[2]==222u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[3]==184u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[4]==70u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[6]==13u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat)[7]==187u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_5_2(),2nat),seq![22u8,126u8,222u8,184u8,70u8,255u8,13u8,187u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),5nat,2nat)==seq![22u8,126u8,222u8,184u8,70u8,255u8,13u8,187u8]) by (compute);
+    assert forall|y: nat| y<3 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),5nat,y) by {
+        if y==0 {} else if y==1 {} else {assert(y==2);}
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_6_0() -> Seq<u8> {seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,45u8,66u8,79u8,176u8,212u8,15u8,191u8,97u8,111u8,61u8,174u8,253u8,250u8,60u8,203u8,178u8,198u8,11u8,42u8,51u8,78u8,71u8,224u8,107u8,172u8,78u8,160u8,75u8,112u8,203u8,46u8,158u8]}
+spec fn e6_a7_line_interlace_ct6_d16_5x5_6_1() -> Seq<u8> {seq![56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_5x5_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),6nat,y),5nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),6nat,y),
+{
+    hide(raw_interlace_ct6_d16_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),6nat)==5nat && r::ph(a_interlace_ct6_d16_5x5(),6nat)==2nat && r::base(a_interlace_ct6_d16_5x5(),6nat)==129nat && r::rb(a_interlace_ct6_d16_5x5(),6nat)==40nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_5x5()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),129nat,40nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_5x5()[129]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),129nat,40nat,0nat)==seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,187u8,238u8,237u8,39u8,25u8,8u8,37u8,233u8,66u8,251u8,95u8,77u8,38u8,45u8,12u8,81u8,87u8,206u8,124u8,54u8,84u8,11u8,21u8,185u8,230u8,67u8,118u8,24u8,34u8,132u8,78u8,51u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),129nat,40nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(4u8,seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,187u8,238u8,237u8,39u8,25u8,8u8,37u8,233u8,66u8,251u8,95u8,77u8,38u8,45u8,12u8,81u8,87u8,206u8,124u8,54u8,84u8,11u8,21u8,185u8,230u8,67u8,118u8,24u8,34u8,132u8,78u8,51u8],None,8nat,seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,45u8,66u8,79u8,176u8,212u8,15u8,191u8,97u8,111u8,61u8,174u8,253u8,250u8,60u8,203u8,178u8,198u8,11u8,42u8,51u8,78u8,71u8,224u8,107u8,172u8,78u8,160u8,75u8,112u8,203u8,46u8,158u8],0,40nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,187u8,238u8,237u8,39u8,25u8,8u8,37u8,233u8,66u8,251u8,95u8,77u8,38u8,45u8,12u8,81u8,87u8,206u8,124u8,54u8,84u8,11u8,21u8,185u8,230u8,67u8,118u8,24u8,34u8,132u8,78u8,51u8],None,8nat,seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,45u8,66u8,79u8,176u8,212u8,15u8,191u8,97u8,111u8,61u8,174u8,253u8,250u8,60u8,203u8,178u8,198u8,11u8,42u8,51u8,78u8,71u8,224u8,107u8,172u8,78u8,160u8,75u8,112u8,203u8,46u8,158u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),6nat,0nat)==seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,45u8,66u8,79u8,176u8,212u8,15u8,191u8,97u8,111u8,61u8,174u8,253u8,250u8,60u8,203u8,178u8,198u8,11u8,42u8,51u8,78u8,71u8,224u8,107u8,172u8,78u8,160u8,75u8,112u8,203u8,46u8,158u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[0]==114u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[1]==98u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[2]==186u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[3]==154u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[4]==45u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[5]==79u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[6]==211u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[7]==191u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[8]==111u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[9]==174u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[10]==249u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[11]==203u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[12]==197u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[13]==42u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[14]==78u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[15]==224u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[16]==172u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[17]==160u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[18]==112u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat)[19]==46u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_0(),5nat),seq![114u8,98u8,186u8,154u8,45u8,79u8,211u8,191u8,111u8,174u8,249u8,203u8,197u8,42u8,78u8,224u8,172u8,160u8,112u8,46u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),6nat,0nat)==seq![114u8,98u8,186u8,154u8,45u8,79u8,211u8,191u8,111u8,174u8,249u8,203u8,197u8,42u8,78u8,224u8,172u8,160u8,112u8,46u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_5x5(),129nat,40nat,8nat,1nat);
+    assert(raw_interlace_ct6_d16_5x5()[170]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_5x5(),129nat,40nat,1nat)==seq![56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_5x5(),129nat,40nat,8nat,1nat)==Some(seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,45u8,66u8,79u8,176u8,212u8,15u8,191u8,97u8,111u8,61u8,174u8,253u8,250u8,60u8,203u8,178u8,198u8,11u8,42u8,51u8,78u8,71u8,224u8,107u8,172u8,78u8,160u8,75u8,112u8,203u8,46u8,158u8]));
+    assert(crate::filter_model::encoded_row(0u8,seq![56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8],Some(seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,45u8,66u8,79u8,176u8,212u8,15u8,191u8,97u8,111u8,61u8,174u8,253u8,250u8,60u8,203u8,178u8,198u8,11u8,42u8,51u8,78u8,71u8,224u8,107u8,172u8,78u8,160u8,75u8,112u8,203u8,46u8,158u8]),8nat,seq![56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8],0,40nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8],Some(seq![114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,45u8,66u8,79u8,176u8,212u8,15u8,191u8,97u8,111u8,61u8,174u8,253u8,250u8,60u8,203u8,178u8,198u8,11u8,42u8,51u8,78u8,71u8,224u8,107u8,172u8,78u8,160u8,75u8,112u8,203u8,46u8,158u8]),8nat,seq![56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8]);
+    assert(r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),6nat,1nat)==seq![56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[0]==56u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[1]==123u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[2]==36u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[3]==236u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[4]==163u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[5]==51u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[6]==48u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[7]==110u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[8]==170u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[9]==73u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[10]==248u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[11]==222u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[12]==253u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[13]==220u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[14]==101u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[15]==41u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[16]==33u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[17]==79u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[18]==106u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat)[19]==158u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),e6_a7_line_interlace_ct6_d16_5x5_6_1(),5nat),seq![56u8,123u8,36u8,236u8,163u8,51u8,48u8,110u8,170u8,73u8,248u8,222u8,253u8,220u8,101u8,41u8,33u8,79u8,106u8,158u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),6nat,1nat)==seq![56u8,123u8,36u8,236u8,163u8,51u8,48u8,110u8,170u8,73u8,248u8,222u8,253u8,220u8,101u8,41u8,33u8,79u8,106u8,158u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),6nat,y),5nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_5x5()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_5x5()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_5x5(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_5x5);hide(z_interlace_ct6_d16_5x5);hide(raw_interlace_ct6_d16_5x5);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_5x5().len()==279nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_5x5())==Ok((crate::model::Ihdr {width:5u32,height:5u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_5x5())==Ok((crate::model::Ihdr {width:5u32,height:5u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_5x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:222nat,next:267nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_5x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:222nat,next:267nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_5x5(),267nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:275nat,len:0nat,next:279nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_5x5(),267nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:275nat,len:0nat,next:279nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_5x5().subrange(41,263)==z_interlace_ct6_d16_5x5()) by (compute);
+    walk_interlace_ct6_d16_5x5(bytes_interlace_ct6_d16_5x5());
+
+    model_interlace_ct6_d16_5x5();inflate_interlace_ct6_d16_5x5();scan_interlace_ct6_d16_5x5();
+    assert(bytes_interlace_ct6_d16_5x5()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_5x5()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_5x5())==211nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_5x5(),h_interlace_ct6_d16_5x5(),222nat);
+    e6_a7_pass_interlace_ct6_d16_5x5_0();
+    e6_a7_pass_interlace_ct6_d16_5x5_1();
+    e6_a7_pass_interlace_ct6_d16_5x5_2();
+    e6_a7_pass_interlace_ct6_d16_5x5_3();
+    e6_a7_pass_interlace_ct6_d16_5x5_4();
+    e6_a7_pass_interlace_ct6_d16_5x5_5();
+    e6_a7_pass_interlace_ct6_d16_5x5_6();
+    assert(r::count(a_interlace_ct6_d16_5x5())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_5x5()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5().len()==100nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),0nat)==1nat && r::ph(a_interlace_ct6_d16_5x5(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),1nat)==1nat && r::ph(a_interlace_ct6_d16_5x5(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),2nat)==2nat && r::ph(a_interlace_ct6_d16_5x5(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),3nat)==1nat && r::ph(a_interlace_ct6_d16_5x5(),3nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),4nat)==3nat && r::ph(a_interlace_ct6_d16_5x5(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),5nat)==2nat && r::ph(a_interlace_ct6_d16_5x5(),5nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_5x5(),6nat)==5nat && r::ph(a_interlace_ct6_d16_5x5(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_5x5(),k)>0 && y<r::ph(a_interlace_ct6_d16_5x5(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_5x5(),r::line(raw_interlace_ct6_d16_5x5(),a_interlace_ct6_d16_5x5(),k,y),r::pw(a_interlace_ct6_d16_5x5(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_5x5(),h_interlace_ct6_d16_5x5(),z_interlace_ct6_d16_5x5(),raw_interlace_ct6_d16_5x5(),0nat,e6_a7_colour_interlace_ct6_d16_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_5x5());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_5x5() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![36u8,232u8,239u8,139u8,215u8,250u8,206u8,180u8,111u8,198u8,225u8,23u8,232u8,97u8,47u8,183u8,158u8,121u8,241u8,229u8,45u8,213u8,146u8,231u8,43u8,40u8,106u8,227u8,168u8,135u8,172u8,74u8,202u8,154u8,237u8,172u8,109u8,123u8,83u8,124u8,229u8,54u8,33u8,54u8,151u8,173u8,202u8,100u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_0_0() -> Seq<u8> {seq![176u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x5_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),0nat)==1nat && r::ph(a_interlace_ct3_d4_5x5(),0nat)==1nat && r::base(a_interlace_ct3_d4_5x5(),0nat)==0nat && r::rb(a_interlace_ct3_d4_5x5(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x5()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),0nat,1nat,0nat)==seq![176u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![176u8],None,1nat,seq![176u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![176u8],None,1nat,seq![176u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),0nat,0nat)==seq![176u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_0_0(),1nat)[0]==154u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_0_0(),1nat)[1]==237u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_0_0(),1nat)[2]==172u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_0_0(),1nat),seq![154u8,237u8,172u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),0nat,0nat)==seq![154u8,237u8,172u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_1_0() -> Seq<u8> {seq![112u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x5_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),1nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),1nat)==1nat && r::ph(a_interlace_ct3_d4_5x5(),1nat)==1nat && r::base(a_interlace_ct3_d4_5x5(),1nat)==2nat && r::rb(a_interlace_ct3_d4_5x5(),1nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x5()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),2nat,1nat,0nat)==seq![112u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![112u8],None,1nat,seq![112u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![112u8],None,1nat,seq![112u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),1nat,0nat)==seq![112u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_1_0(),1nat)[0]==213u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_1_0(),1nat)[1]==146u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_1_0(),1nat)[2]==231u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_1_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_1_0(),1nat),seq![213u8,146u8,231u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),1nat,0nat)==seq![213u8,146u8,231u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_2_0() -> Seq<u8> {seq![44u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x5_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),2nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),2nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),2nat)==2nat && r::ph(a_interlace_ct3_d4_5x5(),2nat)==1nat && r::base(a_interlace_ct3_d4_5x5(),2nat)==4nat && r::rb(a_interlace_ct3_d4_5x5(),2nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x5()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),4nat,1nat,0nat)==seq![44u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![44u8],None,1nat,seq![44u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![44u8],None,1nat,seq![44u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),2nat,0nat)==seq![44u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[0]==206u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[1]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[2]==111u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[4]==109u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[5]==123u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[6]==83u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_2_0(),2nat),seq![206u8,180u8,111u8,255u8,109u8,123u8,83u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),2nat,0nat)==seq![206u8,180u8,111u8,255u8,109u8,123u8,83u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),2nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_3_0() -> Seq<u8> {seq![32u8]}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_3_1() -> Seq<u8> {seq![224u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x5_3()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),3nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),3nat)==1nat && r::ph(a_interlace_ct3_d4_5x5(),3nat)==2nat && r::base(a_interlace_ct3_d4_5x5(),3nat)==6nat && r::rb(a_interlace_ct3_d4_5x5(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x5()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),6nat,1nat,0nat)==seq![32u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![32u8],None,1nat,seq![32u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![32u8],None,1nat,seq![32u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),3nat,0nat)==seq![32u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_0(),1nat)[0]==206u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_0(),1nat)[1]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_0(),1nat)[2]==111u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_0(),1nat),seq![206u8,180u8,111u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),3nat,0nat)==seq![206u8,180u8,111u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_5x5()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),6nat,1nat,1nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),6nat,1nat,1nat,1nat)==Some(seq![32u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![192u8],Some(seq![32u8]),1nat,seq![224u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![192u8],Some(seq![32u8]),1nat,seq![224u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),3nat,1nat)==seq![224u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_1(),1nat)[0]==33u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_1(),1nat)[1]==54u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_1(),1nat)[2]==151u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_3_1(),1nat),seq![33u8,54u8,151u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),3nat,1nat)==seq![33u8,54u8,151u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),3nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),3nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_4_0() -> Seq<u8> {seq![82u8,96u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x5_4()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),4nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),4nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),4nat)==3nat && r::ph(a_interlace_ct3_d4_5x5(),4nat)==1nat && r::base(a_interlace_ct3_d4_5x5(),4nat)==10nat && r::rb(a_interlace_ct3_d4_5x5(),4nat)==2nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),10nat,2nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x5()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),10nat,2nat,0nat)==seq![82u8,96u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),10nat,2nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![82u8,96u8],None,1nat,seq![82u8,96u8],0,2nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![82u8,96u8],None,1nat,seq![82u8,96u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),4nat,0nat)==seq![82u8,96u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[0]==183u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[1]==158u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[2]==121u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[4]==206u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[5]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[6]==111u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[8]==241u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[9]==229u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[10]==45u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat)[11]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_4_0(),3nat),seq![183u8,158u8,121u8,255u8,206u8,180u8,111u8,255u8,241u8,229u8,45u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),4nat,0nat)==seq![183u8,158u8,121u8,255u8,206u8,180u8,111u8,255u8,241u8,229u8,45u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),4nat,y),3nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),4nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_5_0() -> Seq<u8> {seq![37u8]}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_5_1() -> Seq<u8> {seq![242u8]}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_5_2() -> Seq<u8> {seq![113u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x5_5()
+    ensures forall|y: nat| y<3 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),5nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),5nat)==2nat && r::ph(a_interlace_ct3_d4_5x5(),5nat)==3nat && r::base(a_interlace_ct3_d4_5x5(),5nat)==13nat && r::rb(a_interlace_ct3_d4_5x5(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),13nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x5()[13]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),13nat,1nat,0nat)==seq![37u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),13nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![37u8],None,1nat,seq![37u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![37u8],None,1nat,seq![37u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),5nat,0nat)==seq![37u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[0]==206u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[1]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[2]==111u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[4]==183u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[5]==158u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[6]==121u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_0(),2nat),seq![206u8,180u8,111u8,255u8,183u8,158u8,121u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),5nat,0nat)==seq![206u8,180u8,111u8,255u8,183u8,158u8,121u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),13nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_5x5()[15]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),13nat,1nat,1nat)==seq![205u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),13nat,1nat,1nat,1nat)==Some(seq![37u8]));
+    assert(crate::filter_model::encoded_row(2u8,seq![205u8],Some(seq![37u8]),1nat,seq![242u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![205u8],Some(seq![37u8]),1nat,seq![242u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),5nat,1nat)==seq![242u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[0]==173u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[1]==202u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[2]==100u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[4]==206u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[5]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[6]==111u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_1(),2nat),seq![173u8,202u8,100u8,255u8,206u8,180u8,111u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),5nat,1nat)==seq![173u8,202u8,100u8,255u8,206u8,180u8,111u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),13nat,1nat,1nat,2nat);
+    assert(raw_interlace_ct3_d4_5x5()[17]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),13nat,1nat,2nat)==seq![248u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),13nat,1nat,1nat,2nat)==Some(seq![242u8]));
+    assert(crate::filter_model::encoded_row(3u8,seq![248u8],Some(seq![242u8]),1nat,seq![113u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![248u8],Some(seq![242u8]),1nat,seq![113u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),5nat,2nat)==seq![113u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[0]==213u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[1]==146u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[2]==231u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[4]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[5]==215u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[6]==250u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_5_2(),2nat),seq![213u8,146u8,231u8,255u8,139u8,215u8,250u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),5nat,2nat)==seq![213u8,146u8,231u8,255u8,139u8,215u8,250u8,255u8]) by (compute);
+    assert forall|y: nat| y<3 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),5nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),5nat,y) by {
+        if y==0 {} else if y==1 {} else {assert(y==2);}
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_6_0() -> Seq<u8> {seq![19u8,237u8,176u8]}
+spec fn e6_a7_line_interlace_ct3_d4_5x5_6_1() -> Seq<u8> {seq![130u8,49u8,224u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_5x5_6()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),6nat,y),5nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),6nat,y),
+{
+    hide(raw_interlace_ct3_d4_5x5);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),6nat)==5nat && r::ph(a_interlace_ct3_d4_5x5(),6nat)==2nat && r::base(a_interlace_ct3_d4_5x5(),6nat)==19nat && r::rb(a_interlace_ct3_d4_5x5(),6nat)==3nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_5x5()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),19nat,3nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_5x5()[19]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),19nat,3nat,0nat)==seq![19u8,218u8,195u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),19nat,3nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(4u8,seq![19u8,218u8,195u8],None,1nat,seq![19u8,237u8,176u8],0,3nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![19u8,218u8,195u8],None,1nat,seq![19u8,237u8,176u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),6nat,0nat)==seq![19u8,237u8,176u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[0]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[1]==215u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[2]==250u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[4]==198u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[5]==225u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[6]==23u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[8]==33u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[9]==54u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[10]==151u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[12]==124u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[13]==229u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[14]==54u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[15]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[16]==154u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[17]==237u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[18]==172u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat)[19]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_0(),5nat),seq![139u8,215u8,250u8,255u8,198u8,225u8,23u8,255u8,33u8,54u8,151u8,255u8,124u8,229u8,54u8,255u8,154u8,237u8,172u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),6nat,0nat)==seq![139u8,215u8,250u8,255u8,198u8,225u8,23u8,255u8,33u8,54u8,151u8,255u8,124u8,229u8,54u8,255u8,154u8,237u8,172u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_5x5(),19nat,3nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_5x5()[23]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_5x5(),19nat,3nat,1nat)==seq![130u8,49u8,224u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_5x5(),19nat,3nat,1nat,1nat)==Some(seq![19u8,237u8,176u8]));
+    assert(crate::filter_model::encoded_row(0u8,seq![130u8,49u8,224u8],Some(seq![19u8,237u8,176u8]),1nat,seq![130u8,49u8,224u8],0,3nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![130u8,49u8,224u8],Some(seq![19u8,237u8,176u8]),1nat,seq![130u8,49u8,224u8]);
+    assert(r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),6nat,1nat)==seq![130u8,49u8,224u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[0]==43u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[1]==40u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[2]==106u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[4]==206u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[5]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[6]==111u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[8]==198u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[9]==225u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[10]==23u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[12]==139u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[13]==215u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[14]==250u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[15]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[16]==33u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[17]==54u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[18]==151u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat)[19]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),e6_a7_line_interlace_ct3_d4_5x5_6_1(),5nat),seq![43u8,40u8,106u8,255u8,206u8,180u8,111u8,255u8,198u8,225u8,23u8,255u8,139u8,215u8,250u8,255u8,33u8,54u8,151u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),6nat,1nat)==seq![43u8,40u8,106u8,255u8,206u8,180u8,111u8,255u8,198u8,225u8,23u8,255u8,139u8,215u8,250u8,255u8,33u8,54u8,151u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),6nat,y),5nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),6nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_5x5()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_5x5()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_5x5(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_5x5);hide(z_interlace_ct3_d4_5x5);hide(raw_interlace_ct3_d4_5x5);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_5x5().len()==153nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_5x5())==Ok((crate::model::Ihdr {width:5u32,height:5u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_5x5())==Ok((crate::model::Ihdr {width:5u32,height:5u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_5x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_5x5(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_5x5(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:36nat,next:141nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_5x5(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:36nat,next:141nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_5x5(),141nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:149nat,len:0nat,next:153nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_5x5(),141nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:149nat,len:0nat,next:153nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_5x5().subrange(101,137)==z_interlace_ct3_d4_5x5()) by (compute);
+    walk_interlace_ct3_d4_5x5(bytes_interlace_ct3_d4_5x5());
+
+    model_interlace_ct3_d4_5x5();inflate_interlace_ct3_d4_5x5();scan_interlace_ct3_d4_5x5();
+    assert(bytes_interlace_ct3_d4_5x5()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_5x5()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_5x5())==27nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_5x5().subrange(41,89)==seq![36u8,232u8,239u8,139u8,215u8,250u8,206u8,180u8,111u8,198u8,225u8,23u8,232u8,97u8,47u8,183u8,158u8,121u8,241u8,229u8,45u8,213u8,146u8,231u8,43u8,40u8,106u8,227u8,168u8,135u8,172u8,74u8,202u8,154u8,237u8,172u8,109u8,123u8,83u8,124u8,229u8,54u8,33u8,54u8,151u8,173u8,202u8,100u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_5x5(),h_interlace_ct3_d4_5x5(),36nat);
+    e6_a7_pass_interlace_ct3_d4_5x5_0();
+    e6_a7_pass_interlace_ct3_d4_5x5_1();
+    e6_a7_pass_interlace_ct3_d4_5x5_2();
+    e6_a7_pass_interlace_ct3_d4_5x5_3();
+    e6_a7_pass_interlace_ct3_d4_5x5_4();
+    e6_a7_pass_interlace_ct3_d4_5x5_5();
+    e6_a7_pass_interlace_ct3_d4_5x5_6();
+    assert(r::count(a_interlace_ct3_d4_5x5())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_5x5()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5().len()==100nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),0nat)==1nat && r::ph(a_interlace_ct3_d4_5x5(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),1nat)==1nat && r::ph(a_interlace_ct3_d4_5x5(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),2nat)==2nat && r::ph(a_interlace_ct3_d4_5x5(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),3nat)==1nat && r::ph(a_interlace_ct3_d4_5x5(),3nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),4nat)==3nat && r::ph(a_interlace_ct3_d4_5x5(),4nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),5nat)==2nat && r::ph(a_interlace_ct3_d4_5x5(),5nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_5x5(),6nat)==5nat && r::ph(a_interlace_ct3_d4_5x5(),6nat)==2nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_5x5(),k)>0 && y<r::ph(a_interlace_ct3_d4_5x5(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_5x5(),r::line(raw_interlace_ct3_d4_5x5(),a_interlace_ct3_d4_5x5(),k,y),r::pw(a_interlace_ct3_d4_5x5(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_5x5(),h_interlace_ct3_d4_5x5(),z_interlace_ct3_d4_5x5(),raw_interlace_ct3_d4_5x5(),16nat,e6_a7_colour_interlace_ct3_d4_5x5(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_5x5());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_9x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_9x1_0_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_9x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),0nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),0nat)==2nat && r::ph(a_interlace_ct0_d1_9x1(),0nat)==1nat && r::base(a_interlace_ct0_d1_9x1(),0nat)==0nat && r::rb(a_interlace_ct0_d1_9x1(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_9x1(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_9x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_9x1(),0nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_9x1(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),0nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_0_0(),2nat),seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),0nat,0nat)==seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),0nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_9x1_1_0() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_9x1_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),1nat,y),
+{
+    hide(raw_interlace_ct0_d1_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),1nat)==1nat && r::ph(a_interlace_ct0_d1_9x1(),1nat)==1nat && r::base(a_interlace_ct0_d1_9x1(),1nat)==2nat && r::rb(a_interlace_ct0_d1_9x1(),1nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_9x1(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_9x1()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_9x1(),2nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_9x1(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),1nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_1_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_1_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_1_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_1_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_1_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),1nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_9x1_3_0() -> Seq<u8> {seq![192u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_9x1_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),3nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),3nat,y),
+{
+    hide(raw_interlace_ct0_d1_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),3nat)==2nat && r::ph(a_interlace_ct0_d1_9x1(),3nat)==1nat && r::base(a_interlace_ct0_d1_9x1(),3nat)==4nat && r::rb(a_interlace_ct0_d1_9x1(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_9x1(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_9x1()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_9x1(),4nat,1nat,0nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_9x1(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![192u8],None,1nat,seq![192u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![192u8],None,1nat,seq![192u8]);
+    assert(r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),3nat,0nat)==seq![192u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[4]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[5]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[6]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_3_0(),2nat),seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),3nat,0nat)==seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),3nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_9x1_5_0() -> Seq<u8> {seq![48u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_9x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),5nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),5nat,y),
+{
+    hide(raw_interlace_ct0_d1_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),5nat)==4nat && r::ph(a_interlace_ct0_d1_9x1(),5nat)==1nat && r::base(a_interlace_ct0_d1_9x1(),5nat)==6nat && r::rb(a_interlace_ct0_d1_9x1(),5nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_9x1(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_9x1()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_9x1(),6nat,1nat,0nat)==seq![48u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_9x1(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![48u8],None,1nat,seq![48u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![48u8],None,1nat,seq![48u8]);
+    assert(r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),5nat,0nat)==seq![48u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[4]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[5]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[6]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[8]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[9]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[10]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[12]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[13]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[14]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat)[15]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),e6_a7_line_interlace_ct0_d1_9x1_5_0(),4nat),seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),5nat,0nat)==seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),5nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_9x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_9x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_9x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_9x1);hide(z_interlace_ct0_d1_9x1);hide(raw_interlace_ct0_d1_9x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_9x1().len()==73nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_9x1())==Ok((crate::model::Ihdr {width:9u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_9x1())==Ok((crate::model::Ihdr {width:9u32,height:1u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_9x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:16nat,next:61nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_9x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:16nat,next:61nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_9x1(),61nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:69nat,len:0nat,next:73nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_9x1(),61nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:69nat,len:0nat,next:73nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_9x1().subrange(41,57)==z_interlace_ct0_d1_9x1()) by (compute);
+    walk_interlace_ct0_d1_9x1(bytes_interlace_ct0_d1_9x1());
+
+    model_interlace_ct0_d1_9x1();inflate_interlace_ct0_d1_9x1();scan_interlace_ct0_d1_9x1();
+    assert(bytes_interlace_ct0_d1_9x1()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_9x1()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_9x1())==8nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_9x1(),h_interlace_ct0_d1_9x1(),16nat);
+    e6_a7_pass_interlace_ct0_d1_9x1_0();
+    e6_a7_pass_interlace_ct0_d1_9x1_1();
+    e6_a7_pass_interlace_ct0_d1_9x1_3();
+    e6_a7_pass_interlace_ct0_d1_9x1_5();
+    assert(r::count(a_interlace_ct0_d1_9x1())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_9x1()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),0nat)==2nat && r::ph(a_interlace_ct0_d1_9x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),1nat)==1nat && r::ph(a_interlace_ct0_d1_9x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),2nat)==3nat && r::ph(a_interlace_ct0_d1_9x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),3nat)==2nat && r::ph(a_interlace_ct0_d1_9x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),4nat)==5nat && r::ph(a_interlace_ct0_d1_9x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),5nat)==4nat && r::ph(a_interlace_ct0_d1_9x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_9x1(),6nat)==9nat && r::ph(a_interlace_ct0_d1_9x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_9x1(),k)>0 && y<r::ph(a_interlace_ct0_d1_9x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_9x1(),r::line(raw_interlace_ct0_d1_9x1(),a_interlace_ct0_d1_9x1(),k,y),r::pw(a_interlace_ct0_d1_9x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_9x1(),h_interlace_ct0_d1_9x1(),z_interlace_ct0_d1_9x1(),raw_interlace_ct0_d1_9x1(),0nat,e6_a7_colour_interlace_ct0_d1_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_9x1());
+}
+spec fn e6_a7_colour_interlace_ct6_d16_9x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:6u8,depth:16u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct6_d16_9x1_0_0() -> Seq<u8> {seq![42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_9x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),0nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),0nat,y),
+{
+    hide(raw_interlace_ct6_d16_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),0nat)==2nat && r::ph(a_interlace_ct6_d16_9x1(),0nat)==1nat && r::base(a_interlace_ct6_d16_9x1(),0nat)==0nat && r::rb(a_interlace_ct6_d16_9x1(),0nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_9x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_9x1(),0nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_9x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_9x1(),0nat,16nat,0nat)==seq![42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_9x1(),0nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8],None,8nat,seq![42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8],None,8nat,seq![42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8]);
+    assert(r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),0nat,0nat)==seq![42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[0]==42u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[1]==252u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[2]==212u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[3]==149u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[4]==108u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[5]==247u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[6]==77u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat)[7]==103u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_0_0(),2nat),seq![42u8,252u8,212u8,149u8,108u8,247u8,77u8,103u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),0nat,0nat)==seq![42u8,252u8,212u8,149u8,108u8,247u8,77u8,103u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),0nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_9x1_1_0() -> Seq<u8> {seq![72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_9x1_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),1nat,y),
+{
+    hide(raw_interlace_ct6_d16_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),1nat)==1nat && r::ph(a_interlace_ct6_d16_9x1(),1nat)==1nat && r::base(a_interlace_ct6_d16_9x1(),1nat)==17nat && r::rb(a_interlace_ct6_d16_9x1(),1nat)==8nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_9x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_9x1(),17nat,8nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_9x1()[17]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_9x1(),17nat,8nat,0nat)==seq![72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_9x1(),17nat,8nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8],None,8nat,seq![72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8],0,8nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8],None,8nat,seq![72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8]);
+    assert(r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),1nat,0nat)==seq![72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_1_0(),1nat)[0]==72u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_1_0(),1nat)[1]==69u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_1_0(),1nat)[2]==47u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_1_0(),1nat)[3]==202u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_1_0(),1nat),seq![72u8,69u8,47u8,202u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),1nat,0nat)==seq![72u8,69u8,47u8,202u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_9x1_3_0() -> Seq<u8> {seq![151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_9x1_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),3nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),3nat,y),
+{
+    hide(raw_interlace_ct6_d16_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),3nat)==2nat && r::ph(a_interlace_ct6_d16_9x1(),3nat)==1nat && r::base(a_interlace_ct6_d16_9x1(),3nat)==26nat && r::rb(a_interlace_ct6_d16_9x1(),3nat)==16nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_9x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_9x1(),26nat,16nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_9x1()[26]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_9x1(),26nat,16nat,0nat)==seq![151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_9x1(),26nat,16nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8],None,8nat,seq![151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8],0,16nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8],None,8nat,seq![151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8]);
+    assert(r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),3nat,0nat)==seq![151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[0]==151u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[1]==81u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[2]==113u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[3]==231u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[4]==39u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[5]==205u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[6]==122u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat)[7]==59u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_3_0(),2nat),seq![151u8,81u8,113u8,231u8,39u8,205u8,122u8,59u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),3nat,0nat)==seq![151u8,81u8,113u8,231u8,39u8,205u8,122u8,59u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),3nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct6_d16_9x1_5_0() -> Seq<u8> {seq![75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,94u8,106u8,17u8,26u8,6u8,37u8,220u8,152u8,182u8,255u8,19u8,210u8,62u8,87u8,72u8,239u8,193u8,120u8,213u8,1u8,79u8,212u8,3u8,13u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct6_d16_9x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),5nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),5nat,y),
+{
+    hide(raw_interlace_ct6_d16_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1);
+    crate::colour_model::depth_values(16u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),5nat)==4nat && r::ph(a_interlace_ct6_d16_9x1(),5nat)==1nat && r::base(a_interlace_ct6_d16_9x1(),5nat)==43nat && r::rb(a_interlace_ct6_d16_9x1(),5nat)==32nat && crate::filter_model::bpp(r::bits(a_interlace_ct6_d16_9x1()))==8nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct6_d16_9x1(),43nat,32nat,8nat,0nat);
+    assert(raw_interlace_ct6_d16_9x1()[43]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct6_d16_9x1(),43nat,32nat,0nat)==seq![75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,57u8,31u8,5u8,1u8,250u8,237u8,168u8,88u8,135u8,202u8,11u8,197u8,59u8,69u8,218u8,163u8,102u8,249u8,204u8,152u8,48u8,169u8,223u8,150u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct6_d16_9x1(),43nat,32nat,8nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,57u8,31u8,5u8,1u8,250u8,237u8,168u8,88u8,135u8,202u8,11u8,197u8,59u8,69u8,218u8,163u8,102u8,249u8,204u8,152u8,48u8,169u8,223u8,150u8],None,8nat,seq![75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,94u8,106u8,17u8,26u8,6u8,37u8,220u8,152u8,182u8,255u8,19u8,210u8,62u8,87u8,72u8,239u8,193u8,120u8,213u8,1u8,79u8,212u8,3u8,13u8],0,32nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,57u8,31u8,5u8,1u8,250u8,237u8,168u8,88u8,135u8,202u8,11u8,197u8,59u8,69u8,218u8,163u8,102u8,249u8,204u8,152u8,48u8,169u8,223u8,150u8],None,8nat,seq![75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,94u8,106u8,17u8,26u8,6u8,37u8,220u8,152u8,182u8,255u8,19u8,210u8,62u8,87u8,72u8,239u8,193u8,120u8,213u8,1u8,79u8,212u8,3u8,13u8]);
+    assert(r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),5nat,0nat)==seq![75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,94u8,106u8,17u8,26u8,6u8,37u8,220u8,152u8,182u8,255u8,19u8,210u8,62u8,87u8,72u8,239u8,193u8,120u8,213u8,1u8,79u8,212u8,3u8,13u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[0]==75u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[1]==24u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[2]==24u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[3]==105u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[4]==94u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[5]==17u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[6]==6u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[7]==220u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[8]==182u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[9]==20u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[10]==62u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[11]==73u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[12]==193u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[13]==212u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[14]==80u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat)[15]==3u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),e6_a7_line_interlace_ct6_d16_9x1_5_0(),4nat),seq![75u8,24u8,24u8,105u8,94u8,17u8,6u8,220u8,182u8,20u8,62u8,73u8,193u8,212u8,80u8,3u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),5nat,0nat)==seq![75u8,24u8,24u8,105u8,94u8,17u8,6u8,220u8,182u8,20u8,62u8,73u8,193u8,212u8,80u8,3u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),5nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct6_d16_9x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_9x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct6_d16_9x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct6_d16_9x1);hide(z_interlace_ct6_d16_9x1);hide(raw_interlace_ct6_d16_9x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct6_d16_9x1().len()==144nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct6_d16_9x1())==Ok((crate::model::Ihdr {width:9u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct6_d16_9x1())==Ok((crate::model::Ihdr {width:9u32,height:1u32,depth:16u8,color_type:6u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 16u8)==(u16::MAX as u32)+1) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_9x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:87nat,next:132nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_9x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:87nat,next:132nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct6_d16_9x1(),132nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:140nat,len:0nat,next:144nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct6_d16_9x1(),132nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:140nat,len:0nat,next:144nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct6_d16_9x1().subrange(41,128)==z_interlace_ct6_d16_9x1()) by (compute);
+    walk_interlace_ct6_d16_9x1(bytes_interlace_ct6_d16_9x1());
+
+    model_interlace_ct6_d16_9x1();inflate_interlace_ct6_d16_9x1();scan_interlace_ct6_d16_9x1();
+    assert(bytes_interlace_ct6_d16_9x1()==crate::witness_m6_m4_a7::bytes_interlace_ct6_d16_9x1()) by (compute);
+    assert(r::raw(a_interlace_ct6_d16_9x1())==76nat) by (compute);
+    assert(r::data(z_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct6_d16_9x1(),h_interlace_ct6_d16_9x1(),87nat);
+    e6_a7_pass_interlace_ct6_d16_9x1_0();
+    e6_a7_pass_interlace_ct6_d16_9x1_1();
+    e6_a7_pass_interlace_ct6_d16_9x1_3();
+    e6_a7_pass_interlace_ct6_d16_9x1_5();
+    assert(r::count(a_interlace_ct6_d16_9x1())==7nat && crate::paint_model::domain(a_interlace_ct6_d16_9x1()) && crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),0nat)==2nat && r::ph(a_interlace_ct6_d16_9x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),1nat)==1nat && r::ph(a_interlace_ct6_d16_9x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),2nat)==3nat && r::ph(a_interlace_ct6_d16_9x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),3nat)==2nat && r::ph(a_interlace_ct6_d16_9x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),4nat)==5nat && r::ph(a_interlace_ct6_d16_9x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),5nat)==4nat && r::ph(a_interlace_ct6_d16_9x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct6_d16_9x1(),6nat)==9nat && r::ph(a_interlace_ct6_d16_9x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct6_d16_9x1(),k)>0 && y<r::ph(a_interlace_ct6_d16_9x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct6_d16_9x1(),r::line(raw_interlace_ct6_d16_9x1(),a_interlace_ct6_d16_9x1(),k,y),r::pw(a_interlace_ct6_d16_9x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct6_d16_9x1(),h_interlace_ct6_d16_9x1(),z_interlace_ct6_d16_9x1(),raw_interlace_ct6_d16_9x1(),0nat,e6_a7_colour_interlace_ct6_d16_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct6_d16_9x1());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_9x1() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![6u8,57u8,192u8,47u8,48u8,39u8,94u8,5u8,197u8,195u8,225u8,116u8,241u8,0u8,255u8,230u8,223u8,121u8,71u8,172u8,53u8,157u8,158u8,239u8,191u8,144u8,220u8,242u8,167u8,59u8,86u8,140u8,145u8,106u8,233u8,230u8,23u8,94u8,171u8,34u8,31u8,171u8,169u8,32u8,126u8,137u8,211u8,213u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_9x1_0_0() -> Seq<u8> {seq![114u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_9x1_0()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),0nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),0nat)==2nat && r::ph(a_interlace_ct3_d4_9x1(),0nat)==1nat && r::base(a_interlace_ct3_d4_9x1(),0nat)==0nat && r::rb(a_interlace_ct3_d4_9x1(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_9x1(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_9x1()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_9x1(),0nat,1nat,0nat)==seq![114u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_9x1(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![114u8],None,1nat,seq![114u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![114u8],None,1nat,seq![114u8]);
+    assert(r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),0nat,0nat)==seq![114u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[0]==157u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[1]==158u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[2]==239u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[4]==94u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[5]==5u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[6]==197u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_0_0(),2nat),seq![157u8,158u8,239u8,255u8,94u8,5u8,197u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),0nat,0nat)==seq![157u8,158u8,239u8,255u8,94u8,5u8,197u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),0nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),0nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_9x1_1_0() -> Seq<u8> {seq![32u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_9x1_1()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),1nat,y),
+{
+    hide(raw_interlace_ct3_d4_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),1nat)==1nat && r::ph(a_interlace_ct3_d4_9x1(),1nat)==1nat && r::base(a_interlace_ct3_d4_9x1(),1nat)==2nat && r::rb(a_interlace_ct3_d4_9x1(),1nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_9x1(),2nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_9x1()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_9x1(),2nat,1nat,0nat)==seq![32u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_9x1(),2nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(1u8,seq![32u8],None,1nat,seq![32u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![32u8],None,1nat,seq![32u8]);
+    assert(r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),1nat,0nat)==seq![32u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_1_0(),1nat)[0]==94u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_1_0(),1nat)[1]==5u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_1_0(),1nat)[2]==197u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_1_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_1_0(),1nat),seq![94u8,5u8,197u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),1nat,0nat)==seq![94u8,5u8,197u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),1nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),1nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_9x1_3_0() -> Seq<u8> {seq![129u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_9x1_3()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),3nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),3nat,y),
+{
+    hide(raw_interlace_ct3_d4_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),3nat)==2nat && r::ph(a_interlace_ct3_d4_9x1(),3nat)==1nat && r::base(a_interlace_ct3_d4_9x1(),3nat)==4nat && r::rb(a_interlace_ct3_d4_9x1(),3nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_9x1(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_9x1()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_9x1(),4nat,1nat,0nat)==seq![129u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_9x1(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![129u8],None,1nat,seq![129u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![129u8],None,1nat,seq![129u8]);
+    assert(r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),3nat,0nat)==seq![129u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[0]==191u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[1]==144u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[2]==220u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[4]==47u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[5]==48u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[6]==39u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat)[7]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_3_0(),2nat),seq![191u8,144u8,220u8,255u8,47u8,48u8,39u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),3nat,0nat)==seq![191u8,144u8,220u8,255u8,47u8,48u8,39u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),3nat,y),2nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),3nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_9x1_5_0() -> Seq<u8> {seq![214u8,206u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_9x1_5()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),5nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),5nat,y),
+{
+    hide(raw_interlace_ct3_d4_9x1);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),5nat)==4nat && r::ph(a_interlace_ct3_d4_9x1(),5nat)==1nat && r::base(a_interlace_ct3_d4_9x1(),5nat)==6nat && r::rb(a_interlace_ct3_d4_9x1(),5nat)==2nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_9x1()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_9x1(),6nat,2nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_9x1()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_9x1(),6nat,2nat,0nat)==seq![214u8,99u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_9x1(),6nat,2nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![214u8,99u8],None,1nat,seq![214u8,206u8],0,2nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![214u8,99u8],None,1nat,seq![214u8,206u8]);
+    assert(r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),5nat,0nat)==seq![214u8,206u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[0]==34u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[1]==31u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[2]==171u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[3]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[4]==71u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[5]==172u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[6]==53u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[7]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[8]==23u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[9]==94u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[10]==171u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[11]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[12]==169u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[13]==32u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[14]==126u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat)[15]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),e6_a7_line_interlace_ct3_d4_9x1_5_0(),4nat),seq![34u8,31u8,171u8,255u8,71u8,172u8,53u8,255u8,23u8,94u8,171u8,255u8,169u8,32u8,126u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),5nat,0nat)==seq![34u8,31u8,171u8,255u8,71u8,172u8,53u8,255u8,23u8,94u8,171u8,255u8,169u8,32u8,126u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),5nat,y),4nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),5nat,y) by {
+        assert(y==0);
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_9x1()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_9x1()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_9x1(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_9x1);hide(z_interlace_ct3_d4_9x1);hide(raw_interlace_ct3_d4_9x1);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_9x1().len()==134nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_9x1())==Ok((crate::model::Ihdr {width:9u32,height:1u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_9x1())==Ok((crate::model::Ihdr {width:9u32,height:1u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_9x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_9x1(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_9x1(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:17nat,next:122nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_9x1(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:17nat,next:122nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_9x1(),122nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:130nat,len:0nat,next:134nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_9x1(),122nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:130nat,len:0nat,next:134nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_9x1().subrange(101,118)==z_interlace_ct3_d4_9x1()) by (compute);
+    walk_interlace_ct3_d4_9x1(bytes_interlace_ct3_d4_9x1());
+
+    model_interlace_ct3_d4_9x1();inflate_interlace_ct3_d4_9x1();scan_interlace_ct3_d4_9x1();
+    assert(bytes_interlace_ct3_d4_9x1()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_9x1()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_9x1())==9nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_9x1().subrange(41,89)==seq![6u8,57u8,192u8,47u8,48u8,39u8,94u8,5u8,197u8,195u8,225u8,116u8,241u8,0u8,255u8,230u8,223u8,121u8,71u8,172u8,53u8,157u8,158u8,239u8,191u8,144u8,220u8,242u8,167u8,59u8,86u8,140u8,145u8,106u8,233u8,230u8,23u8,94u8,171u8,34u8,31u8,171u8,169u8,32u8,126u8,137u8,211u8,213u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_9x1(),h_interlace_ct3_d4_9x1(),17nat);
+    e6_a7_pass_interlace_ct3_d4_9x1_0();
+    e6_a7_pass_interlace_ct3_d4_9x1_1();
+    e6_a7_pass_interlace_ct3_d4_9x1_3();
+    e6_a7_pass_interlace_ct3_d4_9x1_5();
+    assert(r::count(a_interlace_ct3_d4_9x1())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_9x1()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),0nat)==2nat && r::ph(a_interlace_ct3_d4_9x1(),0nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),1nat)==1nat && r::ph(a_interlace_ct3_d4_9x1(),1nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),2nat)==3nat && r::ph(a_interlace_ct3_d4_9x1(),2nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),3nat)==2nat && r::ph(a_interlace_ct3_d4_9x1(),3nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),4nat)==5nat && r::ph(a_interlace_ct3_d4_9x1(),4nat)==0nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),5nat)==4nat && r::ph(a_interlace_ct3_d4_9x1(),5nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_9x1(),6nat)==9nat && r::ph(a_interlace_ct3_d4_9x1(),6nat)==0nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_9x1(),k)>0 && y<r::ph(a_interlace_ct3_d4_9x1(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_9x1(),r::line(raw_interlace_ct3_d4_9x1(),a_interlace_ct3_d4_9x1(),k,y),r::pw(a_interlace_ct3_d4_9x1(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_9x1(),h_interlace_ct3_d4_9x1(),z_interlace_ct3_d4_9x1(),raw_interlace_ct3_d4_9x1(),16nat,e6_a7_colour_interlace_ct3_d4_9x1(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_9x1());
+}
+spec fn e6_a7_colour_interlace_ct0_d1_1x9() -> crate::colour_model::Context {crate::colour_model::Context {ct:0u8,depth:1u8,plte:seq![],trns:None}}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_0_0() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_0_1() -> Seq<u8> {seq![128u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x9_0()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),0nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),0nat)==2nat && r::base(a_interlace_ct0_d1_1x9(),0nat)==0nat && r::rb(a_interlace_ct0_d1_1x9(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x9()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),0nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),0nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),0nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),0nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_1x9()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),0nat,1nat,1nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),0nat,1nat,1nat,1nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(1u8,seq![128u8],Some(seq![128u8]),1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![128u8],Some(seq![128u8]),1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),0nat,1nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_1(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_1(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_1(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_0_1(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),0nat,1nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),0nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_2_0() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x9_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),2nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),2nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),2nat)==1nat && r::base(a_interlace_ct0_d1_1x9(),2nat)==4nat && r::rb(a_interlace_ct0_d1_1x9(),2nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x9()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),4nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),2nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_2_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_2_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_2_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_2_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_2_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),2nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_4_0() -> Seq<u8> {seq![0u8]}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_4_1() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x9_4()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),4nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),4nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),4nat)==2nat && r::base(a_interlace_ct0_d1_1x9(),4nat)==6nat && r::rb(a_interlace_ct0_d1_1x9(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x9()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),6nat,1nat,0nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![0u8],None,1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![0u8],None,1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),4nat,0nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_0(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_0(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_0(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_0(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),4nat,0nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_1x9()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),6nat,1nat,1nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),6nat,1nat,1nat,1nat)==Some(seq![0u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![0u8],Some(seq![0u8]),1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![0u8],Some(seq![0u8]),1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),4nat,1nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_1(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_1(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_1(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_4_1(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),4nat,1nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),4nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_6_0() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_6_1() -> Seq<u8> {seq![0u8]}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_6_2() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct0_d1_1x9_6_3() -> Seq<u8> {seq![0u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct0_d1_1x9_6()
+    ensures forall|y: nat| y<4 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),6nat,y),
+{
+    hide(raw_interlace_ct0_d1_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9);
+    crate::colour_model::depth_values(1u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),6nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),6nat)==4nat && r::base(a_interlace_ct0_d1_1x9(),6nat)==10nat && r::rb(a_interlace_ct0_d1_1x9(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct0_d1_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct0_d1_1x9()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),10nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),6nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_0(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_0(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_0(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_0(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),6nat,0nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct0_d1_1x9()[12]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat)==seq![0u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,1nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(1u8,seq![0u8],Some(seq![128u8]),1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![0u8],Some(seq![128u8]),1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),6nat,1nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_1(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_1(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_1(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_1(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),6nat,1nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,2nat);
+    assert(raw_interlace_ct0_d1_1x9()[14]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),10nat,1nat,2nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,2nat)==Some(seq![0u8]));
+    assert(crate::filter_model::encoded_row(2u8,seq![128u8],Some(seq![0u8]),1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![128u8],Some(seq![0u8]),1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),6nat,2nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_2(),1nat)[0]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_2(),1nat)[1]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_2(),1nat)[2]==255u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_2(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_2(),1nat),seq![255u8,255u8,255u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),6nat,2nat)==seq![255u8,255u8,255u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,3nat);
+    assert(raw_interlace_ct0_d1_1x9()[16]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct0_d1_1x9(),10nat,1nat,3nat)==seq![192u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct0_d1_1x9(),10nat,1nat,1nat,3nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(3u8,seq![192u8],Some(seq![128u8]),1nat,seq![0u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![192u8],Some(seq![128u8]),1nat,seq![0u8]);
+    assert(r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),6nat,3nat)==seq![0u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_3(),1nat)[0]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_3(),1nat)[1]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_3(),1nat)[2]==0u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_3(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),e6_a7_line_interlace_ct0_d1_1x9_6_3(),1nat),seq![0u8,0u8,0u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),6nat,3nat)==seq![0u8,0u8,0u8,255u8]) by (compute);
+    assert forall|y: nat| y<4 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),6nat,y) by {
+        if y==0 {} else if y==1 {} else if y==2 {} else {assert(y==3);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct0_d1_1x9()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x9()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct0_d1_1x9(value),_=>false},
+{
+
+    hide(bytes_interlace_ct0_d1_1x9);hide(z_interlace_ct0_d1_1x9);hide(raw_interlace_ct0_d1_1x9);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9);
+    hide(crate::critical_model::read);hide(crate::model::mh);hide(crate::document_model::drive);hide(crate::document_model::initial_info);hide(crate::walk_model::classify);
+    assert(bytes_interlace_ct0_d1_1x9().len()==83nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct0_d1_1x9())==Ok((crate::model::Ihdr {width:1u32,height:9u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct0_d1_1x9())==Ok((crate::model::Ihdr {width:1u32,height:9u32,depth:1u8,color_type:0u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 1u8)==2u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x9(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x9(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:41nat,len:26nat,next:71nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct0_d1_1x9(),71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:79nat,len:0nat,next:83nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct0_d1_1x9(),71nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:79nat,len:0nat,next:83nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct0_d1_1x9().subrange(41,67)==z_interlace_ct0_d1_1x9()) by (compute);
+    walk_interlace_ct0_d1_1x9(bytes_interlace_ct0_d1_1x9());
+
+    model_interlace_ct0_d1_1x9();inflate_interlace_ct0_d1_1x9();scan_interlace_ct0_d1_1x9();
+    assert(bytes_interlace_ct0_d1_1x9()==crate::witness_m6_m4_a7::bytes_interlace_ct0_d1_1x9()) by (compute);
+    assert(r::raw(a_interlace_ct0_d1_1x9())==18nat) by (compute);
+    assert(r::data(z_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    crate::witness_m6_rows_model::bare_colour(bytes_interlace_ct0_d1_1x9(),h_interlace_ct0_d1_1x9(),26nat);
+    e6_a7_pass_interlace_ct0_d1_1x9_0();
+    e6_a7_pass_interlace_ct0_d1_1x9_2();
+    e6_a7_pass_interlace_ct0_d1_1x9_4();
+    e6_a7_pass_interlace_ct0_d1_1x9_6();
+    assert(r::count(a_interlace_ct0_d1_1x9())==7nat && crate::paint_model::domain(a_interlace_ct0_d1_1x9()) && crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),0nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),0nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),1nat)==0nat && r::ph(a_interlace_ct0_d1_1x9(),1nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),2nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),3nat)==0nat && r::ph(a_interlace_ct0_d1_1x9(),3nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),4nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),4nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),5nat)==0nat && r::ph(a_interlace_ct0_d1_1x9(),5nat)==5nat) by (compute);
+    assert(r::pw(a_interlace_ct0_d1_1x9(),6nat)==1nat && r::ph(a_interlace_ct0_d1_1x9(),6nat)==4nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct0_d1_1x9(),k)>0 && y<r::ph(a_interlace_ct0_d1_1x9(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct0_d1_1x9(),r::line(raw_interlace_ct0_d1_1x9(),a_interlace_ct0_d1_1x9(),k,y),r::pw(a_interlace_ct0_d1_1x9(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct0_d1_1x9(),h_interlace_ct0_d1_1x9(),z_interlace_ct0_d1_1x9(),raw_interlace_ct0_d1_1x9(),0nat,e6_a7_colour_interlace_ct0_d1_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct0_d1_1x9());
+}
+spec fn e6_a7_colour_interlace_ct3_d4_1x9() -> crate::colour_model::Context {crate::colour_model::Context {ct:3u8,depth:4u8,plte:seq![33u8,200u8,29u8,0u8,192u8,84u8,8u8,198u8,36u8,196u8,79u8,63u8,106u8,13u8,88u8,9u8,104u8,32u8,201u8,42u8,74u8,172u8,130u8,213u8,102u8,138u8,204u8,70u8,4u8,100u8,86u8,216u8,216u8,122u8,188u8,187u8,23u8,68u8,5u8,180u8,147u8,135u8,206u8,63u8,86u8,4u8,123u8,180u8],trns:None}}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_0_0() -> Seq<u8> {seq![240u8]}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_0_1() -> Seq<u8> {seq![176u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x9_0()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),0nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),0nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),0nat)==2nat && r::base(a_interlace_ct3_d4_1x9(),0nat)==0nat && r::rb(a_interlace_ct3_d4_1x9(),0nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),0nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x9()[0]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),0nat,1nat,0nat)==seq![240u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),0nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![240u8],None,1nat,seq![240u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![240u8],None,1nat,seq![240u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),0nat,0nat)==seq![240u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_0(),1nat)[0]==4u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_0(),1nat)[1]==123u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_0(),1nat)[2]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_0(),1nat),seq![4u8,123u8,180u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),0nat,0nat)==seq![4u8,123u8,180u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),0nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_1x9()[2]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),0nat,1nat,1nat)==seq![176u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),0nat,1nat,1nat,1nat)==Some(seq![240u8]));
+    assert(crate::filter_model::encoded_row(1u8,seq![176u8],Some(seq![240u8]),1nat,seq![176u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![176u8],Some(seq![240u8]),1nat,seq![176u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),0nat,1nat)==seq![176u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_1(),1nat)[0]==122u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_1(),1nat)[1]==188u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_1(),1nat)[2]==187u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_0_1(),1nat),seq![122u8,188u8,187u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),0nat,1nat)==seq![122u8,188u8,187u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),0nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),0nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_2_0() -> Seq<u8> {seq![112u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x9_2()
+    ensures forall|y: nat| y<1 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),2nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),2nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),2nat)==1nat && r::base(a_interlace_ct3_d4_1x9(),2nat)==4nat && r::rb(a_interlace_ct3_d4_1x9(),2nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),4nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x9()[4]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),4nat,1nat,0nat)==seq![112u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),4nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(2u8,seq![112u8],None,1nat,seq![112u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![112u8],None,1nat,seq![112u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),2nat,0nat)==seq![112u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_2_0(),1nat)[0]==172u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_2_0(),1nat)[1]==130u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_2_0(),1nat)[2]==213u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_2_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_2_0(),1nat),seq![172u8,130u8,213u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),2nat,0nat)==seq![172u8,130u8,213u8,255u8]) by (compute);
+    assert forall|y: nat| y<1 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),2nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),2nat,y) by {
+        assert(y==0);
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_4_0() -> Seq<u8> {seq![128u8]}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_4_1() -> Seq<u8> {seq![240u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x9_4()
+    ensures forall|y: nat| y<2 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),4nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),4nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),4nat)==2nat && r::base(a_interlace_ct3_d4_1x9(),4nat)==6nat && r::rb(a_interlace_ct3_d4_1x9(),4nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),6nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x9()[6]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),6nat,1nat,0nat)==seq![128u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),6nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(3u8,seq![128u8],None,1nat,seq![128u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![128u8],None,1nat,seq![128u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),4nat,0nat)==seq![128u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_0(),1nat)[0]==102u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_0(),1nat)[1]==138u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_0(),1nat)[2]==204u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_0(),1nat),seq![102u8,138u8,204u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),4nat,0nat)==seq![102u8,138u8,204u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),6nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_1x9()[8]==4u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),6nat,1nat,1nat)==seq![112u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),6nat,1nat,1nat,1nat)==Some(seq![128u8]));
+    assert(crate::filter_model::encoded_row(4u8,seq![112u8],Some(seq![128u8]),1nat,seq![240u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(4u8,seq![112u8],Some(seq![128u8]),1nat,seq![240u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),4nat,1nat)==seq![240u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_1(),1nat)[0]==4u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_1(),1nat)[1]==123u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_1(),1nat)[2]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_4_1(),1nat),seq![4u8,123u8,180u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),4nat,1nat)==seq![4u8,123u8,180u8,255u8]) by (compute);
+    assert forall|y: nat| y<2 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),4nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),4nat,y) by {
+        if y==0 {} else {assert(y==1);}
+    }
+}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_6_0() -> Seq<u8> {seq![48u8]}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_6_1() -> Seq<u8> {seq![144u8]}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_6_2() -> Seq<u8> {seq![208u8]}
+spec fn e6_a7_line_interlace_ct3_d4_1x9_6_3() -> Seq<u8> {seq![176u8]}
+#[verifier::spinoff_prover]
+proof fn e6_a7_pass_interlace_ct3_d4_1x9_6()
+    ensures forall|y: nat| y<4 ==> #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),6nat,y),
+{
+    hide(raw_interlace_ct3_d4_1x9);hide(crate::colour_model::pixel);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9);
+    crate::colour_model::depth_values(4u8);crate::colour_model::depth_values(8u8);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),6nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),6nat)==4nat && r::base(a_interlace_ct3_d4_1x9(),6nat)==10nat && r::rb(a_interlace_ct3_d4_1x9(),6nat)==1nat && crate::filter_model::bpp(r::bits(a_interlace_ct3_d4_1x9()))==1nat) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,0nat);
+    assert(raw_interlace_ct3_d4_1x9()[10]==0u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),10nat,1nat,0nat)==seq![48u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,0nat)==None);
+    assert(crate::filter_model::encoded_row(0u8,seq![48u8],None,1nat,seq![48u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(0u8,seq![48u8],None,1nat,seq![48u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),6nat,0nat)==seq![48u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_0(),1nat)[0]==196u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_0(),1nat)[1]==79u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_0(),1nat)[2]==63u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_0(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_0(),1nat),seq![196u8,79u8,63u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),6nat,0nat)==seq![196u8,79u8,63u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,1nat);
+    assert(raw_interlace_ct3_d4_1x9()[12]==1u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat)==seq![144u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,1nat)==Some(seq![48u8]));
+    assert(crate::filter_model::encoded_row(1u8,seq![144u8],Some(seq![48u8]),1nat,seq![144u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(1u8,seq![144u8],Some(seq![48u8]),1nat,seq![144u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),6nat,1nat)==seq![144u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_1(),1nat)[0]==70u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_1(),1nat)[1]==4u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_1(),1nat)[2]==100u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_1(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_1(),1nat),seq![70u8,4u8,100u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),6nat,1nat)==seq![70u8,4u8,100u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,2nat);
+    assert(raw_interlace_ct3_d4_1x9()[14]==2u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),10nat,1nat,2nat)==seq![64u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,2nat)==Some(seq![144u8]));
+    assert(crate::filter_model::encoded_row(2u8,seq![64u8],Some(seq![144u8]),1nat,seq![208u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(2u8,seq![64u8],Some(seq![144u8]),1nat,seq![208u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),6nat,2nat)==seq![208u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_2(),1nat)[0]==180u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_2(),1nat)[1]==147u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_2(),1nat)[2]==135u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_2(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_2(),1nat),seq![180u8,147u8,135u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),6nat,2nat)==seq![180u8,147u8,135u8,255u8]) by (compute);
+    crate::filter_model::pass_row_equation(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,3nat);
+    assert(raw_interlace_ct3_d4_1x9()[16]==3u8) by (compute);
+    assert(crate::filter_model::row_data(raw_interlace_ct3_d4_1x9(),10nat,1nat,3nat)==seq![72u8]) by (compute);
+    assert(crate::filter_model::previous_row(raw_interlace_ct3_d4_1x9(),10nat,1nat,1nat,3nat)==Some(seq![208u8]));
+    assert(crate::filter_model::encoded_row(3u8,seq![72u8],Some(seq![208u8]),1nat,seq![176u8],0,1nat)) by (compute);
+    crate::filter_model::checked_row_hint(3u8,seq![72u8],Some(seq![208u8]),1nat,seq![176u8]);
+    assert(r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),6nat,3nat)==seq![176u8]);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_3(),1nat)[0]==122u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_3(),1nat)[1]==188u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_3(),1nat)[2]==187u8) by (compute);
+    assert(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_3(),1nat)[3]==255u8) by (compute);
+    crate::witness_m6_rows_model::bounded_row_equal(crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),e6_a7_line_interlace_ct3_d4_1x9_6_3(),1nat),seq![122u8,188u8,187u8,255u8]);
+    assert(crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),6nat,3nat)==seq![122u8,188u8,187u8,255u8]) by (compute);
+    assert forall|y: nat| y<4 implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),6nat,y),1nat)==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),6nat,y) by {
+        if y==0 {} else if y==1 {} else if y==2 {} else {assert(y==3);}
+    }
+}
+#[verifier::spinoff_prover]
+pub(crate) proof fn e6_a7_complete_interlace_ct3_d4_1x9()
+    ensures match crate::still_model::MS(crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_1x9()) {crate::still_model::Outcome::Done(value)=>crate::witness_m6_m4_a7::expected_value_interlace_ct3_d4_1x9(value),_=>false},
+{
+
+    hide(bytes_interlace_ct3_d4_1x9);hide(z_interlace_ct3_d4_1x9);hide(raw_interlace_ct3_d4_1x9);hide(r::data);hide(crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9);
+    hide(crate::critical_model::read);hide(crate::model::mh);
+    assert(bytes_interlace_ct3_d4_1x9().len()==143nat) by (compute);
+    assert(crate::model::mh(bytes_interlace_ct3_d4_1x9())==Ok((crate::model::Ihdr {width:1u32,height:9u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by {
+        reveal(crate::model::mh);
+        assert(crate::model::mh(bytes_interlace_ct3_d4_1x9())==Ok((crate::model::Ihdr {width:1u32,height:9u32,depth:4u8,color_type:3u8,interlace:1u8},33nat))) by (compute);
+    }
+        assert((1u32 << 4u8)==16u32) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x9(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x9(),33nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![80u8,76u8,84u8,69u8],data:41nat,len:48nat,next:93nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((80u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![80u8,76u8,84u8,69u8])==crate::walk_model::Name::Plte) by (compute);
+        }
+        assert(crate::metadata_model::palette(48nat,3u8,4u8,false,false,false,false)==crate::metadata_model::Decision::Keep(16nat)) by (compute);
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x9(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:26nat,next:131nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x9(),93nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,68u8,65u8,84u8],data:101nat,len:26nat,next:131nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,68u8,65u8,84u8])==crate::walk_model::Name::Idat) by (compute);
+        }
+        assert forall|phase: crate::walk_model::Phase| crate::critical_model::read(bytes_interlace_ct3_d4_1x9(),131nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:139nat,len:0nat,next:143nat,crc_ok:true,synthetic:false}) by {
+            reveal(crate::critical_model::read);
+            assert(crate::critical_model::read(bytes_interlace_ct3_d4_1x9(),131nat,phase,false)==Ok(crate::critical_model::Candidate {ty:seq![73u8,69u8,78u8,68u8],data:139nat,len:0nat,next:143nat,crc_ok:true,synthetic:false})) by (compute);
+        }
+        assert((73u8 & 32u8)==0u8) by (bit_vector);
+        assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by {
+            reveal(crate::walk_model::classify);
+            assert(crate::walk_model::classify(seq![73u8,69u8,78u8,68u8])==crate::walk_model::Name::Iend) by (compute);
+        }
+    assert(bytes_interlace_ct3_d4_1x9().subrange(101,127)==z_interlace_ct3_d4_1x9()) by (compute);
+    walk_interlace_ct3_d4_1x9(bytes_interlace_ct3_d4_1x9());
+
+    model_interlace_ct3_d4_1x9();inflate_interlace_ct3_d4_1x9();scan_interlace_ct3_d4_1x9();
+    assert(bytes_interlace_ct3_d4_1x9()==crate::witness_m6_m4_a7::bytes_interlace_ct3_d4_1x9()) by (compute);
+    assert(r::raw(a_interlace_ct3_d4_1x9())==18nat) by (compute);
+    assert(r::data(z_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),STRICT)==Some(Ok(()))) by {reveal(r::data);}
+    assert(bytes_interlace_ct3_d4_1x9().subrange(41,89)==seq![33u8,200u8,29u8,0u8,192u8,84u8,8u8,198u8,36u8,196u8,79u8,63u8,106u8,13u8,88u8,9u8,104u8,32u8,201u8,42u8,74u8,172u8,130u8,213u8,102u8,138u8,204u8,70u8,4u8,100u8,86u8,216u8,216u8,122u8,188u8,187u8,23u8,68u8,5u8,180u8,147u8,135u8,206u8,63u8,86u8,4u8,123u8,180u8]) by (compute);
+    crate::witness_m6_a7_model::palette_colour(bytes_interlace_ct3_d4_1x9(),h_interlace_ct3_d4_1x9(),26nat);
+    e6_a7_pass_interlace_ct3_d4_1x9_0();
+    e6_a7_pass_interlace_ct3_d4_1x9_2();
+    e6_a7_pass_interlace_ct3_d4_1x9_4();
+    e6_a7_pass_interlace_ct3_d4_1x9_6();
+    assert(r::count(a_interlace_ct3_d4_1x9())==7nat && crate::paint_model::domain(a_interlace_ct3_d4_1x9()) && crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9().len()==36nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),0nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),0nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),1nat)==0nat && r::ph(a_interlace_ct3_d4_1x9(),1nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),2nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),2nat)==1nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),3nat)==0nat && r::ph(a_interlace_ct3_d4_1x9(),3nat)==3nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),4nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),4nat)==2nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),5nat)==0nat && r::ph(a_interlace_ct3_d4_1x9(),5nat)==5nat) by (compute);
+    assert(r::pw(a_interlace_ct3_d4_1x9(),6nat)==1nat && r::ph(a_interlace_ct3_d4_1x9(),6nat)==4nat) by (compute);
+    assert forall|k: nat,y: nat| k<7 && r::pw(a_interlace_ct3_d4_1x9(),k)>0 && y<r::ph(a_interlace_ct3_d4_1x9(),k) implies #[trigger] crate::witness_m6_rows_model::row_bytes8(e6_a7_colour_interlace_ct3_d4_1x9(),r::line(raw_interlace_ct3_d4_1x9(),a_interlace_ct3_d4_1x9(),k,y),r::pw(a_interlace_ct3_d4_1x9(),k))==crate::witness_m6_a7_model::expected_pass_row(a_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9(),k,y) by {
+        if k==0 {} else if k==1 {} else if k==2 {} else if k==3 {} else if k==4 {} else if k==5 {} else {assert(k==6);}
+    }
+    crate::witness_m6_a7_model::complete_still(bytes_interlace_ct3_d4_1x9(),h_interlace_ct3_d4_1x9(),z_interlace_ct3_d4_1x9(),raw_interlace_ct3_d4_1x9(),16nat,e6_a7_colour_interlace_ct3_d4_1x9(),crate::witness_m6_m4_a7::expected_interlace_ct3_d4_1x9());
+}
 } // verus!

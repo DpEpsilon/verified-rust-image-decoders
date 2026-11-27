@@ -1,5 +1,56 @@
 # png_verus ledger
 
+## M6 E6-M4-A7 — all 36 interlace records complete (2026-11-27)
+
+**All 36 A7 records are complete at M6; hold for coordinator acceptance.** The 31 remaining records extend reviewed C1 additively. Full host **839** and i686 **842** each verify **7,329, zero errors**, against identical 110-file inventories with every existing generated leaf, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged **3,600-second process caps**. Times are **55m41s host** and **55m55s i686**; the checkpoint adds **283 goals** to accepted C1. The host warning remains 48 minutes; the owner-directed approach monitor stops/reports at 58 minutes rather than changing a cap or gate.
+
+Every complete independent MS witness proves both frozen dimensions and all pixel bytes, then makes a real ordinary `png::try_decode_still` call retaining unrestricted model/native equality and actual OOM request membership. The full set contains **453 pixels and 1,812 physical RGBA bytes**; 31 records with 251 pixels and 1,004 bytes are newly complete. Expected values come only from frozen VECTORS, never a decoder or reconstruction hint.
+
+The 144 nonempty-pass certificates use the reviewed Adam7 `source_coordinate` inverse/forward composition and strided expected pass rows, not the noninterlaced image argument. Untrusted scanline hints are checked through unchanged filter contracts. Every accepted C1 function, shared lemma and document-model corollary remains byte-for-byte unchanged; only generated witness tails append. No model definition, native body or public contract changes. The independent auditor specifies all three formats and twelve shapes independently, rejects duplicate names before counting, requires exact set equality and rejects changed pixel/dimension and duplicate/omitted/unexpected-index controls. Raw reproduction matches both generated modules and the repository-relative index. All 1,373 historical evidence hashes remain unchanged.
+
+| Frozen record | Current E6 assignment | Complete model / ordinary public witness |
+|---|---|---|
+| `interlace/ct0-d1-8x8` | complete at M6 | `model_complete_interlace_ct0_d1_8x8` / `public_complete_interlace_ct0_d1_8x8` |
+| `interlace/ct6-d16-8x8` | complete at M6 | `model_complete_interlace_ct6_d16_8x8` / `public_complete_interlace_ct6_d16_8x8` |
+| `interlace/ct3-d4-8x8` | complete at M6 | `model_complete_interlace_ct3_d4_8x8` / `public_complete_interlace_ct3_d4_8x8` |
+| `interlace/ct6-d16-1x9` | complete at M6 | `model_complete_interlace_ct6_d16_1x9` / `public_complete_interlace_ct6_d16_1x9` |
+| `interlace/ct3-d4-1x1` | complete at M6 | `model_complete_interlace_ct3_d4_1x1` / `public_complete_interlace_ct3_d4_1x1` |
+| `interlace/ct0-d1-1x1` | complete at M6 | `model_complete_interlace_ct0_d1_1x1` / `public_complete_interlace_ct0_d1_1x1` |
+| `interlace/ct6-d16-1x1` | complete at M6 | `model_complete_interlace_ct6_d16_1x1` / `public_complete_interlace_ct6_d16_1x1` |
+| `interlace/ct0-d1-1x2` | complete at M6 | `model_complete_interlace_ct0_d1_1x2` / `public_complete_interlace_ct0_d1_1x2` |
+| `interlace/ct6-d16-1x2` | complete at M6 | `model_complete_interlace_ct6_d16_1x2` / `public_complete_interlace_ct6_d16_1x2` |
+| `interlace/ct3-d4-1x2` | complete at M6 | `model_complete_interlace_ct3_d4_1x2` / `public_complete_interlace_ct3_d4_1x2` |
+| `interlace/ct0-d1-2x1` | complete at M6 | `model_complete_interlace_ct0_d1_2x1` / `public_complete_interlace_ct0_d1_2x1` |
+| `interlace/ct6-d16-2x1` | complete at M6 | `model_complete_interlace_ct6_d16_2x1` / `public_complete_interlace_ct6_d16_2x1` |
+| `interlace/ct3-d4-2x1` | complete at M6 | `model_complete_interlace_ct3_d4_2x1` / `public_complete_interlace_ct3_d4_2x1` |
+| `interlace/ct0-d1-1x5` | complete at M6 | `model_complete_interlace_ct0_d1_1x5` / `public_complete_interlace_ct0_d1_1x5` |
+| `interlace/ct6-d16-1x5` | complete at M6 | `model_complete_interlace_ct6_d16_1x5` / `public_complete_interlace_ct6_d16_1x5` |
+| `interlace/ct3-d4-1x5` | complete at M6 | `model_complete_interlace_ct3_d4_1x5` / `public_complete_interlace_ct3_d4_1x5` |
+| `interlace/ct0-d1-5x1` | complete at M6 | `model_complete_interlace_ct0_d1_5x1` / `public_complete_interlace_ct0_d1_5x1` |
+| `interlace/ct6-d16-5x1` | complete at M6 | `model_complete_interlace_ct6_d16_5x1` / `public_complete_interlace_ct6_d16_5x1` |
+| `interlace/ct3-d4-5x1` | complete at M6 | `model_complete_interlace_ct3_d4_5x1` / `public_complete_interlace_ct3_d4_5x1` |
+| `interlace/ct0-d1-2x2` | complete at M6 | `model_complete_interlace_ct0_d1_2x2` / `public_complete_interlace_ct0_d1_2x2` |
+| `interlace/ct6-d16-2x2` | complete at M6 | `model_complete_interlace_ct6_d16_2x2` / `public_complete_interlace_ct6_d16_2x2` |
+| `interlace/ct3-d4-2x2` | complete at M6 | `model_complete_interlace_ct3_d4_2x2` / `public_complete_interlace_ct3_d4_2x2` |
+| `interlace/ct0-d1-3x3` | complete at M6 | `model_complete_interlace_ct0_d1_3x3` / `public_complete_interlace_ct0_d1_3x3` |
+| `interlace/ct6-d16-3x3` | complete at M6 | `model_complete_interlace_ct6_d16_3x3` / `public_complete_interlace_ct6_d16_3x3` |
+| `interlace/ct3-d4-3x3` | complete at M6 | `model_complete_interlace_ct3_d4_3x3` / `public_complete_interlace_ct3_d4_3x3` |
+| `interlace/ct0-d1-4x4` | complete at M6 | `model_complete_interlace_ct0_d1_4x4` / `public_complete_interlace_ct0_d1_4x4` |
+| `interlace/ct6-d16-4x4` | complete at M6 | `model_complete_interlace_ct6_d16_4x4` / `public_complete_interlace_ct6_d16_4x4` |
+| `interlace/ct3-d4-4x4` | complete at M6 | `model_complete_interlace_ct3_d4_4x4` / `public_complete_interlace_ct3_d4_4x4` |
+| `interlace/ct0-d1-5x5` | complete at M6 | `model_complete_interlace_ct0_d1_5x5` / `public_complete_interlace_ct0_d1_5x5` |
+| `interlace/ct6-d16-5x5` | complete at M6 | `model_complete_interlace_ct6_d16_5x5` / `public_complete_interlace_ct6_d16_5x5` |
+| `interlace/ct3-d4-5x5` | complete at M6 | `model_complete_interlace_ct3_d4_5x5` / `public_complete_interlace_ct3_d4_5x5` |
+| `interlace/ct0-d1-9x1` | complete at M6 | `model_complete_interlace_ct0_d1_9x1` / `public_complete_interlace_ct0_d1_9x1` |
+| `interlace/ct6-d16-9x1` | complete at M6 | `model_complete_interlace_ct6_d16_9x1` / `public_complete_interlace_ct6_d16_9x1` |
+| `interlace/ct3-d4-9x1` | complete at M6 | `model_complete_interlace_ct3_d4_9x1` / `public_complete_interlace_ct3_d4_9x1` |
+| `interlace/ct0-d1-1x9` | complete at M6 | `model_complete_interlace_ct0_d1_1x9` / `public_complete_interlace_ct0_d1_1x9` |
+| `interlace/ct3-d4-1x9` | complete at M6 | `model_complete_interlace_ct3_d4_1x9` / `public_complete_interlace_ct3_d4_1x9` |
+
+All **117 distinct moved records and 118 assignments** now have complete M6 witnesses, and the seven prior complete errors remain unchanged. E6 clause 6's moved-witness requirement is satisfied; this does not sign off M6 or remove the remaining T10, mutation or CAPS-SYM obligations. Independent acceptance is pending. Named-policy iterator 2b remains paused; no recovered-bit work is included.
+
+Runtime **840** passes release/fault/council tests, cap/allocation self-tests and no_std; frozen conformance remains **846/848** with exactly the two prescribed skips. Public-error control **841** passes **72/72**. Final control **843** binds source inventories, original/C1 prefix preservation, the accepted Adam7 composition, independent frozen literals/schedules, raw reproduction, cache pins and historical hashes. The timing evidence records the actual accumulated full-36 baseline and largest default-budget certificates; diagnostics earn no checkpoint credit. No protected/QUESTIONS edit, trust shortcut, cache build, solver/process-limit increase, module-scoped acceptance, mutation/CAPS-SYM methodology change, commit or push occurred. Durable drivers remain under `/__modal/volumes/vo-Iyh3VLkOB7cEHrIp2RkTs7/m6-e6-m4-a7/223a5ef-20261127`.
+
 ## M6 E6-M4-A7-C1 — five-record Adam7 calibration (2026-11-27)
 
 **Five interlace records are complete at M6; hold before the remaining 31 A7 records.** Full host **832** and i686 **835** each verify **7,046, zero errors**, against identical 109-file inventories with every existing leaf, `--no-cheating`, default solver limits, 256 MiB stacks and unchanged 3,600-second process caps. Times are **52m54s host** and **53m16s i686**. The checkpoint adds **62 goals** to accepted 35-FILT. Independent acceptance remains pending.
@@ -689,42 +740,42 @@ Fresh runtime/source run **447** passes release tests, fault injection, all seve
 | `image/filter-type-255` | complete at M4 | Proved | Not applicable |
 | `precedence/adler-before-filter` | complete at M4 | Proved | Not applicable |
 | `precedence/index-row0-before-filter-row1` | complete at M4 | Proved | Not applicable |
-| `interlace/ct0-d1-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-1x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-1x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-1x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct3-d4-1x1` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
-| `interlace/ct0-d1-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-1x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-2x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-2x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-2x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-1x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-1x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-1x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-5x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-5x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-5x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-2x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-2x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-2x2` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-3x3` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-3x3` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-3x3` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-4x4` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-4x4` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-4x4` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-5x5` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-1x2` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-1x2` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-1x2` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-2x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-2x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-2x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-1x5` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-1x5` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-1x5` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-5x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-5x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-5x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-2x2` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-2x2` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-2x2` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-3x3` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-3x3` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-3x3` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-4x4` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-4x4` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-4x4` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-5x5` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-5x5` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-5x5` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct0-d1-8x8` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct6-d16-8x8` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct3-d4-8x8` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
-| `interlace/ct0-d1-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct6-d16-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct3-d4-9x1` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
-| `interlace/ct0-d1-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct0-d1-9x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct6-d16-9x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct3-d4-9x1` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
+| `interlace/ct0-d1-1x9` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
 | `interlace/ct6-d16-1x9` | complete at M6 (E6-M4-A7-C1) | Proved | Proved (full A7 calibration gates) |
-| `interlace/ct3-d4-1x9` | projection at M4, complete at M6 | Proved | Unproved; due M6 |
+| `interlace/ct3-d4-1x9` | complete at M6 (E6-M4-A7) | Proved | Proved (full A7 calibration gates) |
 | `interlace/1x1-filter-bytes-for-empty-passes` | complete at M4 | Proved | Not applicable |
 
 ## M4 filter projections and E8 checkpoint (2026-11-22)
@@ -874,42 +925,42 @@ This is an assignment list, not proof credit. All 76 gates below are **unproved*
 | `image/filter-type-255` | complete at M4 |
 | `precedence/adler-before-filter` | complete at M4 |
 | `precedence/index-row0-before-filter-row1` | complete at M4 |
-| `interlace/ct0-d1-1x1` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-1x1` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-1x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-1x1` | complete at M6 (E6-M4-A7) |
 | `interlace/ct3-d4-1x1` | complete at M6 (E6-M4-A7-C1) |
-| `interlace/ct0-d1-1x2` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-1x2` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-1x2` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-2x1` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-2x1` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-2x1` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-1x5` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-1x5` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-1x5` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-5x1` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-5x1` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-5x1` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-2x2` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-2x2` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-2x2` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-3x3` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-3x3` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-3x3` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-4x4` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-4x4` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-4x4` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-5x5` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-5x5` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-5x5` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-1x2` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-1x2` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-1x2` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-2x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-2x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-2x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-1x5` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-1x5` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-1x5` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-5x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-5x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-5x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-2x2` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-2x2` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-2x2` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-3x3` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-3x3` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-3x3` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-4x4` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-4x4` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-4x4` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-5x5` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-5x5` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-5x5` | complete at M6 (E6-M4-A7) |
 | `interlace/ct0-d1-8x8` | complete at M6 (E6-M4-A7-C1) |
 | `interlace/ct6-d16-8x8` | complete at M6 (E6-M4-A7-C1) |
 | `interlace/ct3-d4-8x8` | complete at M6 (E6-M4-A7-C1) |
-| `interlace/ct0-d1-9x1` | projection at M4, complete at M6 |
-| `interlace/ct6-d16-9x1` | projection at M4, complete at M6 |
-| `interlace/ct3-d4-9x1` | projection at M4, complete at M6 |
-| `interlace/ct0-d1-1x9` | projection at M4, complete at M6 |
+| `interlace/ct0-d1-9x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct6-d16-9x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct3-d4-9x1` | complete at M6 (E6-M4-A7) |
+| `interlace/ct0-d1-1x9` | complete at M6 (E6-M4-A7) |
 | `interlace/ct6-d16-1x9` | complete at M6 (E6-M4-A7-C1) |
-| `interlace/ct3-d4-1x9` | projection at M4, complete at M6 |
+| `interlace/ct3-d4-1x9` | complete at M6 (E6-M4-A7) |
 | `interlace/1x1-filter-bytes-for-empty-passes` | complete at M4 |
 
 ## M3 signed off (2026-11-21)

@@ -102,4 +102,624 @@ pub fn public_complete_interlace_ct3_d4_1x1() -> (result: Result<crate::png::Sti
     proof {assert(b@==bytes_interlace_ct3_d4_1x1());model_complete_interlace_ct3_d4_1x1();}
     crate::png::try_decode_still(&b)
 }
+// interlace/ct0-d1-1x1
+pub open spec fn bytes_interlace_ct0_d1_1x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,64u8,105u8,201u8,178u8,0u8,0u8,0u8,10u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,0u8,0u8,0u8,130u8,0u8,129u8,119u8,205u8,114u8,182u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_1x1() -> Seq<u8> {seq![255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_1x1(value: sm::Value) -> bool {value.width==1u32 && value.height==1u32 && value.pixels==expected_interlace_ct0_d1_1x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_1x1()
+    ensures match sm::MS(bytes_interlace_ct0_d1_1x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_1x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_1x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_1x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_1x1(),false),result),
+        se::eq(bytes_interlace_ct0_d1_1x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_1x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,64u8,105u8,201u8,178u8,0u8,0u8,0u8,10u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,0u8,0u8,0u8,130u8,0u8,129u8,119u8,205u8,114u8,182u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_1x1());model_complete_interlace_ct0_d1_1x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-1x1
+pub open spec fn bytes_interlace_ct6_d16_1x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,56u8,130u8,40u8,92u8,0u8,0u8,0u8,17u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,200u8,80u8,188u8,62u8,125u8,91u8,124u8,174u8,23u8,0u8,17u8,70u8,3u8,196u8,100u8,212u8,110u8,131u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_1x1() -> Seq<u8> {seq![104u8,215u8,182u8,109u8]}
+pub open spec fn expected_value_interlace_ct6_d16_1x1(value: sm::Value) -> bool {value.width==1u32 && value.height==1u32 && value.pixels==expected_interlace_ct6_d16_1x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_1x1()
+    ensures match sm::MS(bytes_interlace_ct6_d16_1x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_1x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_1x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_1x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_1x1(),false),result),
+        se::eq(bytes_interlace_ct6_d16_1x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_1x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,56u8,130u8,40u8,92u8,0u8,0u8,0u8,17u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,200u8,80u8,188u8,62u8,125u8,91u8,124u8,174u8,23u8,0u8,17u8,70u8,3u8,196u8,100u8,212u8,110u8,131u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_1x1());model_complete_interlace_ct6_d16_1x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-1x2
+pub open spec fn bytes_interlace_ct0_d1_1x2() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,1u8,0u8,0u8,0u8,1u8,198u8,253u8,187u8,28u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,0u8,0u8,2u8,6u8,1u8,2u8,163u8,240u8,140u8,39u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_1x2() -> Seq<u8> {seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_1x2(value: sm::Value) -> bool {value.width==1u32 && value.height==2u32 && value.pixels==expected_interlace_ct0_d1_1x2()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_1x2()
+    ensures match sm::MS(bytes_interlace_ct0_d1_1x2()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_1x2(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_1x2();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_1x2() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_1x2(),false),result),
+        se::eq(bytes_interlace_ct0_d1_1x2(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_1x2(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,1u8,0u8,0u8,0u8,1u8,198u8,253u8,187u8,28u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,0u8,0u8,2u8,6u8,1u8,2u8,163u8,240u8,140u8,39u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_1x2());model_complete_interlace_ct0_d1_1x2();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-1x2
+pub open spec fn bytes_interlace_ct6_d16_1x2() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,16u8,6u8,0u8,0u8,1u8,190u8,22u8,90u8,242u8,0u8,0u8,0u8,27u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,88u8,114u8,116u8,39u8,59u8,79u8,103u8,193u8,71u8,198u8,27u8,31u8,229u8,171u8,210u8,38u8,62u8,23u8,0u8,0u8,77u8,102u8,8u8,113u8,190u8,101u8,86u8,216u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_1x2() -> Seq<u8> {seq![164u8,184u8,12u8,113u8,216u8,31u8,102u8,230u8]}
+pub open spec fn expected_value_interlace_ct6_d16_1x2(value: sm::Value) -> bool {value.width==1u32 && value.height==2u32 && value.pixels==expected_interlace_ct6_d16_1x2()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_1x2()
+    ensures match sm::MS(bytes_interlace_ct6_d16_1x2()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_1x2(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_1x2();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_1x2() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_1x2(),false),result),
+        se::eq(bytes_interlace_ct6_d16_1x2(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_1x2(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,16u8,6u8,0u8,0u8,1u8,190u8,22u8,90u8,242u8,0u8,0u8,0u8,27u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,88u8,114u8,116u8,39u8,59u8,79u8,103u8,193u8,71u8,198u8,27u8,31u8,229u8,171u8,210u8,38u8,62u8,23u8,0u8,0u8,77u8,102u8,8u8,113u8,190u8,101u8,86u8,216u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_1x2());model_complete_interlace_ct6_d16_1x2();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-1x2
+pub open spec fn bytes_interlace_ct3_d4_1x2() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,4u8,3u8,0u8,0u8,1u8,28u8,168u8,155u8,130u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,48u8,133u8,152u8,119u8,73u8,36u8,137u8,169u8,47u8,31u8,222u8,37u8,218u8,42u8,11u8,195u8,93u8,100u8,205u8,159u8,179u8,3u8,251u8,34u8,252u8,216u8,107u8,91u8,226u8,12u8,195u8,205u8,79u8,172u8,16u8,169u8,169u8,254u8,66u8,31u8,92u8,97u8,148u8,36u8,145u8,249u8,13u8,185u8,153u8,213u8,47u8,0u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,80u8,96u8,44u8,0u8,0u8,0u8,214u8,0u8,146u8,188u8,134u8,196u8,42u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_1x2() -> Seq<u8> {seq![137u8,169u8,47u8,255u8,3u8,251u8,34u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_1x2(value: sm::Value) -> bool {value.width==1u32 && value.height==2u32 && value.pixels==expected_interlace_ct3_d4_1x2()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_1x2()
+    ensures match sm::MS(bytes_interlace_ct3_d4_1x2()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_1x2(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_1x2();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_1x2() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_1x2(),false),result),
+        se::eq(bytes_interlace_ct3_d4_1x2(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_1x2(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,2u8,4u8,3u8,0u8,0u8,1u8,28u8,168u8,155u8,130u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,48u8,133u8,152u8,119u8,73u8,36u8,137u8,169u8,47u8,31u8,222u8,37u8,218u8,42u8,11u8,195u8,93u8,100u8,205u8,159u8,179u8,3u8,251u8,34u8,252u8,216u8,107u8,91u8,226u8,12u8,195u8,205u8,79u8,172u8,16u8,169u8,169u8,254u8,66u8,31u8,92u8,97u8,148u8,36u8,145u8,249u8,13u8,185u8,153u8,213u8,47u8,0u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,80u8,96u8,44u8,0u8,0u8,0u8,214u8,0u8,146u8,188u8,134u8,196u8,42u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_1x2());model_complete_interlace_ct3_d4_1x2();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-2x1
+pub open spec fn bytes_interlace_ct0_d1_2x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,171u8,94u8,114u8,177u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,0u8,0u8,0u8,134u8,0u8,130u8,167u8,183u8,79u8,85u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_2x1() -> Seq<u8> {seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_2x1(value: sm::Value) -> bool {value.width==2u32 && value.height==1u32 && value.pixels==expected_interlace_ct0_d1_2x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_2x1()
+    ensures match sm::MS(bytes_interlace_ct0_d1_2x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_2x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_2x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_2x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_2x1(),false),result),
+        se::eq(bytes_interlace_ct0_d1_2x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_2x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,171u8,94u8,114u8,177u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,0u8,0u8,0u8,134u8,0u8,130u8,167u8,183u8,79u8,85u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_2x1());model_complete_interlace_ct0_d1_2x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-2x1
+pub open spec fn bytes_interlace_ct6_d16_2x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,211u8,181u8,147u8,95u8,0u8,0u8,0u8,27u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,8u8,102u8,158u8,94u8,252u8,238u8,68u8,213u8,74u8,70u8,150u8,218u8,60u8,173u8,235u8,55u8,79u8,171u8,3u8,0u8,68u8,212u8,7u8,246u8,210u8,201u8,17u8,122u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_2x1() -> Seq<u8> {seq![83u8,151u8,238u8,122u8,4u8,110u8,215u8,202u8]}
+pub open spec fn expected_value_interlace_ct6_d16_2x1(value: sm::Value) -> bool {value.width==2u32 && value.height==1u32 && value.pixels==expected_interlace_ct6_d16_2x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_2x1()
+    ensures match sm::MS(bytes_interlace_ct6_d16_2x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_2x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_2x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_2x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_2x1(),false),result),
+        se::eq(bytes_interlace_ct6_d16_2x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_2x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,211u8,181u8,147u8,95u8,0u8,0u8,0u8,27u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,8u8,102u8,158u8,94u8,252u8,238u8,68u8,213u8,74u8,70u8,150u8,218u8,60u8,173u8,235u8,55u8,79u8,171u8,3u8,0u8,68u8,212u8,7u8,246u8,210u8,201u8,17u8,122u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_2x1());model_complete_interlace_ct6_d16_2x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-2x1
+pub open spec fn bytes_interlace_ct3_d4_2x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,1u8,4u8,3u8,0u8,0u8,1u8,113u8,11u8,82u8,47u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,89u8,196u8,227u8,155u8,87u8,162u8,121u8,246u8,210u8,86u8,127u8,185u8,92u8,199u8,181u8,14u8,145u8,216u8,190u8,196u8,167u8,144u8,238u8,26u8,246u8,17u8,167u8,145u8,35u8,138u8,66u8,27u8,249u8,24u8,58u8,27u8,53u8,70u8,220u8,235u8,135u8,120u8,6u8,211u8,79u8,87u8,184u8,23u8,22u8,106u8,116u8,123u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,120u8,192u8,152u8,0u8,0u8,3u8,6u8,1u8,66u8,251u8,44u8,17u8,229u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_2x1() -> Seq<u8> {seq![6u8,211u8,79u8,255u8,190u8,196u8,167u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_2x1(value: sm::Value) -> bool {value.width==2u32 && value.height==1u32 && value.pixels==expected_interlace_ct3_d4_2x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_2x1()
+    ensures match sm::MS(bytes_interlace_ct3_d4_2x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_2x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_2x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_2x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_2x1(),false),result),
+        se::eq(bytes_interlace_ct3_d4_2x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_2x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,1u8,4u8,3u8,0u8,0u8,1u8,113u8,11u8,82u8,47u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,89u8,196u8,227u8,155u8,87u8,162u8,121u8,246u8,210u8,86u8,127u8,185u8,92u8,199u8,181u8,14u8,145u8,216u8,190u8,196u8,167u8,144u8,238u8,26u8,246u8,17u8,167u8,145u8,35u8,138u8,66u8,27u8,249u8,24u8,58u8,27u8,53u8,70u8,220u8,235u8,135u8,120u8,6u8,211u8,79u8,87u8,184u8,23u8,22u8,106u8,116u8,123u8,0u8,0u8,0u8,12u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,120u8,192u8,152u8,0u8,0u8,3u8,6u8,1u8,66u8,251u8,44u8,17u8,229u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_2x1());model_complete_interlace_ct3_d4_2x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-1x5
+pub open spec fn bytes_interlace_ct0_d1_1x5() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,5u8,1u8,0u8,0u8,0u8,1u8,219u8,248u8,139u8,164u8,0u8,0u8,0u8,18u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,96u8,98u8,96u8,102u8,96u8,105u8,0u8,0u8,4u8,50u8,1u8,11u8,87u8,131u8,16u8,229u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_1x5() -> Seq<u8> {seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_1x5(value: sm::Value) -> bool {value.width==1u32 && value.height==5u32 && value.pixels==expected_interlace_ct0_d1_1x5()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_1x5()
+    ensures match sm::MS(bytes_interlace_ct0_d1_1x5()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_1x5(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_1x5();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_1x5() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_1x5(),false),result),
+        se::eq(bytes_interlace_ct0_d1_1x5(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_1x5(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,5u8,1u8,0u8,0u8,0u8,1u8,219u8,248u8,139u8,164u8,0u8,0u8,0u8,18u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,96u8,98u8,96u8,102u8,96u8,105u8,0u8,0u8,4u8,50u8,1u8,11u8,87u8,131u8,16u8,229u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_1x5());model_complete_interlace_ct0_d1_1x5();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-1x5
+pub open spec fn bytes_interlace_ct6_d16_1x5() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,5u8,16u8,6u8,0u8,0u8,1u8,163u8,19u8,106u8,74u8,0u8,0u8,0u8,56u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,45u8,0u8,210u8,255u8,0u8,158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8,1u8,222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8,2u8,139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8,3u8,186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8,4u8,94u8,33u8,232u8,25u8,67u8,210u8,157u8,76u8,9u8,226u8,22u8,59u8,4u8,201u8,254u8,17u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_1x5() -> Seq<u8> {seq![158u8,251u8,234u8,72u8,185u8,41u8,174u8,199u8,139u8,221u8,1u8,83u8,24u8,16u8,241u8,100u8,222u8,55u8,225u8,106u8]}
+pub open spec fn expected_value_interlace_ct6_d16_1x5(value: sm::Value) -> bool {value.width==1u32 && value.height==5u32 && value.pixels==expected_interlace_ct6_d16_1x5()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_1x5()
+    ensures match sm::MS(bytes_interlace_ct6_d16_1x5()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_1x5(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_1x5();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_1x5() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_1x5(),false),result),
+        se::eq(bytes_interlace_ct6_d16_1x5(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_1x5(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,5u8,16u8,6u8,0u8,0u8,1u8,163u8,19u8,106u8,74u8,0u8,0u8,0u8,56u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,45u8,0u8,210u8,255u8,0u8,158u8,163u8,251u8,139u8,234u8,109u8,72u8,74u8,1u8,222u8,255u8,55u8,114u8,225u8,214u8,106u8,77u8,2u8,139u8,98u8,221u8,148u8,1u8,110u8,82u8,237u8,3u8,186u8,20u8,40u8,253u8,174u8,161u8,199u8,249u8,4u8,94u8,33u8,232u8,25u8,67u8,210u8,157u8,76u8,9u8,226u8,22u8,59u8,4u8,201u8,254u8,17u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_1x5());model_complete_interlace_ct6_d16_1x5();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-1x5
+pub open spec fn bytes_interlace_ct3_d4_1x5() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,5u8,4u8,3u8,0u8,0u8,1u8,1u8,173u8,171u8,58u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,87u8,8u8,201u8,231u8,105u8,48u8,146u8,222u8,193u8,246u8,123u8,62u8,127u8,17u8,162u8,150u8,214u8,243u8,70u8,168u8,2u8,185u8,190u8,15u8,115u8,201u8,98u8,124u8,177u8,208u8,133u8,240u8,176u8,10u8,36u8,156u8,79u8,103u8,70u8,180u8,169u8,43u8,220u8,164u8,131u8,13u8,126u8,151u8,186u8,111u8,222u8,13u8,0u8,0u8,0u8,18u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,76u8,96u8,122u8,192u8,220u8,192u8,242u8,1u8,0u8,9u8,162u8,2u8,187u8,231u8,49u8,168u8,193u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_1x5() -> Seq<u8> {seq![87u8,8u8,201u8,255u8,115u8,201u8,98u8,255u8,220u8,164u8,131u8,255u8,185u8,190u8,15u8,255u8,70u8,168u8,2u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_1x5(value: sm::Value) -> bool {value.width==1u32 && value.height==5u32 && value.pixels==expected_interlace_ct3_d4_1x5()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_1x5()
+    ensures match sm::MS(bytes_interlace_ct3_d4_1x5()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_1x5(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_1x5();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_1x5() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_1x5(),false),result),
+        se::eq(bytes_interlace_ct3_d4_1x5(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_1x5(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,5u8,4u8,3u8,0u8,0u8,1u8,1u8,173u8,171u8,58u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,87u8,8u8,201u8,231u8,105u8,48u8,146u8,222u8,193u8,246u8,123u8,62u8,127u8,17u8,162u8,150u8,214u8,243u8,70u8,168u8,2u8,185u8,190u8,15u8,115u8,201u8,98u8,124u8,177u8,208u8,133u8,240u8,176u8,10u8,36u8,156u8,79u8,103u8,70u8,180u8,169u8,43u8,220u8,164u8,131u8,13u8,126u8,151u8,186u8,111u8,222u8,13u8,0u8,0u8,0u8,18u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,76u8,96u8,122u8,192u8,220u8,192u8,242u8,1u8,0u8,9u8,162u8,2u8,187u8,231u8,49u8,168u8,193u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_1x5());model_complete_interlace_ct3_d4_1x5();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-5x1
+pub open spec fn bytes_interlace_ct0_d1_5x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,73u8,130u8,105u8,200u8,0u8,0u8,0u8,16u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,98u8,96u8,102u8,0u8,0u8,6u8,28u8,1u8,7u8,19u8,83u8,222u8,14u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_5x1() -> Seq<u8> {seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_5x1(value: sm::Value) -> bool {value.width==5u32 && value.height==1u32 && value.pixels==expected_interlace_ct0_d1_5x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_5x1()
+    ensures match sm::MS(bytes_interlace_ct0_d1_5x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_5x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_5x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_5x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_5x1(),false),result),
+        se::eq(bytes_interlace_ct0_d1_5x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_5x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,73u8,130u8,105u8,200u8,0u8,0u8,0u8,16u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,98u8,96u8,102u8,0u8,0u8,6u8,28u8,1u8,7u8,19u8,83u8,222u8,14u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_5x1());model_complete_interlace_ct0_d1_5x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-5x1
+pub open spec fn bytes_interlace_ct6_d16_5x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,49u8,105u8,136u8,38u8,0u8,0u8,0u8,55u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,44u8,0u8,211u8,255u8,0u8,120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8,1u8,87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8,2u8,246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8,3u8,25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,28u8,252u8,208u8,43u8,185u8,193u8,224u8,245u8,182u8,42u8,20u8,228u8,206u8,95u8,35u8,250u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_5x1() -> Seq<u8> {seq![120u8,130u8,236u8,223u8,26u8,157u8,39u8,115u8,246u8,231u8,221u8,183u8,40u8,31u8,204u8,25u8,87u8,58u8,164u8,46u8]}
+pub open spec fn expected_value_interlace_ct6_d16_5x1(value: sm::Value) -> bool {value.width==5u32 && value.height==1u32 && value.pixels==expected_interlace_ct6_d16_5x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_5x1()
+    ensures match sm::MS(bytes_interlace_ct6_d16_5x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_5x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_5x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_5x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_5x1(),false),result),
+        se::eq(bytes_interlace_ct6_d16_5x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_5x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,49u8,105u8,136u8,38u8,0u8,0u8,0u8,55u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,44u8,0u8,211u8,255u8,0u8,120u8,193u8,130u8,10u8,237u8,34u8,223u8,182u8,1u8,87u8,141u8,58u8,175u8,165u8,32u8,46u8,134u8,2u8,246u8,181u8,232u8,19u8,221u8,101u8,184u8,36u8,3u8,25u8,176u8,158u8,11u8,39u8,83u8,115u8,169u8,28u8,252u8,208u8,43u8,185u8,193u8,224u8,245u8,182u8,42u8,20u8,228u8,206u8,95u8,35u8,250u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_5x1());model_complete_interlace_ct6_d16_5x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-5x1
+pub open spec fn bytes_interlace_ct3_d4_5x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,1u8,4u8,3u8,0u8,0u8,1u8,147u8,215u8,73u8,86u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,46u8,39u8,214u8,171u8,90u8,127u8,169u8,19u8,13u8,145u8,106u8,212u8,19u8,229u8,18u8,255u8,102u8,165u8,147u8,116u8,179u8,14u8,105u8,220u8,149u8,215u8,123u8,11u8,255u8,65u8,144u8,74u8,73u8,227u8,67u8,94u8,118u8,224u8,157u8,159u8,235u8,74u8,99u8,222u8,157u8,20u8,121u8,123u8,68u8,20u8,215u8,220u8,0u8,0u8,0u8,16u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,216u8,192u8,88u8,192u8,244u8,128u8,185u8,24u8,0u8,10u8,47u8,2u8,122u8,28u8,110u8,199u8,221u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_5x1() -> Seq<u8> {seq![227u8,67u8,94u8,255u8,14u8,105u8,220u8,255u8,99u8,222u8,157u8,255u8,145u8,106u8,212u8,255u8,14u8,105u8,220u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_5x1(value: sm::Value) -> bool {value.width==5u32 && value.height==1u32 && value.pixels==expected_interlace_ct3_d4_5x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_5x1()
+    ensures match sm::MS(bytes_interlace_ct3_d4_5x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_5x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_5x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_5x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_5x1(),false),result),
+        se::eq(bytes_interlace_ct3_d4_5x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_5x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,1u8,4u8,3u8,0u8,0u8,1u8,147u8,215u8,73u8,86u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,46u8,39u8,214u8,171u8,90u8,127u8,169u8,19u8,13u8,145u8,106u8,212u8,19u8,229u8,18u8,255u8,102u8,165u8,147u8,116u8,179u8,14u8,105u8,220u8,149u8,215u8,123u8,11u8,255u8,65u8,144u8,74u8,73u8,227u8,67u8,94u8,118u8,224u8,157u8,159u8,235u8,74u8,99u8,222u8,157u8,20u8,121u8,123u8,68u8,20u8,215u8,220u8,0u8,0u8,0u8,16u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,216u8,192u8,88u8,192u8,244u8,128u8,185u8,24u8,0u8,10u8,47u8,2u8,122u8,28u8,110u8,199u8,221u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_5x1());model_complete_interlace_ct3_d4_5x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-2x2
+pub open spec fn bytes_interlace_ct0_d1_2x2() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,1u8,0u8,0u8,0u8,1u8,45u8,202u8,0u8,31u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,100u8,96u8,114u8,0u8,0u8,2u8,206u8,0u8,196u8,187u8,87u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_2x2() -> Seq<u8> {seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_2x2(value: sm::Value) -> bool {value.width==2u32 && value.height==2u32 && value.pixels==expected_interlace_ct0_d1_2x2()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_2x2()
+    ensures match sm::MS(bytes_interlace_ct0_d1_2x2()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_2x2(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_2x2();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_2x2() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_2x2(),false),result),
+        se::eq(bytes_interlace_ct0_d1_2x2(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_2x2(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,1u8,0u8,0u8,0u8,1u8,45u8,202u8,0u8,31u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,100u8,96u8,114u8,0u8,0u8,2u8,206u8,0u8,196u8,187u8,87u8,157u8,8u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_2x2());model_complete_interlace_ct0_d1_2x2();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-2x2
+pub open spec fn bytes_interlace_ct6_d16_2x2() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,16u8,6u8,0u8,0u8,1u8,85u8,33u8,225u8,241u8,0u8,0u8,0u8,44u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,240u8,121u8,214u8,239u8,92u8,31u8,35u8,93u8,203u8,104u8,187u8,76u8,42u8,220u8,172u8,147u8,95u8,149u8,233u8,138u8,70u8,197u8,50u8,205u8,19u8,18u8,179u8,126u8,60u8,201u8,208u8,231u8,43u8,57u8,191u8,16u8,0u8,226u8,87u8,13u8,228u8,180u8,246u8,129u8,27u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_2x2() -> Seq<u8> {seq![77u8,143u8,127u8,27u8,61u8,26u8,54u8,15u8,211u8,120u8,42u8,25u8,248u8,104u8,14u8,207u8]}
+pub open spec fn expected_value_interlace_ct6_d16_2x2(value: sm::Value) -> bool {value.width==2u32 && value.height==2u32 && value.pixels==expected_interlace_ct6_d16_2x2()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_2x2()
+    ensures match sm::MS(bytes_interlace_ct6_d16_2x2()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_2x2(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_2x2();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_2x2() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_2x2(),false),result),
+        se::eq(bytes_interlace_ct6_d16_2x2(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_2x2(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,16u8,6u8,0u8,0u8,1u8,85u8,33u8,225u8,241u8,0u8,0u8,0u8,44u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,240u8,121u8,214u8,239u8,92u8,31u8,35u8,93u8,203u8,104u8,187u8,76u8,42u8,220u8,172u8,147u8,95u8,149u8,233u8,138u8,70u8,197u8,50u8,205u8,19u8,18u8,179u8,126u8,60u8,201u8,208u8,231u8,43u8,57u8,191u8,16u8,0u8,226u8,87u8,13u8,228u8,180u8,246u8,129u8,27u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_2x2());model_complete_interlace_ct6_d16_2x2();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-2x2
+pub open spec fn bytes_interlace_ct3_d4_2x2() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,4u8,3u8,0u8,0u8,1u8,247u8,159u8,32u8,129u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,194u8,155u8,159u8,253u8,215u8,50u8,11u8,140u8,194u8,168u8,145u8,56u8,151u8,195u8,123u8,17u8,249u8,103u8,143u8,55u8,212u8,184u8,212u8,105u8,207u8,41u8,49u8,81u8,122u8,2u8,25u8,134u8,96u8,239u8,125u8,219u8,110u8,210u8,237u8,228u8,162u8,17u8,50u8,150u8,193u8,202u8,116u8,25u8,70u8,49u8,9u8,56u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,80u8,96u8,60u8,192u8,212u8,2u8,0u8,3u8,114u8,1u8,104u8,145u8,9u8,202u8,127u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_2x2() -> Seq<u8> {seq![11u8,140u8,194u8,255u8,110u8,210u8,237u8,255u8,207u8,41u8,49u8,255u8,151u8,195u8,123u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_2x2(value: sm::Value) -> bool {value.width==2u32 && value.height==2u32 && value.pixels==expected_interlace_ct3_d4_2x2()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_2x2()
+    ensures match sm::MS(bytes_interlace_ct3_d4_2x2()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_2x2(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_2x2();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_2x2() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_2x2(),false),result),
+        se::eq(bytes_interlace_ct3_d4_2x2(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_2x2(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,2u8,0u8,0u8,0u8,2u8,4u8,3u8,0u8,0u8,1u8,247u8,159u8,32u8,129u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,194u8,155u8,159u8,253u8,215u8,50u8,11u8,140u8,194u8,168u8,145u8,56u8,151u8,195u8,123u8,17u8,249u8,103u8,143u8,55u8,212u8,184u8,212u8,105u8,207u8,41u8,49u8,81u8,122u8,2u8,25u8,134u8,96u8,239u8,125u8,219u8,110u8,210u8,237u8,228u8,162u8,17u8,50u8,150u8,193u8,202u8,116u8,25u8,70u8,49u8,9u8,56u8,0u8,0u8,0u8,14u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,80u8,96u8,60u8,192u8,212u8,2u8,0u8,3u8,114u8,1u8,104u8,145u8,9u8,202u8,127u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_2x2());model_complete_interlace_ct3_d4_2x2();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-3x3
+pub open spec fn bytes_interlace_ct0_d1_3x3() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,1u8,0u8,0u8,0u8,1u8,9u8,84u8,184u8,132u8,0u8,0u8,0u8,20u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,114u8,96u8,102u8,96u8,97u8,96u8,56u8,0u8,0u8,12u8,200u8,2u8,11u8,89u8,216u8,176u8,93u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_3x3() -> Seq<u8> {seq![255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_3x3(value: sm::Value) -> bool {value.width==3u32 && value.height==3u32 && value.pixels==expected_interlace_ct0_d1_3x3()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_3x3()
+    ensures match sm::MS(bytes_interlace_ct0_d1_3x3()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_3x3(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_3x3();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_3x3() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_3x3(),false),result),
+        se::eq(bytes_interlace_ct0_d1_3x3(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_3x3(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,1u8,0u8,0u8,0u8,1u8,9u8,84u8,184u8,132u8,0u8,0u8,0u8,20u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,114u8,96u8,102u8,96u8,97u8,96u8,56u8,0u8,0u8,12u8,200u8,2u8,11u8,89u8,216u8,176u8,93u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_3x3());model_complete_interlace_ct0_d1_3x3();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-3x3
+pub open spec fn bytes_interlace_ct6_d16_3x3() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,16u8,6u8,0u8,0u8,1u8,113u8,191u8,89u8,106u8,0u8,0u8,0u8,89u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,78u8,0u8,177u8,255u8,0u8,106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8,1u8,65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8,2u8,221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8,3u8,73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8,4u8,106u8,136u8,38u8,39u8,238u8,100u8,203u8,66u8,0u8,165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8,185u8,85u8,33u8,194u8,53u8,255u8,29u8,250u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_3x3() -> Seq<u8> {seq![106u8,73u8,7u8,107u8,73u8,53u8,245u8,71u8,65u8,26u8,135u8,22u8,165u8,124u8,127u8,25u8,7u8,69u8,253u8,57u8,195u8,174u8,198u8,127u8,220u8,12u8,253u8,202u8,179u8,90u8,228u8,19u8,225u8,150u8,166u8,12u8]}
+pub open spec fn expected_value_interlace_ct6_d16_3x3(value: sm::Value) -> bool {value.width==3u32 && value.height==3u32 && value.pixels==expected_interlace_ct6_d16_3x3()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_3x3()
+    ensures match sm::MS(bytes_interlace_ct6_d16_3x3()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_3x3(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_3x3();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_3x3() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_3x3(),false),result),
+        se::eq(bytes_interlace_ct6_d16_3x3(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_3x3(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,16u8,6u8,0u8,0u8,1u8,113u8,191u8,89u8,106u8,0u8,0u8,0u8,89u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,78u8,0u8,177u8,255u8,0u8,106u8,51u8,72u8,202u8,7u8,37u8,107u8,131u8,1u8,65u8,76u8,26u8,146u8,135u8,159u8,22u8,57u8,2u8,221u8,3u8,12u8,95u8,254u8,37u8,202u8,188u8,225u8,224u8,150u8,201u8,166u8,132u8,12u8,21u8,3u8,73u8,112u8,52u8,233u8,246u8,19u8,71u8,152u8,4u8,106u8,136u8,38u8,39u8,238u8,100u8,203u8,66u8,0u8,165u8,128u8,124u8,223u8,127u8,22u8,24u8,234u8,7u8,104u8,68u8,198u8,253u8,156u8,57u8,51u8,196u8,39u8,174u8,126u8,198u8,150u8,126u8,255u8,185u8,85u8,33u8,194u8,53u8,255u8,29u8,250u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_3x3());model_complete_interlace_ct6_d16_3x3();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-3x3
+pub open spec fn bytes_interlace_ct3_d4_3x3() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,4u8,3u8,0u8,0u8,1u8,211u8,1u8,152u8,26u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,64u8,165u8,197u8,59u8,205u8,174u8,113u8,157u8,26u8,122u8,35u8,237u8,139u8,153u8,15u8,105u8,130u8,34u8,54u8,172u8,38u8,103u8,35u8,57u8,174u8,18u8,146u8,64u8,39u8,165u8,74u8,77u8,4u8,212u8,157u8,168u8,28u8,25u8,234u8,253u8,1u8,109u8,219u8,136u8,206u8,247u8,94u8,54u8,222u8,12u8,88u8,7u8,0u8,0u8,0u8,21u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,184u8,192u8,232u8,192u8,228u8,204u8,252u8,128u8,229u8,0u8,67u8,141u8,0u8,0u8,23u8,243u8,3u8,138u8,115u8,22u8,83u8,6u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_3x3() -> Seq<u8> {seq![253u8,1u8,109u8,255u8,219u8,136u8,206u8,255u8,139u8,153u8,15u8,255u8,103u8,35u8,57u8,255u8,28u8,25u8,234u8,255u8,59u8,205u8,174u8,255u8,139u8,153u8,15u8,255u8,74u8,77u8,4u8,255u8,122u8,35u8,237u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_3x3(value: sm::Value) -> bool {value.width==3u32 && value.height==3u32 && value.pixels==expected_interlace_ct3_d4_3x3()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_3x3()
+    ensures match sm::MS(bytes_interlace_ct3_d4_3x3()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_3x3(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_3x3();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_3x3() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_3x3(),false),result),
+        se::eq(bytes_interlace_ct3_d4_3x3(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_3x3(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,3u8,0u8,0u8,0u8,3u8,4u8,3u8,0u8,0u8,1u8,211u8,1u8,152u8,26u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,64u8,165u8,197u8,59u8,205u8,174u8,113u8,157u8,26u8,122u8,35u8,237u8,139u8,153u8,15u8,105u8,130u8,34u8,54u8,172u8,38u8,103u8,35u8,57u8,174u8,18u8,146u8,64u8,39u8,165u8,74u8,77u8,4u8,212u8,157u8,168u8,28u8,25u8,234u8,253u8,1u8,109u8,219u8,136u8,206u8,247u8,94u8,54u8,222u8,12u8,88u8,7u8,0u8,0u8,0u8,21u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,184u8,192u8,232u8,192u8,228u8,204u8,252u8,128u8,229u8,0u8,67u8,141u8,0u8,0u8,23u8,243u8,3u8,138u8,115u8,22u8,83u8,6u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_3x3());model_complete_interlace_ct3_d4_3x3();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-4x4
+pub open spec fn bytes_interlace_ct0_d1_4x4() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,4u8,1u8,0u8,0u8,0u8,1u8,246u8,141u8,147u8,69u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,96u8,114u8,96u8,110u8,96u8,97u8,96u8,16u8,96u8,188u8,0u8,0u8,12u8,160u8,2u8,44u8,67u8,163u8,24u8,60u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_4x4() -> Seq<u8> {seq![0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_4x4(value: sm::Value) -> bool {value.width==4u32 && value.height==4u32 && value.pixels==expected_interlace_ct0_d1_4x4()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_4x4()
+    ensures match sm::MS(bytes_interlace_ct0_d1_4x4()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_4x4(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_4x4();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_4x4() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_4x4(),false),result),
+        se::eq(bytes_interlace_ct0_d1_4x4(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_4x4(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,4u8,1u8,0u8,0u8,0u8,1u8,246u8,141u8,147u8,69u8,0u8,0u8,0u8,22u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,96u8,114u8,96u8,110u8,96u8,97u8,96u8,16u8,96u8,188u8,0u8,0u8,12u8,160u8,2u8,44u8,67u8,163u8,24u8,60u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_4x4());model_complete_interlace_ct0_d1_4x4();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-4x4
+pub open spec fn bytes_interlace_ct6_d16_4x4() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,4u8,16u8,6u8,0u8,0u8,1u8,142u8,102u8,114u8,171u8,0u8,0u8,0u8,146u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,135u8,0u8,120u8,255u8,0u8,122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8,1u8,128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8,2u8,34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8,3u8,89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,82u8,208u8,203u8,70u8,9u8,201u8,128u8,60u8,4u8,227u8,188u8,98u8,136u8,174u8,239u8,181u8,178u8,247u8,96u8,115u8,132u8,13u8,132u8,182u8,7u8,0u8,2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8,1u8,199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,88u8,253u8,143u8,52u8,127u8,76u8,91u8,163u8,179u8,244u8,113u8,34u8,186u8,167u8,73u8,208u8,4u8,0u8,133u8,63u8,197u8,90u8,116u8,217u8,41u8,230u8,65u8,135u8,16u8,12u8,143u8,198u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_4x4() -> Seq<u8> {seq![122u8,68u8,139u8,154u8,89u8,29u8,114u8,66u8,128u8,33u8,224u8,127u8,126u8,217u8,66u8,161u8,3u8,193u8,42u8,247u8,157u8,81u8,29u8,88u8,224u8,174u8,7u8,33u8,214u8,82u8,209u8,133u8,34u8,106u8,17u8,109u8,60u8,126u8,33u8,246u8,210u8,90u8,167u8,251u8,80u8,77u8,45u8,173u8,199u8,114u8,189u8,142u8,32u8,2u8,60u8,232u8,210u8,114u8,245u8,50u8,214u8,246u8,187u8,166u8]}
+pub open spec fn expected_value_interlace_ct6_d16_4x4(value: sm::Value) -> bool {value.width==4u32 && value.height==4u32 && value.pixels==expected_interlace_ct6_d16_4x4()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_4x4()
+    ensures match sm::MS(bytes_interlace_ct6_d16_4x4()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_4x4(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_4x4();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_4x4() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_4x4(),false),result),
+        se::eq(bytes_interlace_ct6_d16_4x4(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_4x4(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,4u8,16u8,6u8,0u8,0u8,1u8,142u8,102u8,114u8,171u8,0u8,0u8,0u8,146u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,135u8,0u8,120u8,255u8,0u8,122u8,246u8,68u8,152u8,139u8,160u8,154u8,125u8,1u8,128u8,248u8,33u8,65u8,225u8,44u8,127u8,209u8,2u8,34u8,1u8,106u8,171u8,17u8,142u8,109u8,159u8,210u8,235u8,90u8,69u8,167u8,88u8,251u8,146u8,3u8,89u8,99u8,28u8,228u8,114u8,190u8,66u8,183u8,82u8,208u8,203u8,70u8,9u8,201u8,128u8,60u8,4u8,227u8,188u8,98u8,136u8,174u8,239u8,181u8,178u8,247u8,96u8,115u8,132u8,13u8,132u8,182u8,7u8,0u8,2u8,221u8,193u8,227u8,42u8,12u8,247u8,149u8,157u8,104u8,81u8,118u8,29u8,89u8,88u8,80u8,224u8,224u8,175u8,1u8,6u8,183u8,33u8,111u8,214u8,164u8,82u8,104u8,209u8,190u8,133u8,50u8,1u8,199u8,205u8,114u8,175u8,189u8,95u8,142u8,142u8,88u8,253u8,143u8,52u8,127u8,76u8,91u8,163u8,179u8,244u8,113u8,34u8,186u8,167u8,73u8,208u8,4u8,0u8,133u8,63u8,197u8,90u8,116u8,217u8,41u8,230u8,65u8,135u8,16u8,12u8,143u8,198u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_4x4());model_complete_interlace_ct6_d16_4x4();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-4x4
+pub open spec fn bytes_interlace_ct3_d4_4x4() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,4u8,4u8,3u8,0u8,0u8,1u8,44u8,216u8,179u8,219u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,154u8,62u8,40u8,122u8,148u8,201u8,94u8,104u8,241u8,34u8,148u8,250u8,101u8,127u8,11u8,235u8,20u8,153u8,70u8,219u8,142u8,44u8,135u8,68u8,215u8,177u8,205u8,225u8,240u8,138u8,16u8,249u8,75u8,193u8,13u8,84u8,197u8,59u8,212u8,181u8,168u8,32u8,235u8,247u8,221u8,159u8,115u8,37u8,93u8,242u8,195u8,173u8,0u8,0u8,0u8,24u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,112u8,96u8,12u8,96u8,202u8,99u8,222u8,199u8,226u8,202u8,144u8,28u8,198u8,168u8,238u8,10u8,0u8,25u8,108u8,3u8,50u8,13u8,59u8,193u8,49u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_4x4() -> Seq<u8> {seq![101u8,127u8,11u8,255u8,193u8,13u8,84u8,255u8,235u8,20u8,153u8,255u8,235u8,247u8,221u8,255u8,70u8,219u8,142u8,255u8,34u8,148u8,250u8,255u8,235u8,20u8,153u8,255u8,70u8,219u8,142u8,255u8,70u8,219u8,142u8,255u8,154u8,62u8,40u8,255u8,235u8,247u8,221u8,255u8,34u8,148u8,250u8,255u8,94u8,104u8,241u8,255u8,44u8,135u8,68u8,255u8,70u8,219u8,142u8,255u8,197u8,59u8,212u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_4x4(value: sm::Value) -> bool {value.width==4u32 && value.height==4u32 && value.pixels==expected_interlace_ct3_d4_4x4()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_4x4()
+    ensures match sm::MS(bytes_interlace_ct3_d4_4x4()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_4x4(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_4x4();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_4x4() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_4x4(),false),result),
+        se::eq(bytes_interlace_ct3_d4_4x4(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_4x4(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,4u8,0u8,0u8,0u8,4u8,4u8,3u8,0u8,0u8,1u8,44u8,216u8,179u8,219u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,154u8,62u8,40u8,122u8,148u8,201u8,94u8,104u8,241u8,34u8,148u8,250u8,101u8,127u8,11u8,235u8,20u8,153u8,70u8,219u8,142u8,44u8,135u8,68u8,215u8,177u8,205u8,225u8,240u8,138u8,16u8,249u8,75u8,193u8,13u8,84u8,197u8,59u8,212u8,181u8,168u8,32u8,235u8,247u8,221u8,159u8,115u8,37u8,93u8,242u8,195u8,173u8,0u8,0u8,0u8,24u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,112u8,96u8,12u8,96u8,202u8,99u8,222u8,199u8,226u8,202u8,144u8,28u8,198u8,168u8,238u8,10u8,0u8,25u8,108u8,3u8,50u8,13u8,59u8,193u8,49u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_4x4());model_complete_interlace_ct3_d4_4x4();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-5x5
+pub open spec fn bytes_interlace_ct0_d1_5x5() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,5u8,1u8,0u8,0u8,0u8,1u8,210u8,19u8,43u8,222u8,0u8,0u8,0u8,27u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,58u8,192u8,220u8,192u8,210u8,192u8,176u8,0u8,204u8,122u8,192u8,114u8,131u8,65u8,2u8,0u8,71u8,82u8,6u8,133u8,90u8,167u8,112u8,214u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_5x5() -> Seq<u8> {seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_5x5(value: sm::Value) -> bool {value.width==5u32 && value.height==5u32 && value.pixels==expected_interlace_ct0_d1_5x5()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_5x5()
+    ensures match sm::MS(bytes_interlace_ct0_d1_5x5()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_5x5(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_5x5();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_5x5() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_5x5(),false),result),
+        se::eq(bytes_interlace_ct0_d1_5x5(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_5x5(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,5u8,1u8,0u8,0u8,0u8,1u8,210u8,19u8,43u8,222u8,0u8,0u8,0u8,27u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,58u8,192u8,220u8,192u8,210u8,192u8,176u8,0u8,204u8,122u8,192u8,114u8,131u8,65u8,2u8,0u8,71u8,82u8,6u8,133u8,90u8,167u8,112u8,214u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_5x5());model_complete_interlace_ct0_d1_5x5();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-5x5
+pub open spec fn bytes_interlace_ct6_d16_5x5() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,5u8,16u8,6u8,0u8,0u8,1u8,170u8,248u8,202u8,48u8,0u8,0u8,0u8,222u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,211u8,0u8,44u8,255u8,0u8,116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8,1u8,20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8,2u8,62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8,3u8,246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8,4u8,174u8,211u8,214u8,34u8,110u8,53u8,78u8,212u8,0u8,112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8,1u8,135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,224u8,198u8,179u8,90u8,109u8,81u8,214u8,188u8,2u8,196u8,56u8,63u8,96u8,255u8,79u8,210u8,47u8,180u8,210u8,212u8,31u8,209u8,122u8,225u8,98u8,3u8,241u8,54u8,24u8,174u8,173u8,90u8,119u8,72u8,46u8,112u8,182u8,46u8,77u8,162u8,45u8,153u8,4u8,114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,187u8,238u8,237u8,39u8,25u8,8u8,37u8,233u8,66u8,251u8,95u8,77u8,38u8,45u8,12u8,81u8,87u8,206u8,124u8,54u8,84u8,11u8,21u8,185u8,230u8,67u8,118u8,24u8,34u8,132u8,78u8,51u8,0u8,56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8,7u8,219u8,98u8,80u8,130u8,233u8,199u8,110u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_5x5() -> Seq<u8> {seq![117u8,191u8,137u8,242u8,135u8,142u8,100u8,176u8,246u8,132u8,64u8,166u8,103u8,65u8,208u8,134u8,20u8,201u8,62u8,123u8,114u8,98u8,186u8,154u8,45u8,79u8,211u8,191u8,111u8,174u8,249u8,203u8,197u8,42u8,78u8,224u8,172u8,160u8,112u8,46u8,112u8,100u8,68u8,24u8,75u8,205u8,99u8,130u8,213u8,169u8,243u8,83u8,28u8,21u8,162u8,103u8,49u8,139u8,20u8,191u8,56u8,123u8,36u8,236u8,163u8,51u8,48u8,110u8,170u8,73u8,248u8,222u8,253u8,220u8,101u8,41u8,33u8,79u8,106u8,158u8,62u8,23u8,4u8,172u8,22u8,126u8,222u8,184u8,164u8,90u8,172u8,244u8,70u8,255u8,13u8,187u8,237u8,100u8,226u8,17u8]}
+pub open spec fn expected_value_interlace_ct6_d16_5x5(value: sm::Value) -> bool {value.width==5u32 && value.height==5u32 && value.pixels==expected_interlace_ct6_d16_5x5()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_5x5()
+    ensures match sm::MS(bytes_interlace_ct6_d16_5x5()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_5x5(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_5x5();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_5x5() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_5x5(),false),result),
+        se::eq(bytes_interlace_ct6_d16_5x5(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_5x5(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,5u8,16u8,6u8,0u8,0u8,1u8,170u8,248u8,202u8,48u8,0u8,0u8,0u8,222u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,211u8,0u8,44u8,255u8,0u8,116u8,245u8,191u8,242u8,137u8,77u8,242u8,116u8,1u8,20u8,101u8,201u8,254u8,62u8,177u8,123u8,87u8,2u8,62u8,113u8,22u8,183u8,4u8,38u8,172u8,180u8,237u8,233u8,100u8,37u8,226u8,167u8,17u8,49u8,3u8,246u8,157u8,132u8,68u8,63u8,213u8,166u8,222u8,4u8,174u8,211u8,214u8,34u8,110u8,53u8,78u8,212u8,0u8,112u8,2u8,100u8,30u8,68u8,103u8,23u8,244u8,213u8,222u8,169u8,96u8,243u8,187u8,83u8,105u8,49u8,91u8,139u8,115u8,20u8,55u8,191u8,115u8,1u8,135u8,93u8,142u8,243u8,100u8,198u8,176u8,54u8,224u8,198u8,179u8,90u8,109u8,81u8,214u8,188u8,2u8,196u8,56u8,63u8,96u8,255u8,79u8,210u8,47u8,180u8,210u8,212u8,31u8,209u8,122u8,225u8,98u8,3u8,241u8,54u8,24u8,174u8,173u8,90u8,119u8,72u8,46u8,112u8,182u8,46u8,77u8,162u8,45u8,153u8,4u8,114u8,84u8,98u8,137u8,187u8,7u8,154u8,120u8,187u8,238u8,237u8,39u8,25u8,8u8,37u8,233u8,66u8,251u8,95u8,77u8,38u8,45u8,12u8,81u8,87u8,206u8,124u8,54u8,84u8,11u8,21u8,185u8,230u8,67u8,118u8,24u8,34u8,132u8,78u8,51u8,0u8,56u8,23u8,123u8,131u8,36u8,66u8,236u8,132u8,163u8,97u8,51u8,97u8,48u8,103u8,110u8,77u8,170u8,182u8,73u8,182u8,248u8,176u8,222u8,135u8,253u8,201u8,220u8,116u8,101u8,227u8,40u8,202u8,32u8,195u8,79u8,182u8,106u8,139u8,158u8,41u8,7u8,219u8,98u8,80u8,130u8,233u8,199u8,110u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_5x5());model_complete_interlace_ct6_d16_5x5();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-5x5
+pub open spec fn bytes_interlace_ct3_d4_5x5() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,5u8,4u8,3u8,0u8,0u8,1u8,8u8,70u8,11u8,64u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,36u8,232u8,239u8,139u8,215u8,250u8,206u8,180u8,111u8,198u8,225u8,23u8,232u8,97u8,47u8,183u8,158u8,121u8,241u8,229u8,45u8,213u8,146u8,231u8,43u8,40u8,106u8,227u8,168u8,135u8,172u8,74u8,202u8,154u8,237u8,172u8,109u8,123u8,83u8,124u8,229u8,54u8,33u8,54u8,151u8,173u8,202u8,100u8,139u8,60u8,110u8,245u8,0u8,0u8,0u8,36u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,216u8,192u8,88u8,192u8,164u8,195u8,172u8,192u8,114u8,128u8,33u8,40u8,129u8,81u8,149u8,233u8,44u8,243u8,15u8,22u8,225u8,91u8,135u8,25u8,154u8,12u8,31u8,0u8,0u8,91u8,217u8,8u8,32u8,80u8,131u8,97u8,98u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_5x5() -> Seq<u8> {seq![154u8,237u8,172u8,255u8,206u8,180u8,111u8,255u8,206u8,180u8,111u8,255u8,183u8,158u8,121u8,255u8,213u8,146u8,231u8,255u8,139u8,215u8,250u8,255u8,198u8,225u8,23u8,255u8,33u8,54u8,151u8,255u8,124u8,229u8,54u8,255u8,154u8,237u8,172u8,255u8,183u8,158u8,121u8,255u8,173u8,202u8,100u8,255u8,206u8,180u8,111u8,255u8,206u8,180u8,111u8,255u8,241u8,229u8,45u8,255u8,43u8,40u8,106u8,255u8,206u8,180u8,111u8,255u8,198u8,225u8,23u8,255u8,139u8,215u8,250u8,255u8,33u8,54u8,151u8,255u8,206u8,180u8,111u8,255u8,213u8,146u8,231u8,255u8,33u8,54u8,151u8,255u8,139u8,215u8,250u8,255u8,109u8,123u8,83u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_5x5(value: sm::Value) -> bool {value.width==5u32 && value.height==5u32 && value.pixels==expected_interlace_ct3_d4_5x5()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_5x5()
+    ensures match sm::MS(bytes_interlace_ct3_d4_5x5()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_5x5(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_5x5();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_5x5() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_5x5(),false),result),
+        se::eq(bytes_interlace_ct3_d4_5x5(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_5x5(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,5u8,0u8,0u8,0u8,5u8,4u8,3u8,0u8,0u8,1u8,8u8,70u8,11u8,64u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,36u8,232u8,239u8,139u8,215u8,250u8,206u8,180u8,111u8,198u8,225u8,23u8,232u8,97u8,47u8,183u8,158u8,121u8,241u8,229u8,45u8,213u8,146u8,231u8,43u8,40u8,106u8,227u8,168u8,135u8,172u8,74u8,202u8,154u8,237u8,172u8,109u8,123u8,83u8,124u8,229u8,54u8,33u8,54u8,151u8,173u8,202u8,100u8,139u8,60u8,110u8,245u8,0u8,0u8,0u8,36u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,216u8,192u8,88u8,192u8,164u8,195u8,172u8,192u8,114u8,128u8,33u8,40u8,129u8,81u8,149u8,233u8,44u8,243u8,15u8,22u8,225u8,91u8,135u8,25u8,154u8,12u8,31u8,0u8,0u8,91u8,217u8,8u8,32u8,80u8,131u8,97u8,98u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_5x5());model_complete_interlace_ct3_d4_5x5();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-9x1
+pub open spec fn bytes_interlace_ct0_d1_9x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,9u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,83u8,190u8,137u8,70u8,0u8,0u8,0u8,16u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,96u8,58u8,192u8,108u8,0u8,0u8,5u8,12u8,1u8,119u8,208u8,113u8,43u8,109u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_9x1() -> Seq<u8> {seq![0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_9x1(value: sm::Value) -> bool {value.width==9u32 && value.height==1u32 && value.pixels==expected_interlace_ct0_d1_9x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_9x1()
+    ensures match sm::MS(bytes_interlace_ct0_d1_9x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_9x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_9x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_9x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_9x1(),false),result),
+        se::eq(bytes_interlace_ct0_d1_9x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_9x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,9u8,0u8,0u8,0u8,1u8,1u8,0u8,0u8,0u8,1u8,83u8,190u8,137u8,70u8,0u8,0u8,0u8,16u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,96u8,96u8,108u8,96u8,58u8,192u8,108u8,0u8,0u8,5u8,12u8,1u8,119u8,208u8,113u8,43u8,109u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_9x1());model_complete_interlace_ct0_d1_9x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct6-d16-9x1
+pub open spec fn bytes_interlace_ct6_d16_9x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,9u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,43u8,85u8,104u8,168u8,0u8,0u8,0u8,87u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,76u8,0u8,179u8,255u8,0u8,42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8,1u8,72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8,2u8,151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8,3u8,75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,57u8,31u8,5u8,1u8,250u8,237u8,168u8,88u8,135u8,202u8,11u8,197u8,59u8,69u8,218u8,163u8,102u8,249u8,204u8,152u8,48u8,169u8,223u8,150u8,88u8,143u8,36u8,58u8,135u8,85u8,108u8,126u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct6_d16_9x1() -> Seq<u8> {seq![42u8,252u8,212u8,149u8,75u8,24u8,24u8,105u8,151u8,81u8,113u8,231u8,94u8,17u8,6u8,220u8,72u8,69u8,47u8,202u8,182u8,20u8,62u8,73u8,39u8,205u8,122u8,59u8,193u8,212u8,80u8,3u8,108u8,247u8,77u8,103u8]}
+pub open spec fn expected_value_interlace_ct6_d16_9x1(value: sm::Value) -> bool {value.width==9u32 && value.height==1u32 && value.pixels==expected_interlace_ct6_d16_9x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct6_d16_9x1()
+    ensures match sm::MS(bytes_interlace_ct6_d16_9x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct6_d16_9x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct6_d16_9x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct6_d16_9x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct6_d16_9x1(),false),result),
+        se::eq(bytes_interlace_ct6_d16_9x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct6_d16_9x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,9u8,0u8,0u8,0u8,1u8,16u8,6u8,0u8,0u8,1u8,43u8,85u8,104u8,168u8,0u8,0u8,0u8,87u8,73u8,68u8,65u8,84u8,120u8,156u8,1u8,76u8,0u8,179u8,255u8,0u8,42u8,81u8,252u8,161u8,212u8,199u8,150u8,2u8,108u8,45u8,247u8,237u8,77u8,199u8,103u8,74u8,1u8,72u8,199u8,68u8,202u8,47u8,121u8,202u8,221u8,2u8,151u8,117u8,81u8,133u8,113u8,95u8,231u8,227u8,39u8,125u8,205u8,115u8,122u8,137u8,59u8,139u8,3u8,75u8,150u8,24u8,50u8,24u8,113u8,105u8,128u8,57u8,31u8,5u8,1u8,250u8,237u8,168u8,88u8,135u8,202u8,11u8,197u8,59u8,69u8,218u8,163u8,102u8,249u8,204u8,152u8,48u8,169u8,223u8,150u8,88u8,143u8,36u8,58u8,135u8,85u8,108u8,126u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct6_d16_9x1());model_complete_interlace_ct6_d16_9x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-9x1
+pub open spec fn bytes_interlace_ct3_d4_9x1() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,9u8,0u8,0u8,0u8,1u8,4u8,3u8,0u8,0u8,1u8,137u8,235u8,169u8,216u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,6u8,57u8,192u8,47u8,48u8,39u8,94u8,5u8,197u8,195u8,225u8,116u8,241u8,0u8,255u8,230u8,223u8,121u8,71u8,172u8,53u8,157u8,158u8,239u8,191u8,144u8,220u8,242u8,167u8,59u8,86u8,140u8,145u8,106u8,233u8,230u8,23u8,94u8,171u8,34u8,31u8,171u8,169u8,32u8,126u8,137u8,211u8,213u8,37u8,219u8,116u8,217u8,0u8,0u8,0u8,17u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,40u8,98u8,84u8,96u8,106u8,100u8,190u8,150u8,12u8,0u8,8u8,134u8,2u8,83u8,93u8,36u8,160u8,94u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_9x1() -> Seq<u8> {seq![157u8,158u8,239u8,255u8,34u8,31u8,171u8,255u8,191u8,144u8,220u8,255u8,71u8,172u8,53u8,255u8,94u8,5u8,197u8,255u8,23u8,94u8,171u8,255u8,47u8,48u8,39u8,255u8,169u8,32u8,126u8,255u8,94u8,5u8,197u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_9x1(value: sm::Value) -> bool {value.width==9u32 && value.height==1u32 && value.pixels==expected_interlace_ct3_d4_9x1()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_9x1()
+    ensures match sm::MS(bytes_interlace_ct3_d4_9x1()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_9x1(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_9x1();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_9x1() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_9x1(),false),result),
+        se::eq(bytes_interlace_ct3_d4_9x1(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_9x1(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,9u8,0u8,0u8,0u8,1u8,4u8,3u8,0u8,0u8,1u8,137u8,235u8,169u8,216u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,6u8,57u8,192u8,47u8,48u8,39u8,94u8,5u8,197u8,195u8,225u8,116u8,241u8,0u8,255u8,230u8,223u8,121u8,71u8,172u8,53u8,157u8,158u8,239u8,191u8,144u8,220u8,242u8,167u8,59u8,86u8,140u8,145u8,106u8,233u8,230u8,23u8,94u8,171u8,34u8,31u8,171u8,169u8,32u8,126u8,137u8,211u8,213u8,37u8,219u8,116u8,217u8,0u8,0u8,0u8,17u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,40u8,98u8,84u8,96u8,106u8,100u8,190u8,150u8,12u8,0u8,8u8,134u8,2u8,83u8,93u8,36u8,160u8,94u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_9x1());model_complete_interlace_ct3_d4_9x1();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct0-d1-1x9
+pub open spec fn bytes_interlace_ct0_d1_1x9() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,9u8,1u8,0u8,0u8,0u8,1u8,172u8,58u8,75u8,223u8,0u8,0u8,0u8,26u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,98u8,96u8,102u8,96u8,97u8,96u8,104u8,96u8,100u8,96u8,106u8,96u8,62u8,0u8,0u8,22u8,94u8,2u8,209u8,250u8,161u8,91u8,128u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct0_d1_1x9() -> Seq<u8> {seq![255u8,255u8,255u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8,0u8,0u8,0u8,255u8,0u8,0u8,0u8,255u8,255u8,255u8,255u8,255u8]}
+pub open spec fn expected_value_interlace_ct0_d1_1x9(value: sm::Value) -> bool {value.width==1u32 && value.height==9u32 && value.pixels==expected_interlace_ct0_d1_1x9()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct0_d1_1x9()
+    ensures match sm::MS(bytes_interlace_ct0_d1_1x9()) {sm::Outcome::Done(value)=>expected_value_interlace_ct0_d1_1x9(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct0_d1_1x9();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct0_d1_1x9() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct0_d1_1x9(),false),result),
+        se::eq(bytes_interlace_ct0_d1_1x9(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct0_d1_1x9(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,9u8,1u8,0u8,0u8,0u8,1u8,172u8,58u8,75u8,223u8,0u8,0u8,0u8,26u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,104u8,96u8,108u8,96u8,98u8,96u8,102u8,96u8,97u8,96u8,104u8,96u8,100u8,96u8,106u8,96u8,62u8,0u8,0u8,22u8,94u8,2u8,209u8,250u8,161u8,91u8,128u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct0_d1_1x9());model_complete_interlace_ct0_d1_1x9();}
+    crate::png::try_decode_still(&b)
+}
+// interlace/ct3-d4-1x9
+pub open spec fn bytes_interlace_ct3_d4_1x9() -> Seq<u8> {seq![137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,9u8,4u8,3u8,0u8,0u8,1u8,118u8,111u8,107u8,65u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,33u8,200u8,29u8,0u8,192u8,84u8,8u8,198u8,36u8,196u8,79u8,63u8,106u8,13u8,88u8,9u8,104u8,32u8,201u8,42u8,74u8,172u8,130u8,213u8,102u8,138u8,204u8,70u8,4u8,100u8,86u8,216u8,216u8,122u8,188u8,187u8,23u8,68u8,5u8,180u8,147u8,135u8,206u8,63u8,86u8,4u8,123u8,180u8,141u8,107u8,80u8,193u8,0u8,0u8,0u8,26u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,192u8,184u8,129u8,169u8,128u8,185u8,129u8,165u8,128u8,193u8,128u8,113u8,2u8,147u8,3u8,179u8,7u8,0u8,47u8,38u8,4u8,89u8,101u8,111u8,27u8,13u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8]}
+pub open spec fn expected_interlace_ct3_d4_1x9() -> Seq<u8> {seq![4u8,123u8,180u8,255u8,196u8,79u8,63u8,255u8,102u8,138u8,204u8,255u8,70u8,4u8,100u8,255u8,172u8,130u8,213u8,255u8,180u8,147u8,135u8,255u8,4u8,123u8,180u8,255u8,122u8,188u8,187u8,255u8,122u8,188u8,187u8,255u8]}
+pub open spec fn expected_value_interlace_ct3_d4_1x9(value: sm::Value) -> bool {value.width==1u32 && value.height==9u32 && value.pixels==expected_interlace_ct3_d4_1x9()}
+#[verifier::spinoff_prover]
+pub proof fn model_complete_interlace_ct3_d4_1x9()
+    ensures match sm::MS(bytes_interlace_ct3_d4_1x9()) {sm::Outcome::Done(value)=>expected_value_interlace_ct3_d4_1x9(value),_=>false},
+{
+    crate::witness_m4_interlace_projection::e6_a7_complete_interlace_ct3_d4_1x9();
+}
+#[verifier::spinoff_prover]
+pub fn public_complete_interlace_ct3_d4_1x9() -> (result: Result<crate::png::Still,TryError>)
+    ensures se::oom_member(se::requests(bytes_interlace_ct3_d4_1x9(),false),result),
+        se::eq(bytes_interlace_ct3_d4_1x9(),false,se::native8(result)),
+        match se::native8(result) {Ok(value)=>expected_value_interlace_ct3_d4_1x9(value),Err(TryError::OutOfMemory(_))=>true,_=>false},
+{
+    let b=[137u8,80u8,78u8,71u8,13u8,10u8,26u8,10u8,0u8,0u8,0u8,13u8,73u8,72u8,68u8,82u8,0u8,0u8,0u8,1u8,0u8,0u8,0u8,9u8,4u8,3u8,0u8,0u8,1u8,118u8,111u8,107u8,65u8,0u8,0u8,0u8,48u8,80u8,76u8,84u8,69u8,33u8,200u8,29u8,0u8,192u8,84u8,8u8,198u8,36u8,196u8,79u8,63u8,106u8,13u8,88u8,9u8,104u8,32u8,201u8,42u8,74u8,172u8,130u8,213u8,102u8,138u8,204u8,70u8,4u8,100u8,86u8,216u8,216u8,122u8,188u8,187u8,23u8,68u8,5u8,180u8,147u8,135u8,206u8,63u8,86u8,4u8,123u8,180u8,141u8,107u8,80u8,193u8,0u8,0u8,0u8,26u8,73u8,68u8,65u8,84u8,120u8,156u8,99u8,248u8,192u8,184u8,129u8,169u8,128u8,185u8,129u8,165u8,128u8,193u8,128u8,113u8,2u8,147u8,3u8,179u8,7u8,0u8,47u8,38u8,4u8,89u8,101u8,111u8,27u8,13u8,0u8,0u8,0u8,0u8,73u8,69u8,78u8,68u8,174u8,66u8,96u8,130u8];
+    proof {assert(b@==bytes_interlace_ct3_d4_1x9());model_complete_interlace_ct3_d4_1x9();}
+    crate::png::try_decode_still(&b)
+}
 } // verus!
